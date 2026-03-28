@@ -27,6 +27,9 @@ LOCALITY_BASELINES = {
     "gachibowli": { "price_2025": 10665, "roi_yoy": 15.8, "roi_3y": 32, "nri_pct": 29, "sales_vel": 130, "growth_rate": 0.118 },
     "miyapur":    { "price_2025":  7413, "roi_yoy": 27.8, "roi_3y": 29, "nri_pct": 18, "sales_vel": 220, "growth_rate": 0.120 },
     "kompally":   { "price_2025":  8695, "roi_yoy": 111.8,"roi_3y": 52, "nri_pct": 14, "sales_vel":  95, "growth_rate": 0.175 },
+    "jubilee":    { "price_2025": 12500, "roi_yoy": 14.0, "roi_3y": 28, "nri_pct": 22, "sales_vel":  42, "growth_rate": 0.082 },
+    "manikonda":  { "price_2025":  5200, "roi_yoy": 21.0, "roi_3y": 38, "nri_pct": 24, "sales_vel": 175, "growth_rate": 0.135 },
+    "uppal":      { "price_2025":  3900, "roi_yoy": 17.0, "roi_3y": 34, "nri_pct": 11, "sales_vel": 160, "growth_rate": 0.110 },
     "shamshabad": { "price_2025":  7312, "roi_yoy": 18.5, "roi_3y": 41, "nri_pct":  9, "sales_vel":  55, "growth_rate": 0.145 },
 }
 
@@ -36,6 +39,9 @@ FULL_PRICE_HISTORY = {
     "gachibowli": [5800, 6090, 6960, 7830, 8700, 9200, 10665],
     "miyapur":    [3200, 3360, 3840, 4480, 5280, 5800,  7413],
     "kompally":   [2100, 2205, 2520, 3150, 3780, 4100,  8695],
+    "jubilee":    [8200, 7900, 8500, 9200, 10100, 11200, 12500],
+    "manikonda":  [2800, 2700, 3100, 3600, 4100, 4700,  5200],
+    "uppal":      [2100, 2050, 2300, 2600, 2900, 3400,  3900],
     "shamshabad": [2800, 2940, 3360, 4060, 5040, 6160,  7312],
 }
 
@@ -44,6 +50,9 @@ NRI_HISTORY = {
     "gachibowli": [20, 22, 25, 27, 29, 30, 31],
     "miyapur":    [ 8,  9, 11, 14, 16, 17, 18],
     "kompally":   [ 4,  4,  6,  8, 10, 12, 14],
+    "jubilee":    [15, 16, 17, 19, 20, 21, 22],
+    "manikonda":  [10, 11, 13, 16, 18, 21, 24],
+    "uppal":      [ 4,  4,  5,  6,  7,  8, 11],
     "shamshabad": [ 2,  2,  3,  4,  6,  7,  9],
 }
 
@@ -52,6 +61,9 @@ ACTIVITY_HISTORY = {
     "gachibowli": [55, 50, 62, 71, 80, 85, 90],
     "miyapur":    [40, 38, 55, 68, 78, 85, 90],
     "kompally":   [15, 14, 22, 35, 52, 68, 78],
+    "jubilee":    [30, 28, 35, 42, 52, 60, 68],
+    "manikonda":  [25, 22, 32, 45, 58, 70, 78],
+    "uppal":      [20, 18, 25, 34, 46, 58, 68],
     "shamshabad": [10,  9, 12, 18, 28, 40, 55],
 }
 

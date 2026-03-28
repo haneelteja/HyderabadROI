@@ -19,6 +19,12 @@ import sys
 import time
 from datetime import datetime
 
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+except Exception:
+    pass
+
 from config import LOCALITIES, OUTPUT_JSON_PATH, DEMO_MODE
 from scrapers import run_all_scrapers
 from mirofish import generate_predictions, generate_all_predictions_batch, get_full_timeline, LOCALITY_BASELINES
@@ -113,8 +119,74 @@ ZONE_META = {
             {"t": "NH-44 6-Lane Expansion", "b": "6-lane widening of NH-44 through Kompally corridor — land values expected to jump 15–20% on completion in 2027"}
         ],
     },
+    "jubilee": {
+        "name": "Jubilee Hills", "rank": 5, "lat": 17.432, "lng": 78.408, "radius": 1600,
+        "type": "luxury", "segment": "Ultra-premium · Legacy · HNI", "color": "#e040fb",
+        "priceRange": "₹3 Cr - ₹50 Cr+",
+        "verdict": "Hyderabad's prestige address - strongest for capital preservation, not growth-chasing.",
+        "summary": "Jubilee Hills remains the city's prestige market. Supply is constrained and buyer demand is reputation-driven, which protects value better than it drives breakout growth.",
+        "pros": [
+            "Constrained supply supports a durable premium floor",
+            "Prestige-driven HNI demand remains structurally strong",
+            "Legacy address with resilient brand value"
+        ],
+        "cons": [
+            "Appreciation is slower than emerging corridors",
+            "Entry ticket is among the highest in the city",
+            "Much of the stock is older and highly project-dependent"
+        ],
+        "govtInit": [
+            {"t": "Road No. 36 Widening", "b": "GHMC road works target one of the locality's chronic traffic pressure points"},
+            {"t": "Heritage Residential Controls", "b": "Planning controls help preserve low-supply premium character"},
+            {"t": "Underground Cabling", "b": "Infrastructure upgrades improve reliability and streetscape quality"}
+        ],
+    },
+    "manikonda": {
+        "name": "Manikonda", "rank": 6, "lat": 17.394, "lng": 78.385, "radius": 1900,
+        "type": "mid", "segment": "Affordable premium · NRI rental", "color": "#26c6da",
+        "priceRange": "₹50 L - ₹2.2 Cr",
+        "verdict": "Best value zone in the western IT belt for buyers who want rentability without Kokapet pricing.",
+        "summary": "Manikonda captures western IT-belt demand at a lower entry point than neighboring premium zones. That combination keeps it attractive for value-focused end users and investors.",
+        "pros": [
+            "Discounted entry versus adjacent IT-belt premium zones",
+            "Healthy rental and NRI interest",
+            "Balanced appreciation and affordability profile"
+        ],
+        "cons": [
+            "Drainage and civic infrastructure still lag development",
+            "Main-road congestion is a persistent issue",
+            "Service consistency varies across jurisdiction boundaries"
+        ],
+        "govtInit": [
+            {"t": "Manikonda-Rajendranagar Flyover", "b": "Approved corridor aimed at reducing travel times toward the ORR"},
+            {"t": "Drainage Master Plan", "b": "Storm-water upgrades target one of the locality's main complaints"},
+            {"t": "Layout Regularisation", "b": "Planning cleanup improves title confidence for more parcels"}
+        ],
+    },
+    "uppal": {
+        "name": "Uppal / Nacharam", "rank": 7, "lat": 17.405, "lng": 78.559, "radius": 2200,
+        "type": "emerging", "segment": "East corridor · Affordable · IT-linked", "color": "#66bb6a",
+        "priceRange": "₹35 L - ₹1.5 Cr",
+        "verdict": "Compelling east-side affordability play, but weaker premium resale demand than west Hyderabad.",
+        "summary": "Uppal and Nacharam benefit from lower entry prices, metro connectivity, and east-corridor employment growth. The upside case is affordability plus transit, not premium scarcity.",
+        "pros": [
+            "Lower entry price than most metro-connected alternatives",
+            "Transit support and east-corridor job growth",
+            "Wide buyer funnel for budget-conscious households"
+        ],
+        "cons": [
+            "Premium NRI resale depth remains limited",
+            "Social infrastructure trails west Hyderabad",
+            "Financial District commutes are still long"
+        ],
+        "govtInit": [
+            {"t": "Knowledge City Expansion", "b": "Large employment plans support future housing demand in the east corridor"},
+            {"t": "Metro Extensions", "b": "Transit improvements strengthen accessibility over time"},
+            {"t": "Industrial SEZ Upgrades", "b": "Employment anchors diversify the area's demand base"}
+        ],
+    },
     "shamshabad": {
-        "name": "Shamshabad / Pharma City", "rank": 5, "lat": 17.240, "lng": 78.429, "radius": 3500,
+        "name": "Shamshabad / Pharma City", "rank": 8, "lat": 17.240, "lng": 78.429, "radius": 3500,
         "type": "commercial", "segment": "Industrial · Long-term · Land", "color": "#9b59b6",
         "priceRange": "₹30 L – ₹2 Cr",
         "verdict": "India's largest pharma cluster. A 10-year land play — investors buying today will see 3–5x by 2035.",
@@ -201,7 +273,8 @@ def build_output(scraped, predictions_map, govt_alerts):
         live_price = listings.get("avg_price_sqft") or base["price_2025"]
         live_listings = listings.get("listing_count") or {
             "kokapet": 342, "gachibowli": 218, "miyapur": 489,
-            "kompally": 628, "shamshabad": 410
+            "kompally": 628, "jubilee": 98, "manikonda": 410,
+            "uppal": 520, "shamshabad": 410
         }.get(lid, 200)
 
         tl = get_full_timeline(lid, preds)

@@ -56,6 +56,9 @@ LOCALITIES = [
     {"id": "gachibowli", "name": "Gachibowli", "rera_keyword": "Gachibowli", "acres_keyword": "gachibowli"},
     {"id": "miyapur", "name": "Miyapur", "rera_keyword": "Miyapur", "acres_keyword": "miyapur"},
     {"id": "kompally", "name": "Kompally", "rera_keyword": "Kompally", "acres_keyword": "kompally"},
+    {"id": "jubilee", "name": "Jubilee Hills", "rera_keyword": "Jubilee Hills", "acres_keyword": "jubilee-hills"},
+    {"id": "manikonda", "name": "Manikonda", "rera_keyword": "Manikonda", "acres_keyword": "manikonda"},
+    {"id": "uppal", "name": "Uppal", "rera_keyword": "Uppal", "acres_keyword": "uppal"},
     {"id": "shamshabad", "name": "Shamshabad", "rera_keyword": "Shamshabad", "acres_keyword": "shamshabad"},
 ]
 
