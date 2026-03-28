@@ -81,6 +81,12 @@ python pipeline.py
 
 Then open [HydROI.html](C:\Users\Haneel Teja\Cursor Applications\Hyderabad ROI\HydROI.html) in a browser.
 
+Validate the generated output:
+
+```bash
+python validate_output.py
+```
+
 ## Prediction modes
 
 The pipeline reports the actual mode used in `data.json` metadata:
