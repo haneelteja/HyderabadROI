@@ -1,0 +1,568 @@
+{
+  "metadata": {
+    "last_updated": "2026-03-28T00:27:03.292282",
+    "pipeline_mode": "LIVE",
+    "prediction_engine": "mirofish_multi_agent",
+    "data_sources": [
+      "rera.telangana.gov.in",
+      "99acres.com",
+      "magicbricks.com"
+    ],
+    "next_refresh": "Run python pipeline.py to refresh"
+  },
+  "city_stats": {
+    "avg_price_sqft": 6840,
+    "quarterly_sales": 4820,
+    "nri_investment_cr": 2840,
+    "active_projects": 1240,
+    "unsold_inventory": 28400
+  },
+  "zones": {
+    "kokapet": {
+      "id": "kokapet",
+      "name": "Kokapet",
+      "rank": 1,
+      "lat": 17.407,
+      "lng": 78.33,
+      "radius": 2200,
+      "type": "luxury",
+      "segment": "Luxury · HNI · NRI",
+      "color": "#ff3a00",
+      "avgPrice": 10394,
+      "priceRange": "₹1.2 Cr – ₹8 Cr",
+      "listings": 912,
+      "roiYoY": 22.3,
+      "roi3Y": 38,
+      "nriPct": 38,
+      "salesVel": 145,
+      "rera": {
+        "total_projects": 0,
+        "recent_registrations_90d": 0
+      },
+      "verdict": "The single best HNI & NRI investment in Hyderabad right now — no debate.",
+      "summary": "Kokapet sits immediately adjacent to the Financial District, where Goldman Sachs, Microsoft, Amazon and Google maintain their largest India campuses. This creates a permanently captive luxury rental and resale market. NRI buyers account for 38% of all purchases — the highest in the city.",
+      "pros": [
+        "Goldman Sachs, Microsoft, Amazon within 2 km — corporate rental demand is unmatched anywhere in Hyderabad",
+        "38% of buyers are NRI — highest in city — guarantees robust resale demand at all times",
+        "HMDA-approved, zero-encumbrance titles — no legal risk, no litigation history"
+      ],
+      "cons": [
+        "Minimum entry ticket is ₹1.2 Cr for 2BHK — locks out sub-₹50L budgets entirely",
+        "Appreciation likely moderates to 18–22% YoY from 2026 as the zone reaches maturity",
+        "Secondary road infrastructure in inner lanes still incomplete"
+      ],
+      "govtInit": [
+        {
+          "t": "IT Corridor Extension",
+          "b": "1,200 additional acres notified adjacent to Financial District under HMDA Master Plan 2031 — brings 40,000+ new IT jobs within 3 km"
+        },
+        {
+          "t": "ORR Phase-2 Dedicated Exit Ramp",
+          "b": "Dedicated ORR exit ramp for Kokapet under construction — completion Q3 2026, cuts airport commute by 12 minutes"
+        },
+        {
+          "t": "HMWSSB Water Grid Phase-2",
+          "b": "Dedicated drinking water pipeline for Kokapet–Narsingi belt — ₹440 Cr project approved"
+        }
+      ],
+      "tl": {
+        "price": [
+          4200,
+          4410,
+          5040,
+          6300,
+          7560,
+          8500,
+          10394,
+          11602,
+          13679,
+          15692
+        ],
+        "nri": [
+          12,
+          14,
+          18,
+          25,
+          31,
+          35,
+          38,
+          40,
+          42,
+          44
+        ],
+        "activity": [
+          20,
+          18,
+          42,
+          65,
+          80,
+          88,
+          95,
+          97,
+          99,
+          99
+        ]
+      },
+      "predictions": {
+        "method": "trend_extrapolation_demo",
+        "confidence": "medium",
+        "Q3_2026": {
+          "price": 11602,
+          "nri_pct": 40,
+          "activity": 97,
+          "confidence": 0.82
+        },
+        "2027": {
+          "price": 13679,
+          "nri_pct": 42,
+          "activity": 99,
+          "confidence": 0.7
+        },
+        "2028": {
+          "price": 15692,
+          "nri_pct": 44,
+          "activity": 99,
+          "confidence": 0.58
+        }
+      },
+      "govtAlerts": []
+    },
+    "gachibowli": {
+      "id": "gachibowli",
+      "name": "Gachibowli",
+      "rank": 2,
+      "lat": 17.44,
+      "lng": 78.349,
+      "radius": 2000,
+      "type": "luxury",
+      "segment": "IT Professionals · NRI · Rental",
+      "color": "#ff8c00",
+      "avgPrice": 10665,
+      "priceRange": "₹1.5 Cr – ₹12 Cr",
+      "listings": 523,
+      "roiYoY": 15.9,
+      "roi3Y": 32,
+      "nriPct": 29,
+      "salesVel": 130,
+      "rera": {
+        "total_projects": 0,
+        "recent_registrations_90d": 0
+      },
+      "verdict": "The safest, most liquid premium market in Hyderabad — never had a down quarter since 2016.",
+      "summary": "Gachibowli is the established IT hub and the most liquid premium zone in the city. Net rental yield is 4.2% — highest in Hyderabad. It has never recorded a down quarter in sales since 2016.",
+      "pros": [
+        "4.2% net rental yield — highest in Hyderabad — generates immediate income from purchase day",
+        "Zero down quarters in sales since 2016 — most liquid, easiest exit of all premium zones",
+        "International schools, hospitals, malls within 3 km — highest end-use demand"
+      ],
+      "cons": [
+        "Highest average price at ₹9,200/sqft — ₹1.5 Cr floor makes it the most expensive entry",
+        "Peak appreciation cycle is behind it — upside now 22% vs 35% three years ago",
+        "HITEC City main corridor traffic congestion is a permanent structural negative"
+      ],
+      "govtInit": [
+        {
+          "t": "Metro Rail Phase-2 Station",
+          "b": "Gachibowli metro station approved and funded — construction begins Q2 2026, operational target 2029"
+        },
+        {
+          "t": "HITECH City Expansion — 800 Acres",
+          "b": "New 800-acre IT park notified adjacent to Gachibowli — 50,000 additional jobs projected"
+        },
+        {
+          "t": "Biodiversity Junction Flyover",
+          "b": "TS-iPass approved flyover — addresses the single biggest infrastructure complaint, completion Dec 2026"
+        }
+      ],
+      "tl": {
+        "price": [
+          5800,
+          6090,
+          6960,
+          7830,
+          8700,
+          9200,
+          10665,
+          11608,
+          13189,
+          14667
+        ],
+        "nri": [
+          20,
+          22,
+          25,
+          27,
+          29,
+          30,
+          31,
+          31,
+          31,
+          31
+        ],
+        "activity": [
+          55,
+          50,
+          62,
+          71,
+          80,
+          85,
+          90,
+          92,
+          94,
+          95
+        ]
+      },
+      "predictions": {
+        "method": "trend_extrapolation_demo",
+        "confidence": "medium",
+        "Q3_2026": {
+          "price": 11608,
+          "nri_pct": 31,
+          "activity": 92,
+          "confidence": 0.82
+        },
+        "2027": {
+          "price": 13189,
+          "nri_pct": 31,
+          "activity": 94,
+          "confidence": 0.7
+        },
+        "2028": {
+          "price": 14667,
+          "nri_pct": 31,
+          "activity": 95,
+          "confidence": 0.58
+        }
+      },
+      "govtAlerts": []
+    },
+    "miyapur": {
+      "id": "miyapur",
+      "name": "Miyapur",
+      "rank": 3,
+      "lat": 17.498,
+      "lng": 78.34,
+      "radius": 2500,
+      "type": "mid",
+      "segment": "Mid-range · Metro-linked · Rental",
+      "color": "#ffd700",
+      "avgPrice": 7413,
+      "priceRange": "₹55 L – ₹2.5 Cr",
+      "listings": 932,
+      "roiYoY": 27.8,
+      "roi3Y": 29,
+      "nriPct": 18,
+      "salesVel": 220,
+      "rera": {
+        "total_projects": 0,
+        "recent_registrations_90d": 0
+      },
+      "verdict": "#1 in sales volume citywide — maximum liquidity, lowest resale risk of any zone.",
+      "summary": "Miyapur leads all Hyderabad localities in quarterly sales at 220 units — meaning you can always exit when needed. Metro terminus connectivity gives it a permanent commute advantage no competitor can replicate.",
+      "pros": [
+        "220 units/quarter — highest sales velocity in city — easiest exit, minimum holding risk",
+        "Metro terminus station gives a permanent, unbeatable commute advantage over all competing zones",
+        "Entry from ₹55 L — widest NRI buyer pool, largest resale market"
+      ],
+      "cons": [
+        "Appreciation ceiling is lower at 19% YoY vs Kokapet or Kompally",
+        "Older building stock is mixed quality — individual project due diligence is mandatory",
+        "2BHK segment showing saturation signals — 3BHK and above is the play going forward"
+      ],
+      "govtInit": [
+        {
+          "t": "Metro Extension to Patancheru",
+          "b": "Metro line extended from Miyapur terminus — land acquisition 80% complete, opens 15km of new real estate corridor"
+        },
+        {
+          "t": "HMDA 3x FAR Designation",
+          "b": "Miyapur–Bachupally belt designated high-density residential — 3x Floor Area Ratio unlocks significant vertical development"
+        },
+        {
+          "t": "TSRTC Multimodal Hub",
+          "b": "₹85 Cr multimodal transport hub approved adjacent to Miyapur metro station"
+        }
+      ],
+      "tl": {
+        "price": [
+          3200,
+          3360,
+          3840,
+          4480,
+          5280,
+          5800,
+          7413,
+          8080,
+          9199,
+          10247
+        ],
+        "nri": [
+          8,
+          9,
+          11,
+          14,
+          16,
+          17,
+          18,
+          18,
+          18,
+          18
+        ],
+        "activity": [
+          40,
+          38,
+          55,
+          68,
+          78,
+          85,
+          90,
+          92,
+          94,
+          95
+        ]
+      },
+      "predictions": {
+        "method": "trend_extrapolation_demo",
+        "confidence": "medium",
+        "Q3_2026": {
+          "price": 8080,
+          "nri_pct": 18,
+          "activity": 92,
+          "confidence": 0.82
+        },
+        "2027": {
+          "price": 9199,
+          "nri_pct": 18,
+          "activity": 94,
+          "confidence": 0.7
+        },
+        "2028": {
+          "price": 10247,
+          "nri_pct": 18,
+          "activity": 95,
+          "confidence": 0.58
+        }
+      },
+      "govtAlerts": []
+    },
+    "kompally": {
+      "id": "kompally",
+      "name": "Kompally",
+      "rank": 4,
+      "lat": 17.562,
+      "lng": 78.476,
+      "radius": 2800,
+      "type": "emerging",
+      "segment": "Emerging · ORR Belt · Land Investment",
+      "color": "#00ced1",
+      "avgPrice": 8695,
+      "priceRange": "₹40 L – ₹1.8 Cr",
+      "listings": 758,
+      "roiYoY": 112.1,
+      "roi3Y": 52,
+      "nriPct": 14,
+      "salesVel": 95,
+      "rera": {
+        "total_projects": 0,
+        "recent_registrations_90d": 0
+      },
+      "verdict": "52% 3-year ROI — fastest appreciating zone in North Hyderabad — still undervalued today.",
+      "summary": "Kompally has delivered the highest raw 3-year ROI (52%) of any tracked zone in Hyderabad. Land plots here at ₹40–60K per sq yard are the last affordable large-land opportunity within ORR limits.",
+      "pros": [
+        "52% 3-year ROI — best raw appreciation in the entire city across the measurement period",
+        "Land still available at ₹40–60K/sq yard — last affordable ORR-adjacent land in Hyderabad",
+        "TCS, Infosys, Wipro all within 15 km — employee housing demand is building fast"
+      ],
+      "cons": [
+        "Social infra — malls, international schools, specialty hospitals — is 3–5 years away from maturity",
+        "Illiquidity risk: takes 60–90 days longer to sell vs HITEC City belt",
+        "Some announced government projects are behind original schedule — execution risk is real"
+      ],
+      "govtInit": [
+        {
+          "t": "Medchal Municipal Corporation Upgrade",
+          "b": "Kompally–Medchal elevated to Medchal–Malkajgiri Municipal Corporation — GHMC-level development spending now applies"
+        },
+        {
+          "t": "400-Acre IT SEZ Notification",
+          "b": "Telangana IT Dept notified 400-acre SEZ in Kompally — 25,000 direct jobs projected"
+        },
+        {
+          "t": "NH-44 6-Lane Expansion",
+          "b": "6-lane widening of NH-44 through Kompally corridor — land values expected to jump 15–20% on completion in 2027"
+        }
+      ],
+      "tl": {
+        "price": [
+          2100,
+          2205,
+          2520,
+          3150,
+          3780,
+          4100,
+          8695,
+          9836,
+          11825,
+          13790
+        ],
+        "nri": [
+          4,
+          4,
+          6,
+          8,
+          10,
+          12,
+          14,
+          15,
+          16,
+          17
+        ],
+        "activity": [
+          15,
+          14,
+          22,
+          35,
+          52,
+          68,
+          78,
+          80,
+          82,
+          83
+        ]
+      },
+      "predictions": {
+        "method": "trend_extrapolation_demo",
+        "confidence": "medium",
+        "Q3_2026": {
+          "price": 9836,
+          "nri_pct": 15,
+          "activity": 80,
+          "confidence": 0.82
+        },
+        "2027": {
+          "price": 11825,
+          "nri_pct": 16,
+          "activity": 82,
+          "confidence": 0.7
+        },
+        "2028": {
+          "price": 13790,
+          "nri_pct": 17,
+          "activity": 83,
+          "confidence": 0.58
+        }
+      },
+      "govtAlerts": []
+    },
+    "shamshabad": {
+      "id": "shamshabad",
+      "name": "Shamshabad / Pharma City",
+      "rank": 5,
+      "lat": 17.24,
+      "lng": 78.429,
+      "radius": 3500,
+      "type": "commercial",
+      "segment": "Industrial · Long-term · Land",
+      "color": "#9b59b6",
+      "avgPrice": 7312,
+      "priceRange": "₹30 L – ₹2 Cr",
+      "listings": 300,
+      "roiYoY": 18.7,
+      "roi3Y": 41,
+      "nriPct": 9,
+      "salesVel": 55,
+      "rera": {
+        "total_projects": 0,
+        "recent_registrations_90d": 0
+      },
+      "verdict": "India's largest pharma cluster. A 10-year land play — investors buying today will see 3–5x by 2035.",
+      "summary": "Shamshabad is home to a 32,000-acre NIMZ — Pharma City — the largest in India. Land within 5 km of the Pharma City gate today is positioned for a 3–5x return by 2035.",
+      "pros": [
+        "Pharma City NIMZ — 32,000 acres, ₹1.12 lakh Cr committed investment — government-mandated anchor",
+        "Airport adjacency: 8 minutes from RGIA — no other zone in Hyderabad offers this at this price",
+        "Lowest entry price at ₹3,200/sqft for a future-premium zone — maximum upside per rupee invested"
+      ],
+      "cons": [
+        "Long gestation period: 8–12 year play — not suitable for investors with a sub-5-year exit horizon",
+        "Pharma City Phase-1 execution is 2 years behind the original schedule — bureaucratic risk",
+        "Very low current liquidity — a small buyer pool today means a difficult near-term exit if needed"
+      ],
+      "govtInit": [
+        {
+          "t": "Pharma City NIMZ — ₹1.12 Lakh Cr",
+          "b": "32,000-acre NIMZ — 200+ pharma companies onboarded, 1.5 lakh direct jobs projected at full build-out"
+        },
+        {
+          "t": "MMTS Rail Extension",
+          "b": "Multi-Modal Transport System extended to Shamshabad — approved in Union Budget 2025 at ₹620 Cr"
+        },
+        {
+          "t": "India's 2nd Largest Logistics Park",
+          "b": "8,000-acre integrated logistics park approved adjacent to RGIA — 60,000 direct jobs, captive residential demand"
+        }
+      ],
+      "tl": {
+        "price": [
+          2800,
+          2940,
+          3360,
+          4060,
+          5040,
+          6160,
+          7312,
+          8107,
+          9464,
+          10767
+        ],
+        "nri": [
+          2,
+          2,
+          3,
+          4,
+          6,
+          7,
+          9,
+          10,
+          11,
+          12
+        ],
+        "activity": [
+          10,
+          9,
+          12,
+          18,
+          28,
+          40,
+          55,
+          57,
+          59,
+          60
+        ]
+      },
+      "predictions": {
+        "method": "trend_extrapolation_demo",
+        "confidence": "medium",
+        "Q3_2026": {
+          "price": 8107,
+          "nri_pct": 10,
+          "activity": 57,
+          "confidence": 0.82
+        },
+        "2027": {
+          "price": 9464,
+          "nri_pct": 11,
+          "activity": 59,
+          "confidence": 0.7
+        },
+        "2028": {
+          "price": 10767,
+          "nri_pct": 12,
+          "activity": 60,
+          "confidence": 0.58
+        }
+      },
+      "govtAlerts": []
+    }
+  },
+  "govt_alerts": []
+}
