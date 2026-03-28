@@ -224,25 +224,51 @@ function closeCompare(){
   document.getElementById('cmp-btn').style.display='';
   renderSB();
 }
-function cmpCol(z){
+function cmpMetric(label,value,cls,isWinner=false){
+  return `<div class="str"><span class="stl">${label}</span><span class="stv ${cls||''}">${value}${isWinner?'<span class="win">WIN</span>':''}</span></div>`;
+}
+
+function cmpSummary(z,other){
+  const edges=[];
+  if(z.roi3>other.roi3) edges.push('higher 3Y ROI');
+  if(z.roiY>other.roiY) edges.push('stronger current momentum');
+  if(z.ry>other.ry) edges.push('better rental yield');
+  if(z.nri>other.nri) edges.push('deeper NRI demand');
+  if(z.sv>other.sv) edges.push('faster sales velocity');
+  if(z.price<other.price) edges.push('lower entry price');
+  if(!edges.length) return 'Profile is broadly balanced against the comparison zone.';
+  return `Edge: ${edges.slice(0,2).join(' · ')}.`;
+}
+
+function cmpCol(z,other=null){
   if(!z)return'';
   const em=['','🥇','🥈','🥉','#4','#5','#6','#7','#8'][z.rank];
+  const wins = other ? {
+    roiY: z.roiY > other.roiY,
+    roi3: z.roi3 > other.roi3,
+    ry: z.ry > other.ry,
+    price: z.price < other.price,
+    nri: z.nri > other.nri,
+    sv: z.sv > other.sv,
+    lst: z.lst > other.lst,
+  } : {};
   return`<div style="font-size:9px;color:#364862;margin-bottom:4px">${em} RANK ${z.rank}</div>
     <div class="cmpn" style="color:${z.col}">${z.name}</div>
     <div class="cmps">${z.seg}</div>
     <div class="cmpv">${z.vd}</div>
+    <div class="meta" style="margin-bottom:12px">${other?cmpSummary(z,other):'Select another zone to compare strengths side by side.'}</div>
     <div class="cmpsec"><h4>Returns</h4>
-      <div class="str"><span class="stl">YoY Appreciation</span><span class="stv g">${z.roiY}%</span></div>
-      <div class="str"><span class="stl">3-Year ROI</span><span class="stv g">${z.roi3}%</span></div>
-      <div class="str"><span class="stl">Rental Yield</span><span class="stv b">${z.ry}%</span></div>
-      <div class="str"><span class="stl">Avg ₹/sqft</span><span class="stv o">₹${z.price.toLocaleString()}</span></div>
-      <div class="str"><span class="stl">Price Range</span><span class="stv" style="font-size:10px">${z.range}</span></div>
+      ${cmpMetric('YoY Appreciation',`${z.roiY}%`,'g',wins.roiY)}
+      ${cmpMetric('3-Year ROI',`${z.roi3}%`,'g',wins.roi3)}
+      ${cmpMetric('Rental Yield',`${z.ry}%`,'b',wins.ry)}
+      ${cmpMetric('Avg ₹/sqft',`₹${z.price.toLocaleString()}`,'o',wins.price)}
+      ${cmpMetric('Price Range',z.range,'',false)}
     </div>
     <div class="cmpsec"><h4>Market Activity</h4>
-      <div class="str"><span class="stl">NRI Buyer Share</span><span class="stv b">${z.nri}%</span></div>
-      <div class="str"><span class="stl">Sales Velocity</span><span class="stv">${z.sv} units/qtr</span></div>
-      <div class="str"><span class="stl">Active Listings</span><span class="stv">${z.lst}</span></div>
-      <div class="str"><span class="stl">HNI Recommended</span><span class="stv ${z.hni?'g':'o'}">${z.hni?'Yes':'No'}</span></div>
+      ${cmpMetric('NRI Buyer Share',`${z.nri}%`,'b',wins.nri)}
+      ${cmpMetric('Sales Velocity',`${z.sv} units/qtr`,'',wins.sv)}
+      ${cmpMetric('Active Listings',`${z.lst}`,'',wins.lst)}
+      ${cmpMetric('HNI Recommended',z.hni?'Yes':'No',z.hni?'g':'o',false)}
     </div>
     <div class="cmpsec"><h4>✅ Pros</h4>${z.pros.map(p=>`<div class="pi" style="margin-bottom:5px">${p}</div>`).join('')}</div>
     <div class="cmpsec"><h4 style="color:#ff4757">⚠️ Cons</h4>${z.cons.map(c=>`<div class="pi" style="color:#ff5a5a">${c}</div>`).join('')}</div>
@@ -251,17 +277,8 @@ function cmpCol(z){
 function renderCmp(){
   const [a,b]=cmpPick.map(id=>Z.find(z=>z.id===id));
   if(!a||!b)return;
-  let lh=cmpCol(a),rh=cmpCol(b);
-  // Inject winner tags via DOM after render
-  document.getElementById('cmpl').innerHTML=lh;
-  document.getElementById('cmpr').innerHTML=rh;
-  // highlight winners
-  const metrics=[['roi3','.cmpsec:nth-child(4) .str:nth-child(2) .stv','3-Year ROI'],['roiY','.cmpsec:nth-child(4) .str:nth-child(1) .stv','YoY ROI'],['nri','.cmpsec:nth-child(5) .str:nth-child(1) .stv','NRI %'],['sv','.cmpsec:nth-child(5) .str:nth-child(2) .stv','Sales'],['ry','.cmpsec:nth-child(4) .str:nth-child(3) .stv','Rental Yield']];
-  metrics.forEach(([k])=>{
-    const winner=a[k]>b[k]?'cmpl':'cmpr';
-    const loser=winner==='cmpl'?'cmpr':'cmpl';
-    // add subtle glow to winner col header
-  });
+  document.getElementById('cmpl').innerHTML=cmpCol(a,b);
+  document.getElementById('cmpr').innerHTML=cmpCol(b,a);
 }
 
 // ── CALCULATOR ───────────────────────────────────
