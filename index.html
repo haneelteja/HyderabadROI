@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HydROI - Hyderabad Real Estate Investment Intelligence</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<div id="topbar">
+  <div class="logo"><span class="logo-h">Hyd</span><span class="logo-r">ROI</span></div>
+  <div class="vsep"></div>
+  <div class="logo-sub">Hyderabad Real Estate Investment Intelligence</div>
+  <div class="sp"><div class="sp-l">City Avg Rs/sqft</div><div class="sp-r"><span class="sp-v" id="sp-price">Rs 6,840</span><span class="sp-u">+18.2%</span></div></div>
+  <div class="sp"><div class="sp-l">Q1 2026 Sales</div><div class="sp-r"><span class="sp-v" id="sp-sales">4,820 units</span><span class="sp-u">+11.4%</span></div></div>
+  <div class="sp"><div class="sp-l">NRI Investment</div><div class="sp-r"><span class="sp-v" id="sp-nri">Rs 2,840 Cr</span><span class="sp-u">+31.6%</span></div></div>
+  <div class="sp"><div class="sp-l">Active Projects</div><div class="sp-r"><span class="sp-v" id="sp-projects">1,240</span><span class="sp-u">+8.3%</span></div></div>
+  <div class="sp"><div class="sp-l">Unsold Inventory</div><div class="sp-r"><span class="sp-v" id="sp-unsold">28,400</span><span class="sp-d">-6.1%</span></div></div>
+  <div class="tb-r"><span id="live-badge" style="font-size:10px;color:#3a4a6a;cursor:default" title="Run pipeline.py to activate live data">DEMO DATA - run pipeline.py to activate live feed</span><span class="vsep"></span><span class="mf">MiroFish AI</span></div>
+</div>
+
+<div id="fbar">
+  <span class="fl">View:</span>
+  <button class="fb on" data-qf="all">All Zones</button>
+  <button class="fb" data-qf="luxury">Luxury</button>
+  <button class="fb" data-qf="mid">Mid-range</button>
+  <button class="fb" data-qf="commercial">Commercial</button>
+  <button class="fb" data-qf="emerging">Emerging</button>
+  <div class="fd"></div>
+  <button class="fb hni" data-qf="hni">HNI Best Bets</button>
+  <button class="fb nri" data-qf="nri">Top NRI Zones</button>
+  <div class="fd"></div>
+  <button class="btn-cmp" id="cmp-btn">Compare Zones</button>
+  <button class="btn-calc" id="calc-btn">Calculator</button>
+</div>
+
+<div id="main">
+  <div id="sb">
+    <div class="sb-hd"><h3>Investment Rankings</h3><p>ROI · NRI Demand · Future Upside</p></div>
+    <div id="zlist"></div>
+  </div>
+  <div id="mw">
+    <div id="map"></div>
+    <div id="mc" class="mc-c">CURRENT STATE - Q1 2026</div>
+    <div class="mbs">
+      <button class="mb on" data-layer="roi">ROI Heat</button>
+      <button class="mb" data-layer="nri">NRI Activity</button>
+      <button class="mb" data-layer="sales">Sales Volume</button>
+    </div>
+    <div id="leg">
+      <h5>Zone Heat</h5>
+      <div class="lr"><div class="ld" style="background:#ff3a00"></div>Hot - greater than 25% ROI</div>
+      <div class="lr"><div class="ld" style="background:#ff8c00"></div>Strong - 15% to 25%</div>
+      <div class="lr"><div class="ld" style="background:#ffd700"></div>Good - 10% to 15%</div>
+      <div class="lr"><div class="ld" style="background:#00ced1"></div>Emerging</div>
+      <div class="lr"><div class="ld" style="background:#9b59b6"></div>Industrial / Long-term</div>
+    </div>
+    <div id="dp"><div id="dpc"></div></div>
+    <div id="cp">
+      <h3>Investment Calculator</h3>
+      <div class="cr"><div class="cl">Investment Amount (Rs)</div><input class="ci" id="iamt" type="number" value="5000000" placeholder="e.g. 5000000"/></div>
+      <div class="cr"><div class="cl">Zone</div><select class="cs2" id="izone"></select></div>
+      <div class="cr"><div class="cl">Holding Period</div>
+        <select class="cs2" id="iyrs">
+          <option value="1">1 Year</option><option value="3" selected>3 Years</option>
+          <option value="5">5 Years</option><option value="10">10 Years</option>
+        </select>
+      </div>
+      <button class="cbtn" onclick="runCalc()">Calculate Returns</button>
+      <div id="cres">
+        <div class="crr"><span class="crl">Investment</span><span class="crv o" id="cr-i"></span></div>
+        <div class="crr"><span class="crl">Projected Value</span><span class="crv" id="cr-v"></span></div>
+        <div class="crr"><span class="crl">Profit</span><span class="crv" id="cr-p"></span></div>
+        <div class="crr"><span class="crl">Total ROI</span><span class="crv" id="cr-r"></span></div>
+        <div class="crr"><span class="crl">Est. Rental Yield/yr</span><span class="crv b" id="cr-y"></span></div>
+        <div class="cn">Projection based on historical trend analysis. Not financial advice.</div>
+      </div>
+    </div>
+    <div id="cmp">
+      <div id="cmph">
+        <h2>Zone Comparison</h2>
+        <span style="font-size:9px;color:#364862;">Click any two zones in the sidebar to compare side-by-side</span>
+        <button class="cmpx" onclick="closeCompare()">Close</button>
+      </div>
+      <div id="cmpb">
+        <div class="cmpc" id="cmpl"><div style="color:#364862;font-size:12px;padding-top:50px;text-align:center;">Select first zone from sidebar</div></div>
+        <div class="cmpc" id="cmpr"><div style="color:#364862;font-size:12px;padding-top:50px;text-align:center;">Select second zone from sidebar</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tl">
+  <div class="tlt">
+    <span class="tll">HISTORY</span>
+    <span class="tlm tlm-c" id="tlml">CURRENT: Q1 2026</span>
+    <span class="tll" id="tld">Live market - drag slider to explore history or AI predictions</span>
+    <span class="tll">FUTURE</span>
+  </div>
+  <div class="tlr">
+    <button class="tlp" id="pbtn">Play</button>
+    <div class="tltr">
+      <input type="range" id="ts" min="0" max="9" value="6" step="1"/>
+      <div class="tltk">
+        <span class="tk">2019</span><span class="tk">2020</span><span class="tk">2021</span><span class="tk">2022</span>
+        <span class="tk">2023</span><span class="tk">2024</span><span class="tk now">NOW</span>
+        <span class="tk fut">Q3'26</span><span class="tk fut">2027</span><span class="tk fut">2028</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
