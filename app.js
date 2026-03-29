@@ -393,9 +393,9 @@ function mergeLiveZone(z, live) {
 function updateTopbarStats(cityStats, meta) {
   // Update top bar stats with live values
   const statMap = {
-    'sp-price':    { v: '₹' + cityStats.avg_price_sqft.toLocaleString('en-IN'), u: true  },
+    'sp-price':    { v: 'Rs ' + cityStats.avg_price_sqft.toLocaleString('en-IN'), u: true  },
     'sp-sales':    { v: cityStats.quarterly_sales.toLocaleString('en-IN') + ' units', u: true },
-    'sp-nri':      { v: '₹' + cityStats.nri_investment_cr.toLocaleString('en-IN') + ' Cr', u: true },
+    'sp-nri':      { v: 'Rs ' + cityStats.nri_investment_cr.toLocaleString('en-IN') + ' Cr', u: true },
     'sp-projects': { v: cityStats.active_projects.toLocaleString('en-IN'), u: true },
     'sp-unsold':   { v: cityStats.unsold_inventory.toLocaleString('en-IN') + ' units', u: false },
   };
@@ -412,17 +412,19 @@ function updateTopbarStats(cityStats, meta) {
     const methods = Array.isArray(meta.actual_prediction_methods)
       ? meta.actual_prediction_methods.join(', ')
       : (meta.prediction_engine || 'unknown');
+
     if (meta.pipeline_mode === 'LIVE') {
-      badge.textContent = `🟢 LIVE DATA · ${ago  ?  '?'}m ago`;
+      badge.textContent = `LIVE DATA - ${ago ?? '?'}m ago`;
       badge.style.color = '#00c896';
     } else if (meta.pipeline_mode === 'FALLBACK') {
-      badge.textContent = `🟠 FALLBACK DATA · ${ago  ?  '?'}m ago`;
+      badge.textContent = `FALLBACK DATA - ${ago ?? '?'}m ago`;
       badge.style.color = '#ffb347';
     } else {
-      badge.textContent = '🟡 DEMO DATA · pipeline/output/data.json';
+      badge.textContent = 'DEMO DATA - pipeline/output/data.json';
       badge.style.color = '#ffd700';
     }
-    badge.title = `Pipeline: ${meta.pipeline_mode || 'UNKNOWN'} · Methods: ${methods}`;
+
+    badge.title = `Pipeline: ${meta.pipeline_mode || 'UNKNOWN'} | Methods: ${methods}`;
   }
 }
 
