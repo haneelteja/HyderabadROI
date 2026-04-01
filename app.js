@@ -189,7 +189,8 @@ function closeDp(){document.getElementById('dp').classList.remove('open');actZ=n
 
 function drawCharts(z){
   const gc='#0d1826',tc='#364862';
-  const pCtx=document.getElementById('pch')?.getContext('2d');
+  const pCanvas=document.getElementById('pch');
+  const pCtx=pCanvas ? pCanvas.getContext('2d') : null;
   if(pCtx){
     chReg['pc']=new Chart(pCtx,{type:'line',data:{labels:YRS,datasets:[{data:z.tl.p,tension:.4,fill:true,pointRadius:4,
       backgroundColor:z.col+'12',borderWidth:2,
@@ -200,7 +201,8 @@ function drawCharts(z){
         tooltip:{callbacks:{label:ctx=>'₹'+ctx.raw.toLocaleString('en-IN')+'/sqft'+(ctx.dataIndex>=7?' (AI)':'')}}},
         scales:{x:{ticks:{color:tc,font:{size:7}},grid:{color:gc}},y:{ticks:{color:tc,font:{size:7},callback:v=>'₹'+v.toLocaleString('en-IN')},grid:{color:gc}}}}});
   }
-  const nCtx=document.getElementById('nch')?.getContext('2d');
+  const nCanvas=document.getElementById('nch');
+  const nCtx=nCanvas ? nCanvas.getContext('2d') : null;
   if(nCtx){
     chReg['nc']=new Chart(nCtx,{type:'bar',data:{labels:YRS,datasets:[{data:z.tl.n,
       backgroundColor:z.tl.n.map((_,i)=>i>=7?'rgba(255,107,53,.5)':'rgba(74,158,255,.5)'),
@@ -312,7 +314,10 @@ document.querySelectorAll('.mb').forEach(b=>{
     actLayer=b.dataset.layer;
     document.querySelectorAll('.mb').forEach(x=>x.classList.remove('on'));
     b.classList.add('on');
-    Z.forEach(z=>{const c=zCol(z,actLayer);circ[z.id]?.setStyle({fillColor:c,color:c});});
+    Z.forEach(z=>{
+      const c=zCol(z,actLayer);
+      if(circ[z.id]) circ[z.id].setStyle({fillColor:c,color:c});
+    });
   });
 });
 
@@ -336,7 +341,10 @@ function applyTL(idx){
   Z.forEach(z=>{
     const act=z.tl.a[idx]/100,r=z.radius*(0.45+0.55*act);
     const fo=idx<6?0.12+0.22*act:idx===6?0.28:0.15+0.2*act;
-    circ[z.id]?.setRadius(r);circ[z.id]?.setStyle({fillOpacity:fo,opacity:idx<6?0.45:0.72});
+    if(circ[z.id]){
+      circ[z.id].setRadius(r);
+      circ[z.id].setStyle({fillOpacity:fo,opacity:idx<6?0.45:0.72});
+    }
   });
   if(actZ){const z=Z.find(v=>v.id===actZ);if(z)setTimeout(()=>drawCharts(z),40);}
 }
@@ -414,10 +422,10 @@ function updateTopbarStats(cityStats, meta) {
       : (meta.prediction_engine || 'unknown');
 
     if (meta.pipeline_mode === 'LIVE') {
-      badge.textContent = `LIVE DATA - ${ago ?? '?'}m ago`;
+      badge.textContent = `LIVE DATA - ${(ago !== null ? ago : '?')}m ago`;
       badge.style.color = '#00c896';
     } else if (meta.pipeline_mode === 'FALLBACK') {
-      badge.textContent = `FALLBACK DATA - ${ago ?? '?'}m ago`;
+      badge.textContent = `FALLBACK DATA - ${(ago !== null ? ago : '?')}m ago`;
       badge.style.color = '#ffb347';
     } else {
       badge.textContent = 'DEMO DATA - pipeline/output/data.json';
