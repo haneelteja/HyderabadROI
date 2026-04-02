@@ -30,6 +30,7 @@ REQUIRED_ZONE_FIELDS = [
     "govtInit",
     "tl",
     "predictions",
+    "dataQuality",
     "govtAlerts",
 ]
 
@@ -89,12 +90,19 @@ def main():
     if not isinstance(metadata, dict):
         fail(errors, "metadata section is missing or invalid")
     else:
-        for key in ["last_updated", "pipeline_mode", "prediction_engine", "actual_prediction_methods"]:
+        for key in ["last_updated", "pipeline_mode", "prediction_engine", "actual_prediction_methods", "scrape_summary"]:
             if key not in metadata:
                 fail(errors, f"metadata missing `{key}`")
         methods = metadata.get("actual_prediction_methods", [])
         if not isinstance(methods, list) or not methods:
             fail(errors, "metadata.actual_prediction_methods must be a non-empty list")
+        scrape_summary = metadata.get("scrape_summary", {})
+        if not isinstance(scrape_summary, dict):
+            fail(errors, "metadata.scrape_summary must be an object")
+        else:
+            for key in ["city_stats", "govt_alerts", "localities", "totals"]:
+                if key not in scrape_summary:
+                    fail(errors, f"metadata.scrape_summary missing `{key}`")
 
     zones = data.get("zones")
     if not isinstance(zones, dict) or not zones:

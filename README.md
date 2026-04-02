@@ -87,6 +87,12 @@ Validate the generated output:
 python validate_output.py
 ```
 
+Run a lightweight frontend + data smoke check from the repo root:
+
+```bash
+python smoke_check.py
+```
+
 ## Prediction modes
 
 The pipeline reports the actual mode used in `data.json` metadata:
@@ -94,6 +100,8 @@ The pipeline reports the actual mode used in `data.json` metadata:
 - `DEMO`: trend extrapolation only
 - `LIVE`: at least one live prediction path succeeded
 - `FALLBACK`: scraping ran, but prediction services fell back
+
+It also reports scrape provenance in `metadata.scrape_summary` and per-zone `dataQuality` fields so you can tell which sources were live vs fallback on each run.
 
 ## Current status
 
@@ -126,6 +134,11 @@ Use this quick checklist after each push to GitHub or Vercel:
    - `LIVE DATA` means a live prediction path succeeded
    - `FALLBACK DATA` means the pipeline loaded but prediction services fell back
    - `DEMO DATA` means the app is using static or demo-mode pipeline data
+9. Run:
+
+```bash
+python smoke_check.py
+```
 
 ## Next likely improvements
 

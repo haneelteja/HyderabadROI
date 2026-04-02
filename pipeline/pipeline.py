@@ -234,11 +234,67 @@ def _summarize_prediction_methods(predictions_map):
     }
 
 
+def _source_status(source_name, payload, fallback_sources=None):
+    fallback_sources = fallback_sources or set()
+    payload = payload or {}
+    source = payload.get("source", source_name)
+    scraped_at = payload.get("scraped_at")
+    status = "live"
+
+    if source in fallback_sources or source in {"baseline", "baseline_estimate"}:
+        status = "fallback"
+    elif source_name == "rera.telangana.gov.in" and (
+        payload.get("total_projects") in ("N/A", None, 0)
+        and not payload.get("projects")
+    ):
+        status = "fallback"
+
+    return {
+        "source": source,
+        "status": status,
+        "scraped_at": scraped_at,
+    }
+
+
+def _build_scrape_summary(scraped):
+    localities = scraped.get("localities", {})
+    city_stats = _source_status("city_stats", scraped.get("city_stats", {}), {"baseline"})
+    govt_alerts = scraped.get("govt_alerts", [])
+
+    summary = {
+        "city_stats": city_stats,
+        "govt_alerts": {
+            "count": len(govt_alerts),
+            "sources": sorted({alert.get("source", "unknown") for alert in govt_alerts}),
+        },
+        "localities": {},
+        "totals": {
+            "listings_live": 0,
+            "listings_fallback": 0,
+            "rera_live": 0,
+            "rera_fallback": 0,
+        },
+    }
+
+    for locality_id, loc_data in localities.items():
+        listings_status = _source_status("listings", loc_data.get("listings", {}), {"baseline_estimate"})
+        rera_status = _source_status("rera.telangana.gov.in", loc_data.get("rera", {}))
+        summary["localities"][locality_id] = {
+            "listings": listings_status,
+            "rera": rera_status,
+        }
+        summary["totals"][f"listings_{listings_status['status']}"] += 1
+        summary["totals"][f"rera_{rera_status['status']}"] += 1
+
+    return summary
+
+
 def build_output(scraped, predictions_map, govt_alerts):
     """Assemble the final data.json that HydROI.html will read."""
 
     city_raw = scraped.get("city_stats", {})
     method_summary = _summarize_prediction_methods(predictions_map)
+    scrape_summary = _build_scrape_summary(scraped)
 
     output = {
         "metadata": {
@@ -248,6 +304,7 @@ def build_output(scraped, predictions_map, govt_alerts):
             "actual_prediction_methods": method_summary["actual_prediction_methods"],
             "data_sources":    ["rera.telangana.gov.in", "99acres.com", "magicbricks.com"],
             "next_refresh":    "Run python pipeline.py to refresh",
+            "scrape_summary":  scrape_summary,
         },
         "city_stats": {
             "avg_price_sqft":    city_raw.get("avg_price_sqft",   6840),
@@ -286,6 +343,8 @@ def build_output(scraped, predictions_map, govt_alerts):
 
         # Locality alerts
         loc_alerts = [a for a in govt_alerts if lid in a.get("localities_affected", [])]
+        listings_status = scrape_summary["localities"].get(lid, {}).get("listings", {})
+        rera_status = scrape_summary["localities"].get(lid, {}).get("rera", {})
 
         output["zones"][lid] = {
             # Identity & map
@@ -331,6 +390,14 @@ def build_output(scraped, predictions_map, govt_alerts):
                 "Q3_2026":    preds.get("Q3_2026", {}),
                 "2027":       preds.get("2027", {}),
                 "2028":       preds.get("2028", {}),
+            },
+
+            # Provenance and fallback reporting
+            "dataQuality": {
+                "listings": listings_status,
+                "rera": rera_status,
+                "govt_alert_count": len(loc_alerts),
+                "prediction_method": preds.get("method", ""),
             },
 
             # Locality-specific govt alerts
