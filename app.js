@@ -1,90 +1,101 @@
-const YRS=['2019','2020','2021','2022','2023','2024','NOW','Q3 2026','2027','2028'];
+﻿const YRS=['2019','2020','2021','2022','2023','2024','NOW','Q3 2026','2027','2028'];
 
 const Z=[
   {id:'kokapet',name:'Kokapet',rank:1,lat:17.407,lng:78.330,radius:2100,type:'luxury',hni:true,nri:true,
    seg:'Luxury · HNI · NRI',col:'#ff3a00',roiY:28,roi3:47,price:8500,ry:3.8,
-   range:'₹1.2 Cr – ₹8 Cr',lst:342,nri:38,sv:180,
-   vd:'The single best HNI & NRI investment in Hyderabad — no debate.',
-   sm:'Kokapet sits directly adjacent to the Financial District — Goldman Sachs, Microsoft, Amazon and Google all maintain their largest India campuses here. This creates a permanently captive luxury rental and resale market. NRI buyers account for 38% of all purchases, the highest in the city, which is the strongest possible signal of future resale demand.',
-   pros:['Goldman Sachs, Microsoft, Amazon within 2 km — corporate rental demand unmatched citywide','38% NRI buyer share — highest in Hyderabad — guarantees robust resale demand at all times','HMDA-approved zero-encumbrance titles — zero legal risk, zero litigation history'],
-   cons:['₹1.2 Cr minimum entry — locks out sub-₹50 L budgets entirely','Appreciation moderating to 18–22% YoY from 2026 onward as the zone matures','Secondary lane infrastructure still incomplete — dust and access issues persist'],
-   gi:[{t:'IT Corridor Extension',b:'1,200 acres notified adjacent to Financial District under HMDA Master Plan 2031 — 40,000 new IT jobs within 3 km'},{t:'ORR Phase-2 Exit Ramp',b:'Dedicated ORR ramp for Kokapet under construction — completion Q3 2026, cuts airport commute by 12 minutes'},{t:'HMWSSB Water Grid Phase-2',b:'Dedicated water pipeline for Kokapet–Narsingi — ₹440 Cr approved, addresses the only major infrastructure gap'}],
+   range:'₹1.2 Cr - ₹8 Cr',lst:342,nri:38,sv:180,
+   vd:'The single best HNI and NRI investment in Hyderabad - no debate.',
+   sm:'Kokapet sits directly adjacent to the Financial District - Goldman Sachs, Microsoft, Amazon and Google all maintain their largest India campuses here. This creates a permanently captive luxury rental and resale market. NRI buyers account for 38% of all purchases, the highest in the city, which is the strongest possible signal of future resale demand.',
+   pros:['Goldman Sachs, Microsoft, Amazon within 2 km - corporate rental demand unmatched citywide','38% NRI buyer share - highest in Hyderabad - guarantees robust resale demand at all times','HMDA-approved zero-encumbrance titles - zero legal risk, zero litigation history'],
+   cons:['₹1.2 Cr minimum entry - locks out sub-₹50 L budgets entirely','Appreciation moderating to 18-22% YoY from 2026 onward as the zone matures','Secondary lane infrastructure still incomplete - dust and access issues persist'],
+   gi:[{t:'IT Corridor Extension',b:'1,200 acres notified adjacent to Financial District under HMDA Master Plan 2031 - 40,000 new IT jobs within 3 km'},{t:'ORR Phase-2 Exit Ramp',b:'Dedicated ORR ramp for Kokapet under construction - completion Q3 2026, cuts airport commute by 12 minutes'},{t:'HMWSSB Water Grid Phase-2',b:'Dedicated water pipeline for Kokapet-Narsingi - ₹440 Cr approved, addresses the only major infrastructure gap'}],
    tl:{p:[4200,4100,4800,5900,7100,7900,8500,9800,11200,12800],a:[20,18,42,65,80,88,95,97,98,99],n:[12,14,18,25,31,35,38,40,42,44]}},
 
   {id:'gachibowli',name:'Gachibowli',rank:2,lat:17.440,lng:78.349,radius:1950,type:'luxury',hni:true,nri:true,
    seg:'IT Premium · NRI · Rental Yield',col:'#ff8c00',roiY:22,roi3:36,price:9200,ry:4.2,
-   range:'₹1.5 Cr – ₹12 Cr',lst:218,nri:31,sv:140,
-   vd:'The safest, most liquid premium market — never had a down quarter since 2016.',
-   sm:"Gachibowli is the established IT hub and the most liquid premium zone in Hyderabad. 4.2% net rental yield means your money works from purchase day. It has never recorded a down quarter in sales since 2016 — no other zone can claim that. For NRIs who want a guaranteed income-generating asset, this is the definitive choice.",
-   pros:['4.2% net rental yield — highest in Hyderabad — immediate income from purchase day','Zero down quarters in sales since 2016 — most liquid, easiest exit of all premium zones','International schools, hospitals, malls within 3 km — strongest end-user demand base'],
-   cons:['Highest entry at ₹9,200/sqft avg — ₹1.5 Cr floor is the most expensive entry point','Peak appreciation is behind — upside now 22% YoY vs 35% three years ago','HITEC City main corridor congestion is a permanent structural problem'],
-   gi:[{t:'Metro Rail Phase-2 Station',b:'Gachibowli metro station funded under Phase-2 — construction begins Q2 2026, operational by 2029'},{t:'HITECH City Expansion 800 Acres',b:'800-acre IT park notified adjacent to Gachibowli — 50,000 additional jobs projected on completion'},{t:'Biodiversity Junction Flyover',b:'TS-iPass approved flyover at the most congested junction — completion Dec 2026'}],
+   range:'₹1.5 Cr - ₹12 Cr',lst:218,nri:31,sv:140,
+   vd:'The safest, most liquid premium market - never had a down quarter since 2016.',
+   sm:'Gachibowli is the established IT hub and the most liquid premium zone in Hyderabad. 4.2% net rental yield means your money works from purchase day. It has never recorded a down quarter in sales since 2016 - no other zone can claim that. For NRIs who want a guaranteed income-generating asset, this is the definitive choice.',
+   pros:['4.2% net rental yield - highest in Hyderabad - immediate income from purchase day','Zero down quarters in sales since 2016 - most liquid, easiest exit of all premium zones','International schools, hospitals, malls within 3 km - strongest end-user demand base'],
+   cons:['Highest entry at ₹9,200/sqft avg - ₹1.5 Cr floor is the most expensive entry point','Peak appreciation is behind - upside now 22% YoY vs 35% three years ago','HITEC City main corridor congestion is a permanent structural problem'],
+   gi:[{t:'Metro Rail Phase-2 Station',b:'Gachibowli metro station funded under Phase-2 - construction begins Q2 2026, operational by 2029'},{t:'HITECH City Expansion 800 Acres',b:'800-acre IT park notified adjacent to Gachibowli - 50,000 additional jobs projected on completion'},{t:'Biodiversity Junction Flyover',b:'TS-iPass approved flyover at the most congested junction - completion Dec 2026'}],
    tl:{p:[5800,5600,6200,7100,7900,8600,9200,10100,11000,12000],a:[55,50,62,71,80,85,90,92,93,94],n:[20,22,25,27,29,30,31,32,33,34]}},
 
   {id:'miyapur',name:'Miyapur',rank:3,lat:17.498,lng:78.340,radius:2300,type:'mid',hni:false,nri:true,
    seg:'Mid-range · Metro-linked · Family',col:'#ffd700',roiY:19,roi3:31,price:5800,ry:3.2,
-   range:'₹55 L – ₹2.5 Cr',lst:489,nri:18,sv:220,
-   vd:'#1 in sales volume citywide — maximum liquidity, lowest resale risk.',
-   sm:'Miyapur leads all Hyderabad localities in raw quarterly sales at 220 units — you can always exit when needed. Metro terminus connectivity gives a permanent commute advantage no competitor can replicate. NRIs from USA and UK specifically target Miyapur for under-₹1 Cr family apartments. Entry at ₹55 L reaches the widest buyer pool.',
-   pros:['220 units/quarter — highest sales velocity citywide — easiest exit, minimum holding risk','Metro terminus gives permanent, unbeatable commute advantage over competing zones','Entry from ₹55 L — widest NRI buyer pool, largest resale market in Hyderabad'],
-   cons:['Appreciation ceiling lower at 19% YoY vs Kokapet or Kompally','Older building stock is mixed quality — individual project due diligence is mandatory','2BHK segment showing saturation signals — 3BHK and above is the play going forward'],
-   gi:[{t:'Metro Extension to Patancheru',b:'Metro extended from Miyapur terminus — land acquisition 80% complete, 12 new stations opening a 15 km corridor'},{t:'HMDA 3× FAR Designation',b:'Miyapur–Bachupally designated high-density residential — 3× Floor Area Ratio unlocks major vertical development'},{t:'TSRTC Multimodal Hub ₹85 Cr',b:'Multimodal hub approved adjacent to Miyapur metro — integrates TSRTC, Metro and feeder buses into one terminal'}],
+   range:'₹55 L - ₹2.5 Cr',lst:489,nri:18,sv:220,
+   vd:'#1 in sales volume citywide - maximum liquidity, lowest resale risk.',
+   sm:'Miyapur leads all Hyderabad localities in raw quarterly sales at 220 units - you can always exit when needed. Metro terminus connectivity gives a permanent commute advantage no competitor can replicate. NRIs from USA and UK specifically target Miyapur for under-₹1 Cr family apartments. Entry at ₹55 L reaches the widest buyer pool.',
+   pros:['220 units/quarter - highest sales velocity citywide - easiest exit, minimum holding risk','Metro terminus gives permanent, unbeatable commute advantage over competing zones','Entry from ₹55 L - widest NRI buyer pool, largest resale market in Hyderabad'],
+   cons:['Appreciation ceiling lower at 19% YoY vs Kokapet or Kompally','Older building stock is mixed quality - individual project due diligence is mandatory','2BHK segment showing saturation signals - 3BHK and above is the play going forward'],
+   gi:[{t:'Metro Extension to Patancheru',b:'Metro extended from Miyapur terminus - land acquisition 80% complete, 12 new stations opening a 15 km corridor'},{t:'HMDA 3x FAR Designation',b:'Miyapur-Bachupally designated high-density residential - 3x Floor Area Ratio unlocks major vertical development'},{t:'TSRTC Multimodal Hub ₹85 Cr',b:'Multimodal hub approved adjacent to Miyapur metro - integrates TSRTC, Metro and feeder buses into one terminal'}],
    tl:{p:[3200,3100,3600,4100,4700,5200,5800,6400,7000,7700],a:[40,38,55,68,78,85,90,93,95,96],n:[8,9,11,14,16,17,18,19,21,23]}},
 
   {id:'kompally',name:'Kompally',rank:4,lat:17.562,lng:78.476,radius:2600,type:'emerging',hni:false,nri:false,
    seg:'Emerging · ORR Belt · Land Play',col:'#00ced1',roiY:24,roi3:52,price:4100,ry:2.8,
-   range:'₹40 L – ₹1.8 Cr',lst:628,nri:14,sv:195,
-   vd:'52% 3-year ROI — fastest appreciating zone in North Hyderabad — still undervalued.',
-   sm:'Kompally has delivered the highest raw 3-year ROI (52%) of any tracked zone. Driven by ORR access, IT campus proximity, and dramatically underpriced land. Plots at ₹40–60K per sq yard are the last affordable large-land opportunity within ORR limits. The upside from here remains substantial.',
-   pros:['52% 3-year ROI — best raw appreciation of any tracked zone in the entire city','Land still at ₹40–60K/sq yard — last affordable ORR-adjacent land in Hyderabad','TCS, Infosys, Wipro campuses within 15 km — employee housing demand rapidly building'],
-   cons:['Social infrastructure — malls, schools — is 3–5 years away from maturity','Illiquidity: takes 60–90 days longer to sell vs HITEC City belt','Some announced projects are behind schedule — execution risk is real'],
-   gi:[{t:'Medchal Municipal Corp Upgrade',b:'Kompally elevated to Medchal–Malkajgiri Municipal Corp — GHMC-level development spending now applies'},{t:'400-Acre IT SEZ',b:'Telangana IT Dept notified 400-acre SEZ — 3 anchor tenants in negotiation, 25,000 direct jobs projected'},{t:'NH-44 6-Lane Expansion',b:'6-lane widening of NH-44 underway — doubles capacity, land values expected to jump 15–20% on completion in 2027'}],
+   range:'₹40 L - ₹1.8 Cr',lst:628,nri:14,sv:195,
+   vd:'52% 3-year ROI - fastest appreciating zone in North Hyderabad - still undervalued.',
+   sm:'Kompally has delivered the highest raw 3-year ROI (52%) of any tracked zone. Driven by ORR access, IT campus proximity, and dramatically underpriced land. Plots at ₹40-60K per sq yard are the last affordable large-land opportunity within ORR limits. The upside from here remains substantial.',
+   pros:['52% 3-year ROI - best raw appreciation of any tracked zone in the entire city','Land still at ₹40-60K/sq yard - last affordable ORR-adjacent land in Hyderabad','TCS, Infosys, Wipro campuses within 15 km - employee housing demand rapidly building'],
+   cons:['Social infrastructure - malls, schools - is 3-5 years away from maturity','Illiquidity: takes 60-90 days longer to sell vs HITEC City belt','Some announced projects are behind schedule - execution risk is real'],
+   gi:[{t:'Medchal Municipal Corp Upgrade',b:'Kompally elevated to Medchal-Malkajgiri Municipal Corp - GHMC-level development spending now applies'},{t:'400-Acre IT SEZ',b:'Telangana IT Dept notified 400-acre SEZ - 3 anchor tenants in negotiation, 25,000 direct jobs projected'},{t:'NH-44 6-Lane Expansion',b:'6-lane widening of NH-44 underway - doubles capacity, land values expected to jump 15-20% on completion in 2027'}],
    tl:{p:[1900,1850,2200,2700,3100,3600,4100,4900,5700,6600],a:[15,14,22,35,52,68,78,85,88,90],n:[4,4,6,8,10,12,14,16,18,21]}},
 
   {id:'jubilee',name:'Jubilee Hills',rank:5,lat:17.432,lng:78.408,radius:1600,type:'luxury',hni:true,nri:false,
    seg:'Ultra-Premium · Legacy · HNI',col:'#e040fb',roiY:14,roi3:28,price:12500,ry:2.9,
-   range:'₹3 Cr – ₹50 Cr+',lst:98,nri:22,sv:42,
-   vd:"Hyderabad's most prestigious address — capital preservation, not growth.",
-   sm:"Jubilee Hills is Hyderabad's Malabar Hill — the city's most prestigious address. Supply is permanently constrained: no large land parcels remain. This is not a growth play. It is a capital preservation and social-signalling asset that retains value in all market conditions. HNI demand from industry, film and politics is structural.",
-   pros:['Permanently constrained supply — no new large developments possible — protects value floor indefinitely','Most prestigious address in Hyderabad — HNI demand from industry, film, politics is structural','25% NRI share from Gulf diaspora — steady Hyderabadi diaspora demand is consistent'],
-   cons:['14% YoY appreciation — lowest of all premium zones — this is not a growth investment','₹3 Cr minimum entry — smallest addressable buyer pool, hardest exit in a downturn','Aging building stock dominates — finding quality new inventory at fair price is genuinely difficult'],
-   gi:[{t:'Road Widening — Road No.36',b:'GHMC widening of 5 key roads — addresses chronic congestion, ₹120 Cr allocation'},{t:'Heritage Zone Notification',b:'Jubilee Hills notified as planned residential heritage zone under HMDA 2031 — prevents commercial encroachment permanently'},{t:'Underground Cabling',b:'TSSPDCL underground cabling project approved — eliminates overhead wires, reduces outage risk'}],
+   range:'₹3 Cr - ₹50 Cr+',lst:98,nri:22,sv:42,
+   vd:"Hyderabad's most prestigious address - capital preservation, not growth.",
+   sm:"Jubilee Hills is Hyderabad's Malabar Hill - the city's most prestigious address. Supply is permanently constrained: no large land parcels remain. This is not a growth play. It is a capital preservation and social-signalling asset that retains value in all market conditions. HNI demand from industry, film and politics is structural.",
+   pros:['Permanently constrained supply - no new large developments possible - protects value floor indefinitely','Most prestigious address in Hyderabad - HNI demand from industry, film, politics is structural','25% NRI share from Gulf diaspora - steady Hyderabadi diaspora demand is consistent'],
+   cons:['14% YoY appreciation - lowest of all premium zones - this is not a growth investment','₹3 Cr minimum entry - smallest addressable buyer pool, hardest exit in a downturn','Aging building stock dominates - finding quality new inventory at fair price is genuinely difficult'],
+   gi:[{t:'Road Widening - Road No.36',b:'GHMC widening of 5 key roads - addresses chronic congestion, ₹120 Cr allocation'},{t:'Heritage Zone Notification',b:'Jubilee Hills notified as planned residential heritage zone under HMDA 2031 - prevents commercial encroachment permanently'},{t:'Underground Cabling',b:'TSSPDCL underground cabling project approved - eliminates overhead wires, reduces outage risk'}],
    tl:{p:[8200,7900,8500,9200,10100,11200,12500,13400,14500,15800],a:[30,28,35,42,52,60,68,70,72,74],n:[15,16,17,19,20,21,22,23,24,25]}},
 
   {id:'manikonda',name:'Manikonda',rank:6,lat:17.394,lng:78.385,radius:1900,type:'mid',hni:false,nri:true,
    seg:'Affordable Premium · NRI Rental',col:'#26c6da',roiY:21,roi3:38,price:5200,ry:3.5,
-   range:'₹50 L – ₹2.2 Cr',lst:410,nri:24,sv:175,
-   vd:'Best value-for-money zone in the HITEC City belt — 21% ROI at ₹5,200/sqft.',
+   range:'₹50 L - ₹2.2 Cr',lst:410,nri:24,sv:175,
+   vd:'Best value-for-money zone in the HITEC City belt - 21% ROI at ₹5,200/sqft.',
    sm:'Manikonda is the underrated gem of the HITEC City belt. It sits between Financial District and Gachibowli, captures the same corporate tenant base, but at prices 40% lower. NRI buyer share at 24% is driven by Gulf diaspora. At ₹50 L entry it delivers the best ROI-per-rupee of any zone in this price range.',
-   pros:['40% cheaper than adjacent Financial District at identical corporate rental demand','24% NRI buyer share driven by Gulf diaspora — durable rental demand above city average','21% YoY ROI at sub-₹6K/sqft — best value of any zone in the south-west quadrant'],
-   cons:['Sewage and drainage infrastructure lags behind pace of development — quality-of-life issue','Traffic on Manikonda main road is severely congested during peak hours','GHMC jurisdiction boundaries create inconsistent service delivery across parts of the zone'],
-   gi:[{t:'Manikonda–Rajendranagar Flyover',b:'GHMC approved elevated corridor to ORR — reduces peak-hour travel time by 20 minutes'},{t:'Drainage Master Plan ₹280 Cr',b:'Storm water drainage project approved for Manikonda zone — addresses the key quality-of-life complaint'},{t:'HMDA Layout Regularisation',b:'Bulk regularisation of HMDA-approved layouts completed 2025 — clears title ambiguity on 2,800+ plots'}],
+   pros:['40% cheaper than adjacent Financial District at identical corporate rental demand','24% NRI buyer share driven by Gulf diaspora - durable rental demand above city average','21% YoY ROI at sub-₹6K/sqft - best value of any zone in the south-west quadrant'],
+   cons:['Sewage and drainage infrastructure lags behind pace of development - quality-of-life issue','Traffic on Manikonda main road is severely congested during peak hours','GHMC jurisdiction boundaries create inconsistent service delivery across parts of the zone'],
+   gi:[{t:'Manikonda-Rajendranagar Flyover',b:'GHMC approved elevated corridor to ORR - reduces peak-hour travel time by 20 minutes'},{t:'Drainage Master Plan ₹280 Cr',b:'Storm water drainage project approved for Manikonda zone - addresses the key quality-of-life complaint'},{t:'HMDA Layout Regularisation',b:'Bulk regularisation of HMDA-approved layouts completed 2025 - clears title ambiguity on 2,800+ plots'}],
    tl:{p:[2800,2700,3100,3600,4100,4700,5200,5900,6700,7600],a:[25,22,32,45,58,70,78,83,87,90],n:[10,11,13,16,18,21,24,26,28,30]}},
 
   {id:'uppal',name:'Uppal / Nacharam',rank:7,lat:17.405,lng:78.559,radius:2200,type:'emerging',hni:false,nri:false,
    seg:'East Corridor · Affordable · IT-linked',col:'#66bb6a',roiY:17,roi3:34,price:3900,ry:3.0,
-   range:'₹35 L – ₹1.5 Cr',lst:520,nri:11,sv:160,
-   vd:"East Hyderabad's fastest growing affordable zone — metro-backed, IT-anchored.",
+   range:'₹35 L - ₹1.5 Cr',lst:520,nri:11,sv:160,
+   vd:"East Hyderabad's fastest growing affordable zone - metro-backed, IT-anchored.",
    sm:'Uppal and Nacharam form East Hyderabad\'s fastest-growing affordable belt. Metro connection to Miyapur puts this zone on the same rapid-transit network as HITEC City. Wipro SEZ, Hyderabad Central University, and the upcoming Knowledge City anchor demand on the eastern side. Entry at ₹35 L is the lowest of any metro-connected zone.',
-   pros:['Metro-connected to HITEC City via LB Nagar line — puts affordable east Hyderabad on same network','₹35 L entry — lowest of any metro-connected zone — widest buyer funnel in the city','Wipro SEZ and Hyderabad Knowledge City anchoring east-side IT demand as a structural driver'],
-   cons:['11% NRI buyer share — lowest of all tracked zones — limited NRI resale market','Social infrastructure quality significantly below west-Hyderabad benchmark','ORR connectivity requires transfers — commute to Financial District is 45+ minutes'],
-   gi:[{t:'Hyderabad Knowledge City ₹3,200 Cr',b:'Breaking ground 2026 — adjacent to Uppal belt, 30,000 jobs projected'},{t:'Metro Phase-2 Extension',b:'Metro extended from Uppal to LB Nagar to Nagole — continuous eastern corridor to city centre'},{t:'Nacharam Industrial SEZ',b:'Nacharam Industrial Area upgraded to multi-product SEZ — attracts pharma and electronics manufacturing'}],
+   pros:['Metro-connected to HITEC City via LB Nagar line - puts affordable east Hyderabad on same network','₹35 L entry - lowest of any metro-connected zone - widest buyer funnel in the city','Wipro SEZ and Hyderabad Knowledge City anchoring east-side IT demand as a structural driver'],
+   cons:['11% NRI buyer share - lowest of all tracked zones - limited NRI resale market','Social infrastructure quality significantly below west-Hyderabad benchmark','ORR connectivity requires transfers - commute to Financial District is 45+ minutes'],
+   gi:[{t:'Hyderabad Knowledge City ₹3,200 Cr',b:'Breaking ground 2026 - adjacent to Uppal belt, 30,000 jobs projected'},{t:'Metro Phase-2 Extension',b:'Metro extended from Uppal to LB Nagar to Nagole - continuous eastern corridor to city centre'},{t:'Nacharam Industrial SEZ',b:'Nacharam Industrial Area upgraded to multi-product SEZ - attracts pharma and electronics manufacturing'}],
    tl:{p:[2100,2050,2300,2600,2900,3400,3900,4400,5000,5700],a:[20,18,25,34,46,58,68,75,80,84],n:[4,4,5,6,7,8,11,12,14,16]}},
 
   {id:'shamshabad',name:'Shamshabad / Pharma City',rank:8,lat:17.240,lng:78.429,radius:3300,type:'commercial',hni:true,nri:false,
    seg:'Industrial · Long-term · Land',col:'#9b59b6',roiY:16,roi3:38,price:3200,ry:2.1,
-   range:'₹30 L – ₹2 Cr',lst:410,nri:9,sv:98,
-   vd:"India's largest pharma cluster. A 10-year land play — 3–5× by 2035.",
-   sm:"A 32,000-acre National Investment & Manufacturing Zone — Pharma City — the largest in India. Investors buying land within 5 km of the Pharma City gate today are positioned for 3–5× by 2035 as 200+ pharma companies and 20,000+ workers relocate here. Airport at 8 minutes is unmatched at this price point anywhere in Hyderabad.",
-   pros:['Pharma City NIMZ — 32,000 acres, ₹1.12 lakh Cr committed — government-backed, non-negotiable','Airport at 8 minutes — no other zone offers this proximity at this price, ever','Lowest entry at ₹3,200/sqft for a future-premium zone — maximum upside per rupee invested'],
-   cons:['Long gestation: 8–12 year play — not suitable for investors needing a sub-5-year exit','Pharma City Phase-1 execution is 2 years behind original schedule — bureaucratic risk is real','Very low current liquidity — difficult near-term exit if capital is needed urgently'],
-   gi:[{t:'Pharma City NIMZ ₹1.12 Lakh Cr',b:'32,000-acre NIMZ — 200+ companies onboarded, 1.5 lakh direct jobs at full build-out'},{t:'MMTS Rail Extension ₹620 Cr',b:'Union Budget 2025 approved MMTS extension to Shamshabad — changes the commute equation entirely'},{t:"India's 2nd Largest Logistics Park",b:'8,000-acre logistics park adjacent to RGIA — 60,000 direct jobs, captive residential demand for entire belt'}],
+   range:'₹30 L - ₹2 Cr',lst:410,nri:9,sv:98,
+   vd:"India's largest pharma cluster. A 10-year land play - 3-5x by 2035.",
+   sm:"A 32,000-acre National Investment & Manufacturing Zone - Pharma City - the largest in India. Investors buying land within 5 km of the Pharma City gate today are positioned for 3-5x by 2035 as 200+ pharma companies and 20,000+ workers relocate here. Airport at 8 minutes is unmatched at this price point anywhere in Hyderabad.",
+   pros:['Pharma City NIMZ - 32,000 acres, ₹1.12 lakh Cr committed - government-backed, non-negotiable','Airport at 8 minutes - no other zone offers this proximity at this price, ever','Lowest entry at ₹3,200/sqft for a future-premium zone - maximum upside per rupee invested'],
+   cons:['Long gestation: 8-12 year play - not suitable for investors needing a sub-5-year exit','Pharma City Phase-1 execution is 2 years behind original schedule - bureaucratic risk is real','Very low current liquidity - difficult near-term exit if capital is needed urgently'],
+   gi:[{t:'Pharma City NIMZ ₹1.12 Lakh Cr',b:'32,000-acre NIMZ - 200+ companies onboarded, 1.5 lakh direct jobs at full build-out'},{t:'MMTS Rail Extension ₹620 Cr',b:'Union Budget 2025 approved MMTS extension to Shamshabad - changes the commute equation entirely'},{t:"India's 2nd Largest Logistics Park",b:'8,000-acre logistics park adjacent to RGIA - 60,000 direct jobs, captive residential demand for entire belt'}],
    tl:{p:[1800,1750,1900,2100,2400,2800,3200,3700,4300,5100],a:[10,9,12,18,28,40,55,65,72,80],n:[2,2,3,4,6,7,9,11,13,16]}}
 ];
 
-// ── MAP ──────────────────────────────────────────
+function setLoadState(message, tone, autoHide){
+  const el=document.getElementById('load-state');
+  if(!el) return;
+  el.className='load-state';
+  if(tone) el.classList.add(tone);
+  el.textContent=message;
+  if(autoHide){
+    setTimeout(()=>el.classList.add('hide'),1800);
+  }
+}
+
+// MAP
 const map=L.map('map',{center:[17.41,78.42],zoom:11,zoomControl:true});
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:20}).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap | CARTO',subdomains:'abcd',maxZoom:20}).addTo(map);
 
 let circ={},lblMk={},actLayer='roi',tlIdx=6,actZ=null,playing=false,ptmr=null,cmpMode=false,cmpPick=[],chReg={};
 
@@ -105,7 +116,7 @@ function buildMap(){
   });
 }
 
-// ── SIDEBAR ──────────────────────────────────────
+// SIDEBAR
 function renderSB(f='all'){
   let show=Z;
   if(f==='luxury'||f==='mid'||f==='commercial'||f==='emerging') show=Z.filter(z=>z.type===f);
@@ -128,13 +139,13 @@ function renderSB(f='all'){
   }).join('');
 }
 
-// ── ZONE CLICK ───────────────────────────────────
+// ZONE CLICK
 function onZone(id){
   if(cmpMode){
     if(cmpPick.includes(id)) cmpPick=cmpPick.filter(x=>x!==id);
     else{if(cmpPick.length>=2){cmpPick.shift();}cmpPick.push(id);}
     renderSB();
-    if(cmpPick.length===1){document.getElementById('cmpl').innerHTML=cmpCol(Z.find(z=>z.id===cmpPick[0]));document.getElementById('cmpr').innerHTML='<div style="color:#364862;font-size:12px;padding-top:50px;text-align:center;">Select second zone →</div>';}
+    if(cmpPick.length===1){document.getElementById('cmpl').innerHTML=cmpCol(Z.find(z=>z.id===cmpPick[0]));document.getElementById('cmpr').innerHTML='<div style="color:#364862;font-size:12px;padding-top:50px;text-align:center;">Select second zone -></div>';}
     if(cmpPick.length===2) renderCmp();
     return;
   }
@@ -146,40 +157,40 @@ function onZone(id){
   showDetail(z);
 }
 
-// ── DETAIL PANEL ─────────────────────────────────
+// DETAIL PANEL
 function showDetail(z){
   ['pc','nc'].forEach(k=>{if(chReg[k]){chReg[k].destroy();delete chReg[k];}});
   const rbC=['','rb1','rb2','rb3','rb4','rb5','rb6','rb7','rb8'][z.rank]||'rb4';
-  const rbL=['','🥇 RANK #1','🥈 RANK #2','🥉 RANK #3','RANK #4','RANK #5','RANK #6','RANK #7','RANK #8'][z.rank];
+  const rbL=['','Rank #1','Rank #2','Rank #3','Rank #4','Rank #5','Rank #6','Rank #7','Rank #8'][z.rank];
   document.getElementById('dpc').innerHTML=`
-    <div class="dph"><span class="dpx" onclick="closeDp()">✕</span>
+    <div class="dph"><span class="dpx" onclick="closeDp()">X</span>
       <div class="rb ${rbC}">${rbL}</div>
       <div class="dpn">${z.name}</div><div class="dpvd">${z.vd}</div>
     </div>
-    <div class="dps"><h4>📊 Returns at a Glance</h4>
+    <div class="dps"><h4>Returns at a Glance</h4>
       <div class="rg">
         <div class="rb2x"><div class="rv">${z.roiY}%</div><div class="rl">YoY ROI</div></div>
         <div class="rb2x"><div class="rv">${z.roi3}%</div><div class="rl">3-Year ROI</div></div>
         <div class="rb2x"><div class="rv o">${z.nri}%</div><div class="rl">NRI Buyers</div></div>
       </div>
     </div>
-    <div class="dps"><h4>📝 Why This Rank</h4>
+    <div class="dps"><h4>Why This Rank</h4>
       <div class="sb2">${z.sm}</div>
-      <div class="meta">Range: ${z.range} · Listings: ${z.lst} · Sales: ${z.sv} units/qtr · Rental yield: ${z.ry}%</div>
+      <div class="meta">Range: ${z.range} | Listings: ${z.lst} | Sales: ${z.sv} units/qtr | Rental yield: ${z.ry}%</div>
     </div>
-    <div class="dps"><h4>✅ Pros vs ⚠️ Cons</h4>
+    <div class="dps"><h4>Pros vs Cons</h4>
       <div class="pcg">
-        <div class="pcc pros"><h5>✅ Pros</h5>${z.pros.map(p=>`<div class="pi">${p}</div>`).join('')}</div>
-        <div class="pcc cons"><h5>⚠️ Cons</h5>${z.cons.map(c=>`<div class="pi">${c}</div>`).join('')}</div>
+        <div class="pcc pros"><h5>Pros</h5>${z.pros.map(p=>`<div class="pi">${p}</div>`).join('')}</div>
+        <div class="pcc cons"><h5>Cons</h5>${z.cons.map(c=>`<div class="pi">${c}</div>`).join('')}</div>
       </div>
     </div>
-    <div class="dps"><h4>🏛️ Government Initiatives</h4>
+    <div class="dps"><h4>Government Initiatives</h4>
       ${z.gi.map(g=>`<div class="gi"><div class="git">${g.t}</div><div class="gib">${g.b}</div></div>`).join('')}
     </div>
-    <div class="dps"><h4>📈 Price Trend ₹/sqft <span style="color:#ff6b35;font-size:7px">dashed = MiroFish AI</span></h4>
+    <div class="dps"><h4>Price Trend ₹/sqft <span style="color:#ff6b35;font-size:7px">dashed = MiroFish AI</span></h4>
       <div class="cw"><canvas id="pch"></canvas></div>
     </div>
-    <div class="dps"><h4>🌍 NRI Buyer % Over Time</h4>
+    <div class="dps"><h4>NRI Buyer % Over Time</h4>
       <div class="cw"><canvas id="nch"></canvas></div>
     </div>`;
   document.getElementById('dp').classList.add('open');
@@ -192,7 +203,7 @@ function drawCharts(z){
   const pCanvas=document.getElementById('pch');
   const pCtx=pCanvas ? pCanvas.getContext('2d') : null;
   if(pCtx){
-    chReg['pc']=new Chart(pCtx,{type:'line',data:{labels:YRS,datasets:[{data:z.tl.p,tension:.4,fill:true,pointRadius:4,
+    chReg.pc=new Chart(pCtx,{type:'line',data:{labels:YRS,datasets:[{data:z.tl.p,tension:.4,fill:true,pointRadius:4,
       backgroundColor:z.col+'12',borderWidth:2,
       borderColor:ctx=>ctx.p1DataIndex>=7?'#ff6b35':z.col,
       pointBackgroundColor:z.tl.p.map((_,i)=>i>=7?'#ff6b35':z.col),
@@ -204,7 +215,7 @@ function drawCharts(z){
   const nCanvas=document.getElementById('nch');
   const nCtx=nCanvas ? nCanvas.getContext('2d') : null;
   if(nCtx){
-    chReg['nc']=new Chart(nCtx,{type:'bar',data:{labels:YRS,datasets:[{data:z.tl.n,
+    chReg.nc=new Chart(nCtx,{type:'bar',data:{labels:YRS,datasets:[{data:z.tl.n,
       backgroundColor:z.tl.n.map((_,i)=>i>=7?'rgba(255,107,53,.5)':'rgba(74,158,255,.5)'),
       borderColor:z.tl.n.map((_,i)=>i>=7?'#ff6b35':'#4a9eff'),borderWidth:1}]},
       options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
@@ -213,7 +224,7 @@ function drawCharts(z){
   }
 }
 
-// ── COMPARE ──────────────────────────────────────
+// COMPARE
 document.getElementById('cmp-btn').addEventListener('click',()=>{
   cmpMode=true;cmpPick=[];actZ=null;closeDp();
   document.getElementById('cmp').classList.add('open');
@@ -226,7 +237,7 @@ function closeCompare(){
   document.getElementById('cmp-btn').style.display='';
   renderSB();
 }
-function cmpMetric(label,value,cls,isWinner=false){
+function cmpMetric(label,value,cls,isWinner){
   return `<div class="str"><span class="stl">${label}</span><span class="stv ${cls||''}">${value}${isWinner?'<span class="win">WIN</span>':''}</span></div>`;
 }
 
@@ -239,12 +250,12 @@ function cmpSummary(z,other){
   if(z.sv>other.sv) edges.push('faster sales velocity');
   if(z.price<other.price) edges.push('lower entry price');
   if(!edges.length) return 'Profile is broadly balanced against the comparison zone.';
-  return `Edge: ${edges.slice(0,2).join(' · ')}.`;
+  return `Edge: ${edges.slice(0,2).join(' | ')}.`;
 }
 
-function cmpCol(z,other=null){
+function cmpCol(z,other){
   if(!z)return'';
-  const em=['','🥇','🥈','🥉','#4','#5','#6','#7','#8'][z.rank];
+  const em=['','#1','#2','#3','#4','#5','#6','#7','#8'][z.rank];
   const wins = other ? {
     roiY: z.roiY > other.roiY,
     roi3: z.roi3 > other.roi3,
@@ -272,9 +283,9 @@ function cmpCol(z,other=null){
       ${cmpMetric('Active Listings',`${z.lst}`,'',wins.lst)}
       ${cmpMetric('HNI Recommended',z.hni?'Yes':'No',z.hni?'g':'o',false)}
     </div>
-    <div class="cmpsec"><h4>✅ Pros</h4>${z.pros.map(p=>`<div class="pi" style="margin-bottom:5px">${p}</div>`).join('')}</div>
-    <div class="cmpsec"><h4 style="color:#ff4757">⚠️ Cons</h4>${z.cons.map(c=>`<div class="pi" style="color:#ff5a5a">${c}</div>`).join('')}</div>
-    <div class="cmpsec"><h4>🏛️ Govt Initiatives</h4>${z.gi.map(g=>`<div class="gi"><div class="git">${g.t}</div><div class="gib">${g.b}</div></div>`).join('')}</div>`;
+    <div class="cmpsec"><h4>Pros</h4>${z.pros.map(p=>`<div class="pi" style="margin-bottom:5px">${p}</div>`).join('')}</div>
+    <div class="cmpsec"><h4 style="color:#ff4757">Cons</h4>${z.cons.map(c=>`<div class="pi" style="color:#ff5a5a">${c}</div>`).join('')}</div>
+    <div class="cmpsec"><h4>Govt Initiatives</h4>${z.gi.map(g=>`<div class="gi"><div class="git">${g.t}</div><div class="gib">${g.b}</div></div>`).join('')}</div>`;
 }
 function renderCmp(){
   const [a,b]=cmpPick.map(id=>Z.find(z=>z.id===id));
@@ -283,7 +294,7 @@ function renderCmp(){
   document.getElementById('cmpr').innerHTML=cmpCol(b,a);
 }
 
-// ── CALCULATOR ───────────────────────────────────
+// CALCULATOR
 const calcP=document.getElementById('cp');
 document.getElementById('calc-btn').addEventListener('click',()=>calcP.classList.toggle('open'));
 const izSel=document.getElementById('izone');
@@ -308,7 +319,7 @@ function runCalc(){
 }
 document.addEventListener('click',e=>{if(!calcP.contains(e.target)&&e.target.id!=='calc-btn')calcP.classList.remove('open');});
 
-// ── LAYER BUTTONS ────────────────────────────────
+// LAYER BUTTONS
 document.querySelectorAll('.mb').forEach(b=>{
   b.addEventListener('click',()=>{
     actLayer=b.dataset.layer;
@@ -321,7 +332,7 @@ document.querySelectorAll('.mb').forEach(b=>{
   });
 });
 
-// ── FILTER BUTTONS ───────────────────────────────
+// FILTER BUTTONS
 document.querySelectorAll('[data-qf]').forEach(b=>{
   b.addEventListener('click',()=>{
     document.querySelectorAll('[data-qf]').forEach(x=>x.classList.remove('on'));
@@ -330,14 +341,14 @@ document.querySelectorAll('[data-qf]').forEach(b=>{
   });
 });
 
-// ── TIMELINE ─────────────────────────────────────
+// TIMELINE
 const slider=document.getElementById('ts');
 function applyTL(idx){
   tlIdx=idx;const yr=YRS[idx];
   const mc=document.getElementById('mc'),ml=document.getElementById('tlml'),dl=document.getElementById('tld');
-  if(idx<6){mc.className='mc-h';mc.textContent='◄ HISTORICAL — '+yr;ml.className='tlm tlm-h';ml.textContent='HISTORICAL: '+yr;dl.textContent='Past development activity, construction completions & government milestones — '+yr;}
-  else if(idx===6){mc.className='mc-c';mc.textContent='● CURRENT STATE — Q1 2026';ml.className='tlm tlm-c';ml.textContent='CURRENT: Q1 2026';dl.textContent='Live market — current prices, active listings & investor activity';}
-  else{mc.className='mc-p';mc.textContent='🤖 AI PREDICTION — '+yr;ml.className='tlm tlm-p';ml.textContent='AI PREDICTION: '+yr;dl.textContent='MiroFish multi-agent simulation — predicted appreciation, activity & NRI demand for '+yr;}
+  if(idx<6){mc.className='mc-h';mc.textContent='HISTORICAL - '+yr;ml.className='tlm tlm-h';ml.textContent='HISTORICAL: '+yr;dl.textContent='Past development activity, construction completions, and government milestones - '+yr;}
+  else if(idx===6){mc.className='mc-c';mc.textContent='CURRENT STATE - Q1 2026';ml.className='tlm tlm-c';ml.textContent='CURRENT: Q1 2026';dl.textContent='Live market - current prices, active listings, and investor activity';}
+  else{mc.className='mc-p';mc.textContent='AI PREDICTION - '+yr;ml.className='tlm tlm-p';ml.textContent='AI PREDICTION: '+yr;dl.textContent='MiroFish multi-agent simulation - predicted appreciation, activity, and NRI demand for '+yr;}
   Z.forEach(z=>{
     const act=z.tl.a[idx]/100,r=z.radius*(0.45+0.55*act);
     const fo=idx<6?0.12+0.22*act:idx===6?0.28:0.15+0.2*act;
@@ -351,68 +362,62 @@ function applyTL(idx){
 slider.addEventListener('input',e=>applyTL(parseInt(e.target.value)));
 const pb=document.getElementById('pbtn');
 pb.addEventListener('click',()=>{
-  playing=!playing;pb.textContent=playing?'⏸':'▶';
+  playing=!playing;pb.textContent=playing?'Pause':'Play';
   if(playing){ptmr=setInterval(()=>{let v=parseInt(slider.value)+1;if(v>9)v=0;slider.value=v;applyTL(v);},1100);}
   else clearInterval(ptmr);
 });
 
-// ── LIVE DATA PIPELINE LOADER ────────────────────
+// LIVE DATA PIPELINE LOADER
 // Tries to load pipeline/output/data.json generated by pipeline.py
-// If found → updates zone prices, predictions, city stats, govt alerts
-// If not found → uses hardcoded data silently (no errors shown to user)
+// If found -> updates zone prices, predictions, city stats, govt alerts
+// If not found -> uses hardcoded data silently (no blocking errors shown to user)
 
 function mergeLiveZone(z, live) {
-  // Update live market figures
-  if (live.name)      z.name  = live.name;
-  if (live.rank)      z.rank  = live.rank;
-  if (live.type)      z.type  = live.type;
-  if (live.segment)   z.seg   = live.segment;
-  if (live.color)     z.col   = live.color;
-  if (live.avgPrice)  z.price  = live.avgPrice;
+  if (live.name) z.name = live.name;
+  if (live.rank) z.rank = live.rank;
+  if (live.type) z.type = live.type;
+  if (live.segment) z.seg = live.segment;
+  if (live.color) z.col = live.color;
+  if (live.avgPrice) z.price = live.avgPrice;
   if (live.priceRange) z.range = live.priceRange;
-  if (live.roiYoY)    z.roiY   = live.roiYoY;
-  if (live.roi3Y)     z.roi3   = live.roi3Y;
-  if (live.nriPct)    z.nri    = live.nriPct;
-  if (live.salesVel)  z.sv     = live.salesVel;
-  if (live.listings)  z.lst    = live.listings;
-  if (live.verdict)   z.vd     = live.verdict;
-  if (live.summary)   z.sm     = live.summary;
-  if (live.pros)      z.pros   = live.pros;
-  if (live.cons)      z.cons   = live.cons;
-  if (live.govtInit)  z.gi     = live.govtInit;
+  if (live.roiYoY) z.roiY = live.roiYoY;
+  if (live.roi3Y) z.roi3 = live.roi3Y;
+  if (live.nriPct) z.nri = live.nriPct;
+  if (live.salesVel) z.sv = live.salesVel;
+  if (live.listings) z.lst = live.listings;
+  if (live.verdict) z.vd = live.verdict;
+  if (live.summary) z.sm = live.summary;
+  if (live.pros) z.pros = live.pros;
+  if (live.cons) z.cons = live.cons;
+  if (live.govtInit) z.gi = live.govtInit;
 
-  // Merge MiroFish predictions into timeline
   if (live.tl) {
-    if (live.tl.price && live.tl.price.length === 10)    z.tl.p = live.tl.price;
-    if (live.tl.nri   && live.tl.nri.length   === 10)    z.tl.n = live.tl.nri;
-    if (live.tl.activity && live.tl.activity.length===10) z.tl.a = live.tl.activity;
+    if (live.tl.price && live.tl.price.length === 10) z.tl.p = live.tl.price;
+    if (live.tl.nri && live.tl.nri.length === 10) z.tl.n = live.tl.nri;
+    if (live.tl.activity && live.tl.activity.length === 10) z.tl.a = live.tl.activity;
   }
 
-  // Append live govt alerts to existing govt initiatives (max 2 new)
   if (live.govtAlerts && live.govtAlerts.length > 0) {
     live.govtAlerts.slice(0, 2).forEach(a => {
-      if (!z.gi.find(g => g.t === a.title)) {
-        z.gi.push({ t: '🔔 ' + a.title, b: a.body });
-      }
+      const exists = z.gi.find(g => g.t === a.title || g.t === ('Alert: ' + a.title));
+      if (!exists) z.gi.push({ t: 'Alert: ' + a.title, b: a.body });
     });
   }
 }
 
 function updateTopbarStats(cityStats, meta) {
-  // Update top bar stats with live values
   const statMap = {
-    'sp-price':    { v: 'Rs ' + cityStats.avg_price_sqft.toLocaleString('en-IN'), u: true  },
-    'sp-sales':    { v: cityStats.quarterly_sales.toLocaleString('en-IN') + ' units', u: true },
-    'sp-nri':      { v: 'Rs ' + cityStats.nri_investment_cr.toLocaleString('en-IN') + ' Cr', u: true },
-    'sp-projects': { v: cityStats.active_projects.toLocaleString('en-IN'), u: true },
-    'sp-unsold':   { v: cityStats.unsold_inventory.toLocaleString('en-IN') + ' units', u: false },
+    'sp-price': { v: 'Rs ' + cityStats.avg_price_sqft.toLocaleString('en-IN') },
+    'sp-sales': { v: cityStats.quarterly_sales.toLocaleString('en-IN') + ' units' },
+    'sp-nri': { v: 'Rs ' + cityStats.nri_investment_cr.toLocaleString('en-IN') + ' Cr' },
+    'sp-projects': { v: cityStats.active_projects.toLocaleString('en-IN') },
+    'sp-unsold': { v: cityStats.unsold_inventory.toLocaleString('en-IN') + ' units' },
   };
   Object.entries(statMap).forEach(([id, cfg]) => {
     const el = document.getElementById(id);
     if (el) el.textContent = cfg.v;
   });
 
-  // Show live data badge
   const badge = document.getElementById('live-badge');
   if (badge) {
     const ts = new Date(meta.last_updated);
@@ -424,12 +429,15 @@ function updateTopbarStats(cityStats, meta) {
     if (meta.pipeline_mode === 'LIVE') {
       badge.textContent = `LIVE DATA - ${(ago !== null ? ago : '?')}m ago`;
       badge.style.color = '#00c896';
+      setLoadState('Pipeline data loaded. Map and rankings refreshed.', 'ok', true);
     } else if (meta.pipeline_mode === 'FALLBACK') {
       badge.textContent = `FALLBACK DATA - ${(ago !== null ? ago : '?')}m ago`;
       badge.style.color = '#ffb347';
+      setLoadState('Pipeline loaded with fallback predictions.', 'warn', true);
     } else {
       badge.textContent = 'DEMO DATA - pipeline/output/data.json';
       badge.style.color = '#ffd700';
+      setLoadState('Using generated demo-mode data from the pipeline.', 'warn', true);
     }
 
     badge.title = `Pipeline: ${meta.pipeline_mode || 'UNKNOWN'} | Methods: ${methods}`;
@@ -437,44 +445,44 @@ function updateTopbarStats(cityStats, meta) {
 }
 
 async function loadLiveData() {
+  setLoadState('Loading pipeline data and refreshing zone metrics...', '', false);
   try {
     const resp = await fetch('pipeline/output/data.json');
     if (!resp.ok) throw new Error('No data.json yet');
     const data = await resp.json();
 
-    // Merge zone data
     const liveZones = data.zones || {};
     Z.forEach(z => {
       if (liveZones[z.id]) mergeLiveZone(z, liveZones[z.id]);
     });
 
-    // Update city stats
     if (data.city_stats) updateTopbarStats(data.city_stats, data.metadata || {});
 
-    // Rebuild map circles + labels with updated data
     Object.values(circ).forEach(c => map.removeLayer(c));
     Object.values(lblMk).forEach(m => map.removeLayer(m));
-    Object.assign(circ, {}); Object.assign(lblMk, {});
+    circ={};
+    lblMk={};
     buildMap();
     renderSB();
 
-    // Refresh active detail panel if open
-    if (actZ) { const z = Z.find(v => v.id === actZ); if (z) showDetail(z); }
+    if (actZ) {
+      const z = Z.find(v => v.id === actZ);
+      if (z) showDetail(z);
+    }
 
     console.log('[HydROI] Live data loaded from pipeline/output/data.json');
-
   } catch (e) {
-    // Silently use hardcoded data — no user-facing error
     const badge = document.getElementById('live-badge');
     if (badge) {
-      badge.textContent = '⚪ DEMO DATA — run pipeline.py to activate live feed';
+      badge.textContent = 'DEMO DATA - run pipeline.py to activate live feed';
       badge.style.color = '#3a4a6a';
     }
+    setLoadState('Using built-in demo data. Run pipeline.py to refresh the live feed.', 'warn', true);
     console.log('[HydROI] Using hardcoded data (pipeline not run yet):', e.message);
   }
 }
 
-// ── INIT ─────────────────────────────────────────
+// INIT
 buildMap();
 renderSB();
 setTimeout(()=>onZone('kokapet'),700);

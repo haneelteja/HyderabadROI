@@ -79,7 +79,7 @@ Run the pipeline:
 python pipeline.py
 ```
 
-Then open [HydROI.html](C:\Users\Haneel Teja\Cursor Applications\Hyderabad ROI\HydROI.html) in a browser.
+Then open [index.html](C:\Users\Haneel Teja\Cursor Applications\Hyderabad ROI\index.html) in a browser.
 
 Validate the generated output:
 
@@ -110,6 +110,22 @@ Still rough:
 - some narrative/source strings still deserve a fuller normalization pass
 - public-site scraping is fragile and often falls back under restricted network conditions
 - the product is still prototype-grade rather than production-ready
+
+## Deployment smoke check
+
+Use this quick checklist after each push to GitHub or Vercel:
+
+1. Confirm the deployed commit SHA matches the latest `main` commit.
+2. Open the homepage and verify the map, sidebar, and topbar stats render.
+3. Open browser DevTools and confirm there are no `app.js` syntax errors.
+4. Click one zone and verify the detail drawer opens and charts render.
+5. Toggle `ROI Heat`, `NRI Activity`, and `Sales Volume`.
+6. Open `Compare Zones` and select any two zones from the sidebar.
+7. Open `Calculator` and run one sample projection.
+8. Check the top-right badge:
+   - `LIVE DATA` means a live prediction path succeeded
+   - `FALLBACK DATA` means the pipeline loaded but prediction services fell back
+   - `DEMO DATA` means the app is using static or demo-mode pipeline data
 
 ## Next likely improvements
 

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="HydROI favicon">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0b0e1a"/>
+      <stop offset="100%" stop-color="#131c34"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <path d="M16 44V20h7v9h8v-9h7v24h-7v-9h-8v9z" fill="#4a9eff"/>
+  <path d="M42 20h6c5.523 0 10 4.477 10 10v4c0 5.523-4.477 10-10 10h-6zm6 6v12c2.209 0 4-1.791 4-4v-4c0-2.209-1.791-4-4-4z" fill="#ff6b35"/>
+</svg>

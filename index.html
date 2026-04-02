@@ -3,7 +3,16 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>HydROI - Hyderabad Real Estate Investment Intelligence</title>
+<title>HydROI | Hyderabad Real Estate Investment Intelligence</title>
+<meta name="description" content="Interactive Hyderabad real estate dashboard with zone rankings, ROI timelines, NRI demand signals, and pipeline-backed market updates."/>
+<meta name="keywords" content="Hyderabad real estate, ROI dashboard, Kokapet, Gachibowli, NRI investment, property analytics"/>
+<meta name="theme-color" content="#07090f"/>
+<meta property="og:title" content="HydROI | Hyderabad Real Estate Investment Intelligence"/>
+<meta property="og:description" content="Explore ranked Hyderabad investment zones, compare returns, and inspect pipeline-backed market signals."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="favicon.svg"/>
+<meta name="twitter:card" content="summary"/>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <link rel="stylesheet" href="styles.css"/>
 </head>
@@ -42,6 +51,7 @@
   </div>
   <div id="mw">
     <div id="map"></div>
+    <div id="load-state" class="load-state">Loading pipeline data...</div>
     <div id="mc" class="mc-c">CURRENT STATE - Q1 2026</div>
     <div class="mbs">
       <button class="mb on" data-layer="roi">ROI Heat</button>
