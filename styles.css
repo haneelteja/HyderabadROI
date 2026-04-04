@@ -92,6 +92,9 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#07090f;color:#dde4f
 .meta{font-size:9px;color:#364862;margin-top:5px;}
 .qpanel{background:#0d1530;border:1px solid #1a2440;border-radius:6px;padding:9px 11px;}
 .qbadges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;}
+.qlink{color:#7ebcff;text-decoration:none;border-bottom:1px solid rgba(126,188,255,.3);}
+.qlink:hover{color:#a6d0ff;border-bottom-color:rgba(166,208,255,.7);}
+.qsrc{color:#90a2c4;}
 .pcg{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
 .pcc h5{font-size:9px;margin-bottom:5px;}.pcc.pros h5{color:#00c896;}.pcc.cons h5{color:#ff4757;}
 .pi{font-size:10px;color:#6a7a9a;line-height:1.5;margin-bottom:4px;padding-left:9px;position:relative;}

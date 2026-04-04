@@ -108,6 +108,36 @@ function qualityLabel(label, status){
   return `${label}: ${status==='live' ? 'Live' : 'Fallback'}`;
 }
 
+function sourceLabel(source){
+  const labels={
+    '99acres.com':'99acres',
+    'magicbricks.com':'MagicBricks',
+    'rera.telangana.gov.in':'Telangana RERA',
+    'baseline_estimate':'Internal baseline estimate',
+    'baseline':'Internal city baseline',
+    'unknown':'Unknown source'
+  };
+  return labels[source] || source || 'Unknown source';
+}
+
+function sourceUrl(source){
+  const urls={
+    '99acres.com':'https://www.99acres.com/',
+    'magicbricks.com':'https://www.magicbricks.com/',
+    'rera.telangana.gov.in':'https://rera.telangana.gov.in/'
+  };
+  return urls[source] || '';
+}
+
+function renderSourceMeta(label, source){
+  const niceLabel=sourceLabel(source);
+  const url=sourceUrl(source);
+  if(url){
+    return `<div class="meta">${label}: <a class="qlink" href="${url}" target="_blank" rel="noopener noreferrer">${niceLabel}</a></div>`;
+  }
+  return `<div class="meta">${label}: <span class="qsrc">${niceLabel}</span></div>`;
+}
+
 function formatAge(isoString){
   if(!isoString) return 'time unknown';
   const ts=new Date(isoString);
@@ -219,6 +249,8 @@ function showDetail(z){
           <span class="qs ${qualityTone(z.dq?.rera?.status)}">${qualityLabel('RERA', z.dq?.rera?.status)}</span>
         </div>
         <div class="meta">${zoneQualitySummary(z)}</div>
+        ${renderSourceMeta('Listings source', z.dq?.listings?.source)}
+        ${renderSourceMeta('RERA source', z.dq?.rera?.source)}
         <div class="meta">Listings updated: ${formatAge(z.dq?.listings?.scraped_at)}</div>
         <div class="meta">RERA updated: ${formatAge(z.dq?.rera?.scraped_at)}</div>
         <div class="meta">Pipeline refreshed: ${formatAge(pipelineMeta?.last_updated)}</div>
