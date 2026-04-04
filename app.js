@@ -99,6 +99,22 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{att
 
 let circ={},lblMk={},actLayer='roi',tlIdx=6,actZ=null,playing=false,ptmr=null,cmpMode=false,cmpPick=[],chReg={};
 
+function qualityTone(status){
+  return status==='live' ? 'live' : 'fallback';
+}
+
+function qualityLabel(label, status){
+  return `${label}: ${status==='live' ? 'Live' : 'Fallback'}`;
+}
+
+function zoneQualitySummary(z){
+  if(!z.dq) return 'Using built-in dashboard seed data.';
+  const listings = z.dq.listings?.status || 'fallback';
+  const rera = z.dq.rera?.status || 'fallback';
+  const method = z.dq.prediction_method || 'unknown';
+  return `Listings ${listings} | RERA ${rera} | Prediction ${method}`;
+}
+
 function zCol(z,layer){
   if(layer==='nri'){let p=z.nri;return p>30?'#4a9eff':p>20?'#00ced1':p>12?'#20b2aa':'#2f4f6f';}
   if(layer==='sales'){let v=z.sv;return v>200?'#ff3a00':v>150?'#ff8c00':v>100?'#ffd700':'#20b2aa';}
@@ -133,6 +149,10 @@ function renderSB(f='all'){
         <div class="zt"><div class="zl">3Y ROI</div><div class="zv g">${z.roi3}%</div></div>
         <div class="zt"><div class="zl">₹/sqft</div><div class="zv o">₹${z.price.toLocaleString()}</div></div>
         <div class="zt"><div class="zl">NRI %</div><div class="zv b">${z.nri}%</div></div>
+      </div>
+      <div class="qrow">
+        <span class="qs ${qualityTone(z.dq?.listings?.status)}">${qualityLabel('Listings', z.dq?.listings?.status)}</span>
+        <span class="qs ${qualityTone(z.dq?.rera?.status)}">${qualityLabel('RERA', z.dq?.rera?.status)}</span>
       </div>
       <span class="np ${hi?'hi':''}">NRI: ${nriLvl}</span>
     </div>`;
@@ -177,6 +197,16 @@ function showDetail(z){
     <div class="dps"><h4>Why This Rank</h4>
       <div class="sb2">${z.sm}</div>
       <div class="meta">Range: ${z.range} | Listings: ${z.lst} | Sales: ${z.sv} units/qtr | Rental yield: ${z.ry}%</div>
+    </div>
+    <div class="dps"><h4>Source Quality</h4>
+      <div class="qpanel">
+        <div class="qbadges">
+          <span class="qs ${qualityTone(z.dq?.listings?.status)}">${qualityLabel('Listings', z.dq?.listings?.status)}</span>
+          <span class="qs ${qualityTone(z.dq?.rera?.status)}">${qualityLabel('RERA', z.dq?.rera?.status)}</span>
+        </div>
+        <div class="meta">${zoneQualitySummary(z)}</div>
+        <div class="meta">Govt alerts linked: ${z.dq?.govt_alert_count ?? 0}</div>
+      </div>
     </div>
     <div class="dps"><h4>Pros vs Cons</h4>
       <div class="pcg">
@@ -390,6 +420,7 @@ function mergeLiveZone(z, live) {
   if (live.pros) z.pros = live.pros;
   if (live.cons) z.cons = live.cons;
   if (live.govtInit) z.gi = live.govtInit;
+  if (live.dataQuality) z.dq = live.dataQuality;
 
   if (live.tl) {
     if (live.tl.price && live.tl.price.length === 10) z.tl.p = live.tl.price;
@@ -440,7 +471,11 @@ function updateTopbarStats(cityStats, meta) {
       setLoadState('Using generated demo-mode data from the pipeline.', 'warn', true);
     }
 
-    badge.title = `Pipeline: ${meta.pipeline_mode || 'UNKNOWN'} | Methods: ${methods}`;
+    const totals = meta.scrape_summary?.totals;
+    const totalsText = totals
+      ? ` | Listings live/fallback: ${totals.listings_live}/${totals.listings_fallback} | RERA live/fallback: ${totals.rera_live}/${totals.rera_fallback}`
+      : '';
+    badge.title = `Pipeline: ${meta.pipeline_mode || 'UNKNOWN'} | Methods: ${methods}${totalsText}`;
   }
 }
 
