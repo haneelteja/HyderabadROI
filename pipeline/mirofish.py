@@ -409,7 +409,7 @@ _BATCH_CACHE = {}
 
 def generate_all_predictions_batch(all_scraped_data, govt_alerts):
     """
-    Make ONE LLM call to predict all 5 localities at once.
+    Make ONE LLM call to predict all tracked localities at once.
     This beats free-tier rate limits (3 RPM) by only needing 1 request total.
     Results are cached in _BATCH_CACHE for generate_predictions() to use.
     """
@@ -435,7 +435,7 @@ def generate_all_predictions_batch(all_scraped_data, govt_alerts):
             f"growth rate {base['growth_rate']*100:.1f}%"
         )
 
-    prompt = f"""You are a Hyderabad real estate analyst. Give decisive price predictions for 5 localities.
+    prompt = f"""You are a Hyderabad real estate analyst. Give decisive price predictions for 8 localities.
 
 Current data (March 2026):
 {chr(10).join(f'- {s}' for s in zone_summaries)}
@@ -446,6 +446,9 @@ Respond ONLY with this exact JSON (no markdown, no explanation):
   "gachibowli": {{"Q3_2026": <int>, "y2027": <int>, "y2028": <int>, "nri_q3": <int>, "nri_27": <int>, "nri_28": <int>}},
   "miyapur":    {{"Q3_2026": <int>, "y2027": <int>, "y2028": <int>, "nri_q3": <int>, "nri_27": <int>, "nri_28": <int>}},
   "kompally":   {{"Q3_2026": <int>, "y2027": <int>, "y2028": <int>, "nri_q3": <int>, "nri_27": <int>, "nri_28": <int>}},
+  "jubilee":    {{"Q3_2026": <int>, "y2027": <int>, "y2028": <int>, "nri_q3": <int>, "nri_27": <int>, "nri_28": <int>}},
+  "manikonda":  {{"Q3_2026": <int>, "y2027": <int>, "y2028": <int>, "nri_q3": <int>, "nri_27": <int>, "nri_28": <int>}},
+  "uppal":      {{"Q3_2026": <int>, "y2027": <int>, "y2028": <int>, "nri_q3": <int>, "nri_27": <int>, "nri_28": <int>}},
   "shamshabad": {{"Q3_2026": <int>, "y2027": <int>, "y2028": <int>, "nri_q3": <int>, "nri_27": <int>, "nri_28": <int>}}
 }}
 All prices in ₹/sqft. Be decisive — no hedging. Reflect realistic Hyderabad market appreciation."""
@@ -515,7 +518,7 @@ All prices in ₹/sqft. Be decisive — no hedging. Reflect realistic Hyderabad 
 def generate_predictions(locality_id, locality_name, scraped_data, govt_alerts):
     """
     Generate price predictions for a locality.
-    Tries in order: MiroFish live → LLM direct → Demo extrapolation
+    Tries in order: batch cache -> MiroFish live -> LLM direct -> extrapolation
     """
     print(f"\n  [MiroFish] Predicting: {locality_name}")
     live_price = scraped_data.get("listings", {}).get("avg_price_sqft")

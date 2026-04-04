@@ -335,6 +335,9 @@ def _fallback_listing_data(locality_keyword):
         "gachibowli": {"avg_price_sqft": 10665, "listing_count": 523},
         "miyapur":    {"avg_price_sqft":  7413, "listing_count": 932},
         "kompally":   {"avg_price_sqft":  8695, "listing_count": 758},
+        "jubilee-hills": {"avg_price_sqft": 12500, "listing_count": 98},
+        "manikonda":  {"avg_price_sqft":  5200, "listing_count": 410},
+        "uppal":      {"avg_price_sqft":  3900, "listing_count": 520},
         "shamshabad": {"avg_price_sqft":  7312, "listing_count": 300},
     }
     base = BASELINE.get(locality_keyword, {"avg_price_sqft": 5000, "listing_count": 100})
@@ -464,6 +467,9 @@ def _tag_localities(text):
         "gachibowli": ["gachibowli", "hitech city", "hitec city", "biodiversity"],
         "miyapur":    ["miyapur", "bachupally", "patancheru", "kondapur"],
         "kompally":   ["kompally", "medchal", "bowrampet", "nh44", "nh-44"],
+        "jubilee":    ["jubilee hills", "jubilee", "banjara hills", "road no. 36"],
+        "manikonda":  ["manikonda", "lanco hills", "khajaguda", "raidurgam"],
+        "uppal":      ["uppal", "nacharam", "nagole", "lb nagar", "knowledge city"],
         "shamshabad": ["shamshabad", "pharma city", "rgia", "airport", "ibrahimpatnam"],
     }
     for loc_id, keywords in locality_map.items():
