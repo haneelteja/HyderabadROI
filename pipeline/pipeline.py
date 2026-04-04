@@ -29,6 +29,32 @@ from config import LOCALITIES, OUTPUT_JSON_PATH, DEMO_MODE
 from scrapers import run_all_scrapers
 from mirofish import generate_predictions, generate_all_predictions_batch, get_full_timeline, LOCALITY_BASELINES
 
+TEXT_FIXUPS = {
+    "â€”": "-",
+    "â€“": "-",
+    "â†’": "->",
+    "â‚¹": "Rs ",
+    "Â·": "·",
+    "â€™": "'",
+    "â€œ": '"',
+    "â€": '"',
+    "â€˜": "'",
+    "â€¦": "...",
+    "Ã—": "x",
+}
+
+
+def _normalize_text(value):
+    if isinstance(value, str):
+        for bad, good in TEXT_FIXUPS.items():
+            value = value.replace(bad, good)
+        return value
+    if isinstance(value, list):
+        return [_normalize_text(item) for item in value]
+    if isinstance(value, dict):
+        return {key: _normalize_text(item) for key, item in value.items()}
+    return value
+
 # ── Zone metadata (static — doesn't change with scraping) ─────
 ZONE_META = {
     "kokapet": {
@@ -404,15 +430,15 @@ def build_output(scraped, predictions_map, govt_alerts):
             "govtAlerts": loc_alerts[:5],
         }
 
-    return output
+    return _normalize_text(output)
 
 
 def run_pipeline(force_scrape=False):
-    print("\n" + "═"*60)
+    print("\n" + "="*60)
     print("  HydROI DATA PIPELINE")
     print(f"  Mode requested: {'DEMO' if DEMO_MODE else 'LIVE / AUTO'}")
     print(f"  Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print("═"*60)
+    print("="*60)
 
     # ── Step 1: Scrape ────────────────────────────────────────
     print("\n[1/3] SCRAPING DATA SOURCES...")
@@ -445,13 +471,13 @@ def run_pipeline(force_scrape=False):
     with open(OUTPUT_JSON_PATH, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
 
-    print(f"\n✓ data.json saved → {os.path.abspath(OUTPUT_JSON_PATH)}")
+    print(f"\n[OK] data.json saved -> {os.path.abspath(OUTPUT_JSON_PATH)}")
     print(f"  Zones:       {len(output['zones'])} localities processed")
     print(f"  Govt alerts: {len(govt_alerts)} items")
     print(f"  Mode:        {output['metadata']['pipeline_mode']}")
     print(f"  Methods:     {', '.join(output['metadata']['actual_prediction_methods'])}")
-    print(f"\n  Open HydROI.html in your browser — it will load this data automatically.")
-    print("═"*60)
+    print("\n  Open HydROI.html in your browser - it will load this data automatically.")
+    print("="*60)
 
     return output
 
@@ -466,7 +492,7 @@ if __name__ == "__main__":
 
     if schedule:
         interval_hours = 24
-        print(f"⏱  Scheduled mode: running every {interval_hours}h. Press Ctrl+C to stop.\n")
+        print(f"[SCHEDULE] running every {interval_hours}h. Press Ctrl+C to stop.\n")
         while True:
             run_pipeline(force_scrape=force)
             print(f"\n  Next run in {interval_hours} hours...")

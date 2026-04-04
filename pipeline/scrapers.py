@@ -69,7 +69,7 @@ def _get(url, params=None, json_mode=False, verify_ssl=True, use_portal_headers=
         with open(cache_path, "w", encoding="utf-8") as f:
             json.dump({"ts": datetime.now().isoformat(), "data": data}, f)
 
-        print(f"  ✓ Fetched: {url[:70]}")
+        print(f"  [OK] Fetched: {url[:70]}")
         return data
 
     except requests.exceptions.SSLError:
@@ -82,16 +82,16 @@ def _get(url, params=None, json_mode=False, verify_ssl=True, use_portal_headers=
             data = resp.json() if json_mode else resp.text
             with open(cache_path, "w", encoding="utf-8") as f:
                 json.dump({"ts": datetime.now().isoformat(), "data": data}, f)
-            print(f"  ✓ Fetched (SSL bypass): {url[:70]}")
+            print(f"  [OK] Fetched (SSL bypass): {url[:70]}")
             return data
         except Exception as e2:
-            print(f"  ✗ Failed (SSL bypass too): {url[:70]} → {e2}")
+            print(f"  [FAIL] SSL bypass failed: {url[:70]} -> {e2}")
 
     except Exception as e:
-        print(f"  ✗ Failed: {url[:70]} → {e}")
+        print(f"  [FAIL] Fetch failed: {url[:70]} -> {e}")
 
     if USE_CACHED_ON_FAILURE and os.path.exists(cache_path):
-        print(f"    → Using cached data from {cache_path}")
+        print(f"    -> Using cached data from {cache_path}")
         with open(cache_path, encoding="utf-8") as f:
             return json.load(f)["data"]
     return None
@@ -513,7 +513,7 @@ def scrape_city_stats():
                     city_stats["source"] = "rera.telangana.gov.in"
                     break
 
-    print(f"  → City avg: ₹{city_stats['avg_price_sqft']}/sqft, "
+    print(f"  -> City avg: Rs {city_stats['avg_price_sqft']}/sqft, "
           f"{city_stats['quarterly_sales']} units/qtr")
     return city_stats
 
@@ -562,4 +562,4 @@ if __name__ == "__main__":
     data = run_all_scrapers()
     with open("output/raw_scraped.json", "w") as f:
         json.dump(data, f, indent=2)
-    print("\n✓ Saved to output/raw_scraped.json")
+    print("\n[OK] Saved to output/raw_scraped.json")

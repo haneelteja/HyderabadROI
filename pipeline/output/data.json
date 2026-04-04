@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "last_updated": "2026-04-04T08:49:01.272952",
+    "last_updated": "2026-04-04T14:35:01.428743",
     "pipeline_mode": "DEMO",
     "prediction_engine": "trend_extrapolation_demo",
     "actual_prediction_methods": [
@@ -16,7 +16,7 @@
       "city_stats": {
         "source": "baseline",
         "status": "fallback",
-        "scraped_at": "2026-04-04T08:44:34.706472"
+        "scraped_at": "2026-04-04T14:30:34.778897"
       },
       "govt_alerts": {
         "count": 0,
@@ -27,96 +27,96 @@
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:45:22.174192"
+            "scraped_at": "2026-04-04T14:31:22.357866"
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:45:07.071979"
+            "scraped_at": "2026-04-04T14:31:07.219182"
           }
         },
         "gachibowli": {
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:45:53.447086"
+            "scraped_at": "2026-04-04T14:31:53.639638"
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:45:38.304197"
+            "scraped_at": "2026-04-04T14:31:38.505249"
           }
         },
         "miyapur": {
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:46:24.763745"
+            "scraped_at": "2026-04-04T14:32:24.932519"
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:46:09.613851"
+            "scraped_at": "2026-04-04T14:32:09.815003"
           }
         },
         "kompally": {
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:46:56.043595"
+            "scraped_at": "2026-04-04T14:32:56.260613"
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:46:40.932458"
+            "scraped_at": "2026-04-04T14:32:41.123734"
           }
         },
         "jubilee": {
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:47:27.357103"
+            "scraped_at": "2026-04-04T14:33:27.586256"
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:47:12.226836"
+            "scraped_at": "2026-04-04T14:33:12.424421"
           }
         },
         "manikonda": {
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:47:58.675503"
+            "scraped_at": "2026-04-04T14:33:58.862736"
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:47:43.522572"
+            "scraped_at": "2026-04-04T14:33:43.734735"
           }
         },
         "uppal": {
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:48:29.989234"
+            "scraped_at": "2026-04-04T14:34:30.112460"
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:48:14.856586"
+            "scraped_at": "2026-04-04T14:34:14.987184"
           }
         },
         "shamshabad": {
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:49:01.272126"
+            "scraped_at": "2026-04-04T14:35:01.427519"
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-04T08:48:46.163570"
+            "scraped_at": "2026-04-04T14:34:46.295842"
           }
         }
       },
@@ -247,12 +247,12 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:45:22.174192"
+          "scraped_at": "2026-04-04T14:31:22.357866"
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:45:07.071979"
+          "scraped_at": "2026-04-04T14:31:07.219182"
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"
@@ -370,12 +370,12 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:45:53.447086"
+          "scraped_at": "2026-04-04T14:31:53.639638"
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:45:38.304197"
+          "scraped_at": "2026-04-04T14:31:38.505249"
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"
@@ -493,12 +493,12 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:46:24.763745"
+          "scraped_at": "2026-04-04T14:32:24.932519"
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:46:09.613851"
+          "scraped_at": "2026-04-04T14:32:09.815003"
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"
@@ -616,12 +616,12 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:46:56.043595"
+          "scraped_at": "2026-04-04T14:32:56.260613"
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:46:40.932458"
+          "scraped_at": "2026-04-04T14:32:41.123734"
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"
@@ -739,12 +739,12 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:47:27.357103"
+          "scraped_at": "2026-04-04T14:33:27.586256"
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:47:12.226836"
+          "scraped_at": "2026-04-04T14:33:12.424421"
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"
@@ -862,12 +862,12 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:47:58.675503"
+          "scraped_at": "2026-04-04T14:33:58.862736"
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:47:43.522572"
+          "scraped_at": "2026-04-04T14:33:43.734735"
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"
@@ -985,12 +985,12 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:48:29.989234"
+          "scraped_at": "2026-04-04T14:34:30.112460"
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:48:14.856586"
+          "scraped_at": "2026-04-04T14:34:14.987184"
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"
@@ -1108,12 +1108,12 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:49:01.272126"
+          "scraped_at": "2026-04-04T14:35:01.427519"
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-04T08:48:46.163570"
+          "scraped_at": "2026-04-04T14:34:46.295842"
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"
