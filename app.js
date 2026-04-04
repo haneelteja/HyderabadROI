@@ -98,6 +98,7 @@ const map=L.map('map',{center:[17.41,78.42],zoom:11,zoomControl:true});
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap | CARTO',subdomains:'abcd',maxZoom:20}).addTo(map);
 
 let circ={},lblMk={},actLayer='roi',tlIdx=6,actZ=null,playing=false,ptmr=null,cmpMode=false,cmpPick=[],chReg={};
+let pipelineMeta={};
 
 function qualityTone(status){
   return status==='live' ? 'live' : 'fallback';
@@ -105,6 +106,19 @@ function qualityTone(status){
 
 function qualityLabel(label, status){
   return `${label}: ${status==='live' ? 'Live' : 'Fallback'}`;
+}
+
+function formatAge(isoString){
+  if(!isoString) return 'time unknown';
+  const ts=new Date(isoString);
+  if(!Number.isFinite(ts.getTime())) return 'time unknown';
+  const mins=Math.max(0, Math.round((Date.now()-ts.getTime())/60000));
+  if(mins < 1) return 'just now';
+  if(mins < 60) return `${mins}m ago`;
+  const hours=Math.round(mins/60);
+  if(hours < 24) return `${hours}h ago`;
+  const days=Math.round(hours/24);
+  return `${days}d ago`;
 }
 
 function zoneQualitySummary(z){
@@ -205,6 +219,9 @@ function showDetail(z){
           <span class="qs ${qualityTone(z.dq?.rera?.status)}">${qualityLabel('RERA', z.dq?.rera?.status)}</span>
         </div>
         <div class="meta">${zoneQualitySummary(z)}</div>
+        <div class="meta">Listings updated: ${formatAge(z.dq?.listings?.scraped_at)}</div>
+        <div class="meta">RERA updated: ${formatAge(z.dq?.rera?.scraped_at)}</div>
+        <div class="meta">Pipeline refreshed: ${formatAge(pipelineMeta?.last_updated)}</div>
         <div class="meta">Govt alerts linked: ${z.dq?.govt_alert_count ?? 0}</div>
       </div>
     </div>
@@ -437,6 +454,7 @@ function mergeLiveZone(z, live) {
 }
 
 function updateTopbarStats(cityStats, meta) {
+  pipelineMeta=meta || {};
   const statMap = {
     'sp-price': { v: 'Rs ' + cityStats.avg_price_sqft.toLocaleString('en-IN') },
     'sp-sales': { v: cityStats.quarterly_sales.toLocaleString('en-IN') + ' units' },
@@ -458,15 +476,15 @@ function updateTopbarStats(cityStats, meta) {
       : (meta.prediction_engine || 'unknown');
 
     if (meta.pipeline_mode === 'LIVE') {
-      badge.textContent = `LIVE DATA - ${(ago !== null ? ago : '?')}m ago`;
+      badge.textContent = `LIVE DATA - ${formatAge(meta.last_updated)}`;
       badge.style.color = '#00c896';
       setLoadState('Pipeline data loaded. Map and rankings refreshed.', 'ok', true);
     } else if (meta.pipeline_mode === 'FALLBACK') {
-      badge.textContent = `FALLBACK DATA - ${(ago !== null ? ago : '?')}m ago`;
+      badge.textContent = `FALLBACK DATA - ${formatAge(meta.last_updated)}`;
       badge.style.color = '#ffb347';
       setLoadState('Pipeline loaded with fallback predictions.', 'warn', true);
     } else {
-      badge.textContent = 'DEMO DATA - pipeline/output/data.json';
+      badge.textContent = `DEMO DATA - ${formatAge(meta.last_updated)}`;
       badge.style.color = '#ffd700';
       setLoadState('Using generated demo-mode data from the pipeline.', 'warn', true);
     }
@@ -485,6 +503,7 @@ async function loadLiveData() {
     const resp = await fetch('pipeline/output/data.json');
     if (!resp.ok) throw new Error('No data.json yet');
     const data = await resp.json();
+    pipelineMeta=data.metadata || {};
 
     const liveZones = data.zones || {};
     Z.forEach(z => {
