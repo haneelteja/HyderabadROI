@@ -138,6 +138,33 @@ function renderSourceMeta(label, source){
   return `<div class="meta">${label}: <span class="qsrc">${niceLabel}</span></div>`;
 }
 
+function fallbackReason(source, status, channel){
+  if(status==='live'){
+    return `${channel} fetched successfully from the primary source in this run.`;
+  }
+  if(source==='baseline_estimate'){
+    return `${channel} portal was unavailable during this run, so the dashboard is using the internal locality baseline.`;
+  }
+  if(source==='baseline'){
+    return `${channel} is using the internal city baseline because no fresh scrape was available.`;
+  }
+  if(source==='rera.telangana.gov.in'){
+    return `${channel} fell back because the RERA response was unavailable or empty for this run.`;
+  }
+  return `${channel} used fallback data for this refresh.`;
+}
+
+function scrapeAgeSummary(localities){
+  const stamps=Object.values(localities || {}).flatMap(loc=>[
+    loc?.listings?.scraped_at,
+    loc?.rera?.scraped_at
+  ]).filter(Boolean).map(v=>new Date(v).getTime()).filter(Number.isFinite);
+  if(!stamps.length) return '';
+  const newest=Math.max(...stamps);
+  const oldest=Math.min(...stamps);
+  return ` | Freshness window: ${formatAge(new Date(newest).toISOString())} newest / ${formatAge(new Date(oldest).toISOString())} oldest`;
+}
+
 function formatAge(isoString){
   if(!isoString) return 'time unknown';
   const ts=new Date(isoString);
@@ -252,7 +279,9 @@ function showDetail(z){
         ${renderSourceMeta('Listings source', z.dq?.listings?.source)}
         ${renderSourceMeta('RERA source', z.dq?.rera?.source)}
         <div class="meta">Listings updated: ${formatAge(z.dq?.listings?.scraped_at)}</div>
+        <div class="meta">${fallbackReason(z.dq?.listings?.source, z.dq?.listings?.status, 'Listings')}</div>
         <div class="meta">RERA updated: ${formatAge(z.dq?.rera?.scraped_at)}</div>
+        <div class="meta">${fallbackReason(z.dq?.rera?.source, z.dq?.rera?.status, 'RERA')}</div>
         <div class="meta">Pipeline refreshed: ${formatAge(pipelineMeta?.last_updated)}</div>
         <div class="meta">Govt alerts linked: ${z.dq?.govt_alert_count ?? 0}</div>
       </div>
@@ -525,7 +554,8 @@ function updateTopbarStats(cityStats, meta) {
     const totalsText = totals
       ? ` | Listings live/fallback: ${totals.listings_live}/${totals.listings_fallback} | RERA live/fallback: ${totals.rera_live}/${totals.rera_fallback}`
       : '';
-    badge.title = `Pipeline: ${meta.pipeline_mode || 'UNKNOWN'} | Methods: ${methods}${totalsText}`;
+    const agesText = scrapeAgeSummary(meta.scrape_summary?.localities || {});
+    badge.title = `Pipeline: ${meta.pipeline_mode || 'UNKNOWN'} | Methods: ${methods}${totalsText}${agesText}`;
   }
 }
 
