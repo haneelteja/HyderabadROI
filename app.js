@@ -186,6 +186,18 @@ function zoneQualitySummary(z){
   return `Listings ${listings} | RERA ${rera} | Prediction ${method}`;
 }
 
+function zoneMapQuality(z){
+  const listings=z.dq?.listings?.status || 'fallback';
+  const rera=z.dq?.rera?.status || 'fallback';
+  if(listings==='live' && rera==='live'){
+    return {tone:'live', label:'LIVE'};
+  }
+  if(listings==='fallback' && rera==='fallback'){
+    return {tone:'fallback', label:'FB'};
+  }
+  return {tone:'mixed', label:'MIX'};
+}
+
 function zCol(z,layer){
   if(layer==='nri'){let p=z.nri;return p>30?'#4a9eff':p>20?'#00ced1':p>12?'#20b2aa':'#2f4f6f';}
   if(layer==='sales'){let v=z.sv;return v>200?'#ff3a00':v>150?'#ff8c00':v>100?'#ffd700':'#20b2aa';}
@@ -197,8 +209,11 @@ function buildMap(){
     const c=L.circle([z.lat,z.lng],{radius:z.radius,fillColor:z.col,fillOpacity:.28,color:z.col,weight:2,opacity:.7}).addTo(map);
     c.on('click',()=>onZone(z.id));
     circ[z.id]=c;
+    const q=zoneMapQuality(z);
     const ic=L.divIcon({className:'zone-lbl',iconAnchor:[0,0],
-      html:`<div class="zlbl" style="color:${z.col};border-color:${z.col}66" onclick="onZone('${z.id}')">#${z.rank} ${z.name} <span style="color:#00c896">₹${z.price.toLocaleString()}</span></div>`});
+      html:`<div class="zlbl" style="color:${z.col};border-color:${z.col}66" onclick="onZone('${z.id}')" title="${zoneQualitySummary(z)}">
+        <span class="zq ${q.tone}">${q.label}</span>#${z.rank} ${z.name} <span style="color:#00c896">₹${z.price.toLocaleString()}</span>
+      </div>`});
     lblMk[z.id]=L.marker([z.lat+0.015,z.lng],{icon:ic}).addTo(map);
   });
 }
