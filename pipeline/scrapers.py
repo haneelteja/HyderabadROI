@@ -75,6 +75,25 @@ def _fetch_meta(url):
     return FETCH_AUDIT.get(url, {})
 
 
+def _govt_source_statuses():
+    statuses = []
+    for source in GOVT_NEWS_SOURCES:
+        meta = _fetch_meta(source["url"])
+        state = meta.get("state", "failed")
+        status = "live" if state in {"live", "cache"} else "fallback"
+        statuses.append({
+            "name": source["name"],
+            "url": source["url"],
+            "status": status,
+            "fetch_state": state,
+            "cache_path": meta.get("cache_path"),
+            "cached_at": meta.get("cached_at"),
+            "cache_age_minutes": meta.get("cache_age_minutes"),
+            "fallback_reason": meta.get("detail", "") if status == "fallback" else "",
+        })
+    return statuses
+
+
 def _get(url, params=None, json_mode=False, verify_ssl=True, use_portal_headers=False):
     """Safe HTTP GET with SSL flexibility and caching on failure."""
     cache_key = re.sub(r'[^a-z0-9]', '_', url.lower())[:80]
@@ -647,10 +666,12 @@ def run_all_scrapers():
     print("  RUNNING ALL SCRAPERS")
     print("="*60)
 
+    govt_alerts = scrape_govt_alerts()
     results = {
         "city_stats":  scrape_city_stats(),
         "localities":  {},
-        "govt_alerts": scrape_govt_alerts(),
+        "govt_alerts": govt_alerts,
+        "govt_source_status": _govt_source_statuses(),
     }
 
     for loc in LOCALITIES:

@@ -111,8 +111,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#07090f;color:#dde4f
 .qbadges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;}
 .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
 .qcard{background:rgba(7,11,21,.85);border:1px solid #16233b;border-radius:9px;padding:9px 10px;min-height:124px;}
+.qcard-full{margin-top:8px;min-height:auto;}
 .qcard-k{font-size:8px;text-transform:uppercase;letter-spacing:.6px;color:#4a9eff;margin-bottom:4px;}
 .qcard-v{font-size:12px;font-weight:700;color:#dde4f0;margin-bottom:4px;}
+.govsrc{padding:8px 0;border-top:1px solid #111a2d;}
+.govsrc:first-of-type{margin-top:6px;}
+.govsrc-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:3px;}
 .qlink{color:#7ebcff;text-decoration:none;border-bottom:1px solid rgba(126,188,255,.3);}
 .qlink:hover{color:#a6d0ff;border-bottom-color:rgba(166,208,255,.7);}
 .qsrc{color:#90a2c4;}

@@ -112,6 +112,7 @@ function debugSummaryText(){
     `Last refresh: ${formatAge(meta.last_updated)}`,
     `Listings live/cached/fallback: ${totals.listings_live ?? 0}/${totals.listings_cached ?? 0}/${totals.listings_fallback ?? 0}`,
     `RERA live/cached/fallback: ${totals.rera_live ?? 0}/${totals.rera_cached ?? 0}/${totals.rera_fallback ?? 0}`,
+    `Govt feeds live/cached/fallback: ${totals.govt_live ?? 0}/${totals.govt_cached ?? 0}/${totals.govt_fallback ?? 0}`,
     `Govt alerts: ${meta.scrape_summary?.govt_alerts?.count ?? 0}`,
     `Refresh command: cd pipeline && python pipeline.py`,
   ].join('\n');
@@ -131,7 +132,8 @@ function renderDebugPanel(){
     debugRow('Last refresh', summary[2].replace('Last refresh: ', '')),
     debugRow('Listings live/cached/fallback', summary[3].replace('Listings live/cached/fallback: ', '')),
     debugRow('RERA live/cached/fallback', summary[4].replace('RERA live/cached/fallback: ', '')),
-    debugRow('Govt alerts', summary[5].replace('Govt alerts: ', '')),
+    debugRow('Govt feeds live/cached/fallback', summary[5].replace('Govt feeds live/cached/fallback: ', '')),
+    debugRow('Govt alerts', summary[6].replace('Govt alerts: ', '')),
     debugRow('Refresh command', '<code>cd pipeline && python pipeline.py</code>'),
   ].join('');
 }
@@ -258,6 +260,39 @@ function sourceStateLabel(entry){
   if(entry.status==='live' && entry.fetch_state==='cache') return 'Cached response';
   if(entry.status==='live') return 'Fresh response';
   return 'Fallback baseline';
+}
+
+function govtFeedSummary(){
+  const checks=pipelineMeta?.scrape_summary?.govt_alerts?.source_checks || [];
+  if(!checks.length) return 'Government feed checks not available in this run.';
+  const live=checks.filter(c=>c.status==='live' && c.fetch_state!=='cache').length;
+  const cached=checks.filter(c=>c.fetch_state==='cache').length;
+  const fallback=checks.filter(c=>c.status!=='live').length;
+  return `Govt feeds ${live} live | ${cached} cached | ${fallback} fallback`;
+}
+
+function renderGovtFeedLines(){
+  const checks=pipelineMeta?.scrape_summary?.govt_alerts?.source_checks || [];
+  if(!checks.length){
+    return `<div class="meta">No government source checks were recorded for this refresh.</div>`;
+  }
+  return checks.map(check=>{
+    const tone=qualityTone(check);
+    const label=qualityLabel(check.name, check);
+    const link=check.url ? `<a class="qlink" href="${check.url}" target="_blank" rel="noopener noreferrer">${check.name}</a>` : `<span class="qsrc">${check.name}</span>`;
+    const freshness=check.fetch_state==='cache' && check.cache_age_minutes!=null
+      ? `Cached ${check.cache_age_minutes}m old`
+      : (check.status==='live' ? 'Fresh response' : 'Unavailable this run');
+    const reason=check.fallback_reason ? `<div class="meta">${check.fallback_reason}</div>` : '';
+    return `<div class="govsrc">
+      <div class="govsrc-top">
+        <span class="qs ${tone}">${label}</span>
+        <span class="meta">${freshness}</span>
+      </div>
+      <div class="meta">Source: ${link}</div>
+      ${reason}
+    </div>`;
+  }).join('');
 }
 
 function scrapeAgeSummary(localities){
@@ -424,8 +459,13 @@ function showDetail(z){
             <div class="meta">${fallbackReason(z.dq?.rera, 'RERA')}</div>
           </div>
         </div>
+        <div class="qcard qcard-full">
+          <div class="qcard-k">Government Feed</div>
+          <div class="qcard-v">${govtFeedSummary()}</div>
+          <div class="meta">Alerts linked to this zone: ${z.dq?.govt_alert_count ?? 0}</div>
+          ${renderGovtFeedLines()}
+        </div>
         <div class="meta">Pipeline refreshed: ${formatAge(pipelineMeta?.last_updated)}</div>
-        <div class="meta">Govt alerts linked: ${z.dq?.govt_alert_count ?? 0}</div>
       </div>
     </div>
     <div class="dps"><h4>Pros vs Cons</h4>
@@ -695,7 +735,7 @@ function updateTopbarStats(cityStats, meta) {
 
     const totals = meta.scrape_summary?.totals;
     const totalsText = totals
-      ? ` | Listings live/cached/fallback: ${totals.listings_live}/${totals.listings_cached ?? 0}/${totals.listings_fallback} | RERA live/cached/fallback: ${totals.rera_live}/${totals.rera_cached ?? 0}/${totals.rera_fallback}`
+      ? ` | Listings live/cached/fallback: ${totals.listings_live}/${totals.listings_cached ?? 0}/${totals.listings_fallback} | RERA live/cached/fallback: ${totals.rera_live}/${totals.rera_cached ?? 0}/${totals.rera_fallback} | Govt feeds live/cached/fallback: ${totals.govt_live ?? 0}/${totals.govt_cached ?? 0}/${totals.govt_fallback ?? 0}`
       : '';
     const agesText = scrapeAgeSummary(meta.scrape_summary?.localities || {});
     badge.title = `Pipeline: ${meta.pipeline_mode || 'UNKNOWN'} | Methods: ${methods}${totalsText}${agesText}`;

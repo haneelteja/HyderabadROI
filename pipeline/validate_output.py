@@ -117,9 +117,12 @@ def main():
                 if key not in scrape_summary:
                     fail(errors, f"metadata.scrape_summary missing `{key}`")
             totals = scrape_summary.get("totals", {})
-            for key in ["listings_live", "listings_cached", "listings_fallback", "rera_live", "rera_cached", "rera_fallback"]:
+            for key in ["listings_live", "listings_cached", "listings_fallback", "rera_live", "rera_cached", "rera_fallback", "govt_live", "govt_cached", "govt_fallback"]:
                 if key not in totals:
                     fail(errors, f"metadata.scrape_summary.totals missing `{key}`")
+            govt_alerts = scrape_summary.get("govt_alerts", {})
+            if "source_checks" not in govt_alerts or not isinstance(govt_alerts.get("source_checks"), list):
+                fail(errors, "metadata.scrape_summary.govt_alerts missing `source_checks` list")
 
     zones = data.get("zones")
     if not isinstance(zones, dict) or not zones:

@@ -306,12 +306,14 @@ def _build_scrape_summary(scraped):
     localities = scraped.get("localities", {})
     city_stats = _source_status("city_stats", scraped.get("city_stats", {}), {"baseline"})
     govt_alerts = scraped.get("govt_alerts", [])
+    govt_sources = scraped.get("govt_source_status", [])
 
     summary = {
         "city_stats": city_stats,
         "govt_alerts": {
             "count": len(govt_alerts),
             "sources": sorted({alert.get("source", "unknown") for alert in govt_alerts}),
+            "source_checks": govt_sources,
         },
         "localities": {},
         "totals": {
@@ -321,8 +323,20 @@ def _build_scrape_summary(scraped):
             "rera_live": 0,
             "rera_cached": 0,
             "rera_fallback": 0,
+            "govt_live": 0,
+            "govt_cached": 0,
+            "govt_fallback": 0,
         },
     }
+
+    for source in govt_sources:
+        state = source.get("fetch_state")
+        if state == "cache":
+            summary["totals"]["govt_cached"] += 1
+        elif source.get("status") == "live":
+            summary["totals"]["govt_live"] += 1
+        else:
+            summary["totals"]["govt_fallback"] += 1
 
     for locality_id, loc_data in localities.items():
         listings_status = _source_status("listings", loc_data.get("listings", {}), {"baseline_estimate"})
