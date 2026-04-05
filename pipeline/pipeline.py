@@ -278,6 +278,7 @@ def _source_status(source_name, payload, fallback_sources=None):
     payload = payload or {}
     source = payload.get("source", source_name)
     scraped_at = payload.get("scraped_at")
+    fetch_state = payload.get("fetch_state", "live")
     status = "live"
 
     if source in fallback_sources or source in {"baseline", "baseline_estimate"}:
@@ -292,6 +293,12 @@ def _source_status(source_name, payload, fallback_sources=None):
         "source": source,
         "status": status,
         "scraped_at": scraped_at,
+        "fetch_state": fetch_state,
+        "source_url": payload.get("source_url", ""),
+        "cache_path": payload.get("cache_path"),
+        "cached_at": payload.get("cached_at"),
+        "cache_age_minutes": payload.get("cache_age_minutes"),
+        "fallback_reason": payload.get("fallback_reason", ""),
     }
 
 
@@ -309,8 +316,10 @@ def _build_scrape_summary(scraped):
         "localities": {},
         "totals": {
             "listings_live": 0,
+            "listings_cached": 0,
             "listings_fallback": 0,
             "rera_live": 0,
+            "rera_cached": 0,
             "rera_fallback": 0,
         },
     }
@@ -324,6 +333,10 @@ def _build_scrape_summary(scraped):
         }
         summary["totals"][f"listings_{listings_status['status']}"] += 1
         summary["totals"][f"rera_{rera_status['status']}"] += 1
+        if listings_status.get("fetch_state") == "cache":
+            summary["totals"]["listings_cached"] += 1
+        if rera_status.get("fetch_state") == "cache":
+            summary["totals"]["rera_cached"] += 1
 
     return summary
 

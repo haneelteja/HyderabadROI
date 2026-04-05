@@ -110,8 +110,8 @@ function debugSummaryText(){
     `Mode: ${meta.pipeline_mode || 'UNKNOWN'}`,
     `Methods: ${methods}`,
     `Last refresh: ${formatAge(meta.last_updated)}`,
-    `Listings live/fallback: ${totals.listings_live ?? 0}/${totals.listings_fallback ?? 0}`,
-    `RERA live/fallback: ${totals.rera_live ?? 0}/${totals.rera_fallback ?? 0}`,
+    `Listings live/cached/fallback: ${totals.listings_live ?? 0}/${totals.listings_cached ?? 0}/${totals.listings_fallback ?? 0}`,
+    `RERA live/cached/fallback: ${totals.rera_live ?? 0}/${totals.rera_cached ?? 0}/${totals.rera_fallback ?? 0}`,
     `Govt alerts: ${meta.scrape_summary?.govt_alerts?.count ?? 0}`,
     `Refresh command: cd pipeline && python pipeline.py`,
   ].join('\n');
@@ -129,8 +129,8 @@ function renderDebugPanel(){
     debugRow('Mode', summary[0].replace('Mode: ', '')),
     debugRow('Methods', summary[1].replace('Methods: ', '')),
     debugRow('Last refresh', summary[2].replace('Last refresh: ', '')),
-    debugRow('Listings live/fallback', summary[3].replace('Listings live/fallback: ', '')),
-    debugRow('RERA live/fallback', summary[4].replace('RERA live/fallback: ', '')),
+    debugRow('Listings live/cached/fallback', summary[3].replace('Listings live/cached/fallback: ', '')),
+    debugRow('RERA live/cached/fallback', summary[4].replace('RERA live/cached/fallback: ', '')),
     debugRow('Govt alerts', summary[5].replace('Govt alerts: ', '')),
     debugRow('Refresh command', '<code>cd pipeline && python pipeline.py</code>'),
   ].join('');
@@ -176,11 +176,17 @@ function toggleDebugPanel(){
   btn.setAttribute('aria-expanded', String(open));
 }
 
-function qualityTone(status){
+function qualityTone(entry){
+  const status=typeof entry==='string' ? entry : entry?.status;
+  const fetchState=typeof entry==='string' ? '' : entry?.fetch_state;
+  if(status==='live' && fetchState==='cache') return 'cache';
   return status==='live' ? 'live' : 'fallback';
 }
 
-function qualityLabel(label, status){
+function qualityLabel(label, entry){
+  const status=typeof entry==='string' ? entry : entry?.status;
+  const fetchState=typeof entry==='string' ? '' : entry?.fetch_state;
+  if(status==='live' && fetchState==='cache') return `${label}: Cached`;
   return `${label}: ${status==='live' ? 'Live' : 'Fallback'}`;
 }
 
@@ -214,7 +220,16 @@ function renderSourceMeta(label, source){
   return `<div class="meta">${label}: <span class="qsrc">${niceLabel}</span></div>`;
 }
 
-function fallbackReason(source, status, channel){
+function fallbackReason(entry, channel){
+  const source=entry?.source;
+  const status=entry?.status;
+  const fetchState=entry?.fetch_state;
+  if(entry?.fallback_reason){
+    return entry.fallback_reason;
+  }
+  if(status==='live' && fetchState==='cache'){
+    return `${channel} is using the most recent cached response because the live request failed this run.`;
+  }
   if(status==='live'){
     return `${channel} fetched successfully from the primary source in this run.`;
   }
@@ -228,6 +243,21 @@ function fallbackReason(source, status, channel){
     return `${channel} fell back because the RERA response was unavailable or empty for this run.`;
   }
   return `${channel} used fallback data for this refresh.`;
+}
+
+function sourceMetaLine(entry){
+  if(!entry) return 'Freshness unknown';
+  if(entry.fetch_state==='cache' && entry.cache_age_minutes!=null){
+    return `Cached ${entry.cache_age_minutes}m old | Updated ${formatAge(entry.scraped_at)}`;
+  }
+  return `Updated ${formatAge(entry.scraped_at)}`;
+}
+
+function sourceStateLabel(entry){
+  if(!entry) return 'Unknown';
+  if(entry.status==='live' && entry.fetch_state==='cache') return 'Cached response';
+  if(entry.status==='live') return 'Fresh response';
+  return 'Fallback baseline';
 }
 
 function scrapeAgeSummary(localities){
@@ -256,10 +286,10 @@ function formatAge(isoString){
 
 function zoneQualitySummary(z){
   if(!z.dq) return 'Using built-in dashboard seed data.';
-  const listings = z.dq.listings?.status || 'fallback';
-  const rera = z.dq.rera?.status || 'fallback';
+  const listings = z.dq.listings;
+  const rera = z.dq.rera;
   const method = z.dq.prediction_method || 'unknown';
-  return `Listings ${listings} | RERA ${rera} | Prediction ${method}`;
+  return `${qualityLabel('Listings', listings)} | ${qualityLabel('RERA', rera)} | Prediction ${method}`;
 }
 
 function compactAge(isoString){
@@ -270,6 +300,11 @@ function compactAge(isoString){
 function zoneMapQuality(z){
   const listings=z.dq?.listings?.status || 'fallback';
   const rera=z.dq?.rera?.status || 'fallback';
+  const listingsFetch=z.dq?.listings?.fetch_state || '';
+  const reraFetch=z.dq?.rera?.fetch_state || '';
+  if(listings==='live' && rera==='live' && (listingsFetch==='cache' || reraFetch==='cache')){
+    return {tone:'cache', label:'CCH'};
+  }
   if(listings==='live' && rera==='live'){
     return {tone:'live', label:'LIVE'};
   }
@@ -318,8 +353,8 @@ function renderSB(f='all'){
         <div class="zt"><div class="zl">NRI %</div><div class="zv b">${z.nri}%</div></div>
       </div>
       <div class="qrow">
-        <span class="qs ${qualityTone(z.dq?.listings?.status)}">${qualityLabel('Listings', z.dq?.listings?.status)}</span>
-        <span class="qs ${qualityTone(z.dq?.rera?.status)}">${qualityLabel('RERA', z.dq?.rera?.status)}</span>
+        <span class="qs ${qualityTone(z.dq?.listings)}">${qualityLabel('Listings', z.dq?.listings)}</span>
+        <span class="qs ${qualityTone(z.dq?.rera)}">${qualityLabel('RERA', z.dq?.rera)}</span>
       </div>
       <div class="qage">Updated L ${compactAge(z.dq?.listings?.scraped_at)} | R ${compactAge(z.dq?.rera?.scraped_at)}</div>
       <span class="np ${hi?'hi':''}">NRI: ${nriLvl}</span>
@@ -369,16 +404,26 @@ function showDetail(z){
     <div class="dps"><h4>Source Quality</h4>
       <div class="qpanel">
         <div class="qbadges">
-          <span class="qs ${qualityTone(z.dq?.listings?.status)}">${qualityLabel('Listings', z.dq?.listings?.status)}</span>
-          <span class="qs ${qualityTone(z.dq?.rera?.status)}">${qualityLabel('RERA', z.dq?.rera?.status)}</span>
+          <span class="qs ${qualityTone(z.dq?.listings)}">${qualityLabel('Listings', z.dq?.listings)}</span>
+          <span class="qs ${qualityTone(z.dq?.rera)}">${qualityLabel('RERA', z.dq?.rera)}</span>
         </div>
         <div class="meta">${zoneQualitySummary(z)}</div>
-        ${renderSourceMeta('Listings source', z.dq?.listings?.source)}
-        ${renderSourceMeta('RERA source', z.dq?.rera?.source)}
-        <div class="meta">Listings updated: ${formatAge(z.dq?.listings?.scraped_at)}</div>
-        <div class="meta">${fallbackReason(z.dq?.listings?.source, z.dq?.listings?.status, 'Listings')}</div>
-        <div class="meta">RERA updated: ${formatAge(z.dq?.rera?.scraped_at)}</div>
-        <div class="meta">${fallbackReason(z.dq?.rera?.source, z.dq?.rera?.status, 'RERA')}</div>
+        <div class="qgrid">
+          <div class="qcard">
+            <div class="qcard-k">Listings</div>
+            <div class="qcard-v">${sourceStateLabel(z.dq?.listings)}</div>
+            <div class="meta">${sourceMetaLine(z.dq?.listings)}</div>
+            ${renderSourceMeta('Source', z.dq?.listings?.source)}
+            <div class="meta">${fallbackReason(z.dq?.listings, 'Listings')}</div>
+          </div>
+          <div class="qcard">
+            <div class="qcard-k">RERA</div>
+            <div class="qcard-v">${sourceStateLabel(z.dq?.rera)}</div>
+            <div class="meta">${sourceMetaLine(z.dq?.rera)}</div>
+            ${renderSourceMeta('Source', z.dq?.rera?.source)}
+            <div class="meta">${fallbackReason(z.dq?.rera, 'RERA')}</div>
+          </div>
+        </div>
         <div class="meta">Pipeline refreshed: ${formatAge(pipelineMeta?.last_updated)}</div>
         <div class="meta">Govt alerts linked: ${z.dq?.govt_alert_count ?? 0}</div>
       </div>
@@ -650,7 +695,7 @@ function updateTopbarStats(cityStats, meta) {
 
     const totals = meta.scrape_summary?.totals;
     const totalsText = totals
-      ? ` | Listings live/fallback: ${totals.listings_live}/${totals.listings_fallback} | RERA live/fallback: ${totals.rera_live}/${totals.rera_fallback}`
+      ? ` | Listings live/cached/fallback: ${totals.listings_live}/${totals.listings_cached ?? 0}/${totals.listings_fallback} | RERA live/cached/fallback: ${totals.rera_live}/${totals.rera_cached ?? 0}/${totals.rera_fallback}`
       : '';
     const agesText = scrapeAgeSummary(meta.scrape_summary?.localities || {});
     badge.title = `Pipeline: ${meta.pipeline_mode || 'UNKNOWN'} | Methods: ${methods}${totalsText}${agesText}`;

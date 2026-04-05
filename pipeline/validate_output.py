@@ -76,6 +76,19 @@ def validate_zone(zone_id, zone, errors):
         elif field in ("avgPrice", "listings", "salesVel") and value < 0:
             fail(errors, f"{zone_id}: `{field}` must be non-negative")
 
+    dq = zone.get("dataQuality", {})
+    if not isinstance(dq, dict):
+        fail(errors, f"{zone_id}: `dataQuality` must be an object")
+    else:
+        for channel in ["listings", "rera"]:
+            source_info = dq.get(channel)
+            if not isinstance(source_info, dict):
+                fail(errors, f"{zone_id}: dataQuality `{channel}` must be an object")
+                continue
+            for key in ["source", "status", "scraped_at", "fetch_state", "fallback_reason"]:
+                if key not in source_info:
+                    fail(errors, f"{zone_id}: dataQuality `{channel}` missing `{key}`")
+
 
 def main():
     output_path = Path(OUTPUT_JSON_PATH)
@@ -103,6 +116,10 @@ def main():
             for key in ["city_stats", "govt_alerts", "localities", "totals"]:
                 if key not in scrape_summary:
                     fail(errors, f"metadata.scrape_summary missing `{key}`")
+            totals = scrape_summary.get("totals", {})
+            for key in ["listings_live", "listings_cached", "listings_fallback", "rera_live", "rera_cached", "rera_fallback"]:
+                if key not in totals:
+                    fail(errors, f"metadata.scrape_summary.totals missing `{key}`")
 
     zones = data.get("zones")
     if not isinstance(zones, dict) or not zones:

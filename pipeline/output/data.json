@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "last_updated": "2026-04-05T09:52:03.529745",
+    "last_updated": "2026-04-05T11:05:16.841582",
     "pipeline_mode": "DEMO",
     "prediction_engine": "trend_extrapolation_demo",
     "actual_prediction_methods": [
@@ -16,7 +16,13 @@
       "city_stats": {
         "source": "baseline",
         "status": "fallback",
-        "scraped_at": "2026-04-05T09:47:34.976666"
+        "scraped_at": "2026-04-05T11:00:50.426807",
+        "fetch_state": "baseline",
+        "source_url": "https://rera.telangana.gov.in/dashboard",
+        "cache_path": "output/cache\\https___rera_telangana_gov_in_dashboard.json",
+        "cached_at": null,
+        "cache_age_minutes": null,
+        "fallback_reason": "Using the city baseline because the RERA dashboard was unavailable."
       },
       "govt_alerts": {
         "count": 0,
@@ -27,103 +33,201 @@
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:48:23.380356"
+            "scraped_at": "2026-04-05T11:01:37.893159",
+            "fetch_state": "failed",
+            "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-kokapet-proptypeid-10-city-18",
+            "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_kokapet_proptypeid_10.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "99acres did not return a usable locality page."
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:48:08.218666"
+            "scraped_at": "2026-04-05T11:01:22.773337",
+            "fetch_state": "failed",
+            "source_url": "https://rera.telangana.gov.in/projectSearch",
+            "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "RERA endpoint returned no locality projects for this run."
           }
         },
         "gachibowli": {
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:48:54.695031"
+            "scraped_at": "2026-04-05T11:02:09.142740",
+            "fetch_state": "failed",
+            "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-gachibowli-proptypeid-10-city-18",
+            "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_gachibowli_proptypeid.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "99acres did not return a usable locality page."
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:48:39.545075"
+            "scraped_at": "2026-04-05T11:01:54.051325",
+            "fetch_state": "failed",
+            "source_url": "https://rera.telangana.gov.in/projectSearch",
+            "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "RERA endpoint returned no locality projects for this run."
           }
         },
         "miyapur": {
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:49:26.021756"
+            "scraped_at": "2026-04-05T11:02:40.422755",
+            "fetch_state": "failed",
+            "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-miyapur-proptypeid-10-city-18",
+            "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_miyapur_proptypeid_10.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "99acres did not return a usable locality page."
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:49:10.895586"
+            "scraped_at": "2026-04-05T11:02:25.296658",
+            "fetch_state": "failed",
+            "source_url": "https://rera.telangana.gov.in/projectSearch",
+            "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "RERA endpoint returned no locality projects for this run."
           }
         },
         "kompally": {
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:49:57.376162"
+            "scraped_at": "2026-04-05T11:03:11.713762",
+            "fetch_state": "failed",
+            "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-kompally-proptypeid-10-city-18",
+            "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_kompally_proptypeid_1.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "99acres did not return a usable locality page."
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:49:42.199370"
+            "scraped_at": "2026-04-05T11:02:56.602833",
+            "fetch_state": "failed",
+            "source_url": "https://rera.telangana.gov.in/projectSearch",
+            "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "RERA endpoint returned no locality projects for this run."
           }
         },
         "jubilee": {
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:50:28.741384"
+            "scraped_at": "2026-04-05T11:03:42.985921",
+            "fetch_state": "failed",
+            "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-jubilee-hills-proptypeid-10-city-18",
+            "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_jubilee_hills_proptyp.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "99acres did not return a usable locality page."
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:50:13.600415"
+            "scraped_at": "2026-04-05T11:03:27.869031",
+            "fetch_state": "failed",
+            "source_url": "https://rera.telangana.gov.in/projectSearch",
+            "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "RERA endpoint returned no locality projects for this run."
           }
         },
         "manikonda": {
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:51:00.099613"
+            "scraped_at": "2026-04-05T11:04:14.301642",
+            "fetch_state": "failed",
+            "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-manikonda-proptypeid-10-city-18",
+            "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_manikonda_proptypeid_.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "99acres did not return a usable locality page."
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:50:44.947605"
+            "scraped_at": "2026-04-05T11:03:59.153077",
+            "fetch_state": "failed",
+            "source_url": "https://rera.telangana.gov.in/projectSearch",
+            "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "RERA endpoint returned no locality projects for this run."
           }
         },
         "uppal": {
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:51:31.603890"
+            "scraped_at": "2026-04-05T11:04:45.575563",
+            "fetch_state": "failed",
+            "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-uppal-proptypeid-10-city-18",
+            "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_uppal_proptypeid_10_c.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "99acres did not return a usable locality page."
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:51:16.472474"
+            "scraped_at": "2026-04-05T11:04:30.454023",
+            "fetch_state": "failed",
+            "source_url": "https://rera.telangana.gov.in/projectSearch",
+            "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "RERA endpoint returned no locality projects for this run."
           }
         },
         "shamshabad": {
           "listings": {
             "source": "baseline_estimate",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:52:03.377863"
+            "scraped_at": "2026-04-05T11:05:16.841356",
+            "fetch_state": "failed",
+            "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-shamshabad-proptypeid-10-city-18",
+            "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_shamshabad_proptypeid.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "99acres did not return a usable locality page."
           },
           "rera": {
             "source": "rera.telangana.gov.in",
             "status": "fallback",
-            "scraped_at": "2026-04-05T09:51:47.863061"
+            "scraped_at": "2026-04-05T11:05:01.728985",
+            "fetch_state": "failed",
+            "source_url": "https://rera.telangana.gov.in/projectSearch",
+            "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+            "cached_at": null,
+            "cache_age_minutes": null,
+            "fallback_reason": "RERA endpoint returned no locality projects for this run."
           }
         }
       },
       "totals": {
         "listings_live": 0,
+        "listings_cached": 0,
         "listings_fallback": 8,
         "rera_live": 0,
+        "rera_cached": 0,
         "rera_fallback": 8
       }
     }
@@ -247,12 +351,24 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:48:23.380356"
+          "scraped_at": "2026-04-05T11:01:37.893159",
+          "fetch_state": "failed",
+          "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-kokapet-proptypeid-10-city-18",
+          "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_kokapet_proptypeid_10.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "99acres did not return a usable locality page."
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:48:08.218666"
+          "scraped_at": "2026-04-05T11:01:22.773337",
+          "fetch_state": "failed",
+          "source_url": "https://rera.telangana.gov.in/projectSearch",
+          "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "RERA endpoint returned no locality projects for this run."
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"
@@ -370,12 +486,24 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:48:54.695031"
+          "scraped_at": "2026-04-05T11:02:09.142740",
+          "fetch_state": "failed",
+          "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-gachibowli-proptypeid-10-city-18",
+          "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_gachibowli_proptypeid.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "99acres did not return a usable locality page."
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:48:39.545075"
+          "scraped_at": "2026-04-05T11:01:54.051325",
+          "fetch_state": "failed",
+          "source_url": "https://rera.telangana.gov.in/projectSearch",
+          "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "RERA endpoint returned no locality projects for this run."
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"
@@ -493,12 +621,24 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:49:26.021756"
+          "scraped_at": "2026-04-05T11:02:40.422755",
+          "fetch_state": "failed",
+          "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-miyapur-proptypeid-10-city-18",
+          "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_miyapur_proptypeid_10.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "99acres did not return a usable locality page."
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:49:10.895586"
+          "scraped_at": "2026-04-05T11:02:25.296658",
+          "fetch_state": "failed",
+          "source_url": "https://rera.telangana.gov.in/projectSearch",
+          "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "RERA endpoint returned no locality projects for this run."
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"
@@ -616,12 +756,24 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:49:57.376162"
+          "scraped_at": "2026-04-05T11:03:11.713762",
+          "fetch_state": "failed",
+          "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-kompally-proptypeid-10-city-18",
+          "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_kompally_proptypeid_1.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "99acres did not return a usable locality page."
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:49:42.199370"
+          "scraped_at": "2026-04-05T11:02:56.602833",
+          "fetch_state": "failed",
+          "source_url": "https://rera.telangana.gov.in/projectSearch",
+          "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "RERA endpoint returned no locality projects for this run."
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"
@@ -739,12 +891,24 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:50:28.741384"
+          "scraped_at": "2026-04-05T11:03:42.985921",
+          "fetch_state": "failed",
+          "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-jubilee-hills-proptypeid-10-city-18",
+          "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_jubilee_hills_proptyp.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "99acres did not return a usable locality page."
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:50:13.600415"
+          "scraped_at": "2026-04-05T11:03:27.869031",
+          "fetch_state": "failed",
+          "source_url": "https://rera.telangana.gov.in/projectSearch",
+          "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "RERA endpoint returned no locality projects for this run."
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"
@@ -862,12 +1026,24 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:51:00.099613"
+          "scraped_at": "2026-04-05T11:04:14.301642",
+          "fetch_state": "failed",
+          "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-manikonda-proptypeid-10-city-18",
+          "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_manikonda_proptypeid_.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "99acres did not return a usable locality page."
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:50:44.947605"
+          "scraped_at": "2026-04-05T11:03:59.153077",
+          "fetch_state": "failed",
+          "source_url": "https://rera.telangana.gov.in/projectSearch",
+          "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "RERA endpoint returned no locality projects for this run."
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"
@@ -985,12 +1161,24 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:51:31.603890"
+          "scraped_at": "2026-04-05T11:04:45.575563",
+          "fetch_state": "failed",
+          "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-uppal-proptypeid-10-city-18",
+          "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_uppal_proptypeid_10_c.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "99acres did not return a usable locality page."
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:51:16.472474"
+          "scraped_at": "2026-04-05T11:04:30.454023",
+          "fetch_state": "failed",
+          "source_url": "https://rera.telangana.gov.in/projectSearch",
+          "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "RERA endpoint returned no locality projects for this run."
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"
@@ -1108,12 +1296,24 @@
         "listings": {
           "source": "baseline_estimate",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:52:03.377863"
+          "scraped_at": "2026-04-05T11:05:16.841356",
+          "fetch_state": "failed",
+          "source_url": "https://www.99acres.com/property-rates-and-price-trends-in-shamshabad-proptypeid-10-city-18",
+          "cache_path": "output/cache\\https___www_99acres_com_property_rates_and_price_trends_in_shamshabad_proptypeid.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "99acres did not return a usable locality page."
         },
         "rera": {
           "source": "rera.telangana.gov.in",
           "status": "fallback",
-          "scraped_at": "2026-04-05T09:51:47.863061"
+          "scraped_at": "2026-04-05T11:05:01.728985",
+          "fetch_state": "failed",
+          "source_url": "https://rera.telangana.gov.in/projectSearch",
+          "cache_path": "output/cache\\https___rera_telangana_gov_in_projectsearch.json",
+          "cached_at": null,
+          "cache_age_minutes": null,
+          "fallback_reason": "RERA endpoint returned no locality projects for this run."
         },
         "govt_alert_count": 0,
         "prediction_method": "trend_extrapolation_demo"

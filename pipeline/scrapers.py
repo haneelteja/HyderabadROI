@@ -22,6 +22,7 @@ from config import (
 
 CACHE_DIR = "output/cache"
 os.makedirs(CACHE_DIR, exist_ok=True)
+FETCH_AUDIT = {}
 
 # Standard browser headers
 HEADERS = {
@@ -50,6 +51,30 @@ PORTAL_HEADERS = {
 # ================================================================
 # HELPERS
 # ================================================================
+def _cache_age_minutes(iso_string):
+    if not iso_string:
+        return None
+    try:
+        delta = datetime.now() - datetime.fromisoformat(iso_string)
+        return max(0, int(delta.total_seconds() // 60))
+    except Exception:
+        return None
+
+
+def _remember_fetch(url, state, cache_path=None, cached_at=None, detail=None):
+    FETCH_AUDIT[url] = {
+        "state": state,
+        "cache_path": cache_path,
+        "cached_at": cached_at,
+        "cache_age_minutes": _cache_age_minutes(cached_at),
+        "detail": detail or "",
+    }
+
+
+def _fetch_meta(url):
+    return FETCH_AUDIT.get(url, {})
+
+
 def _get(url, params=None, json_mode=False, verify_ssl=True, use_portal_headers=False):
     """Safe HTTP GET with SSL flexibility and caching on failure."""
     cache_key = re.sub(r'[^a-z0-9]', '_', url.lower())[:80]
@@ -64,10 +89,12 @@ def _get(url, params=None, json_mode=False, verify_ssl=True, use_portal_headers=
         data = resp.json() if json_mode else resp.text
 
         # Save to cache
+        fetched_at = datetime.now().isoformat()
         with open(cache_path, "w", encoding="utf-8") as f:
-            json.dump({"ts": datetime.now().isoformat(), "data": data}, f)
+            json.dump({"ts": fetched_at, "data": data}, f)
 
         print(f"  [OK] Fetched: {url[:70]}")
+        _remember_fetch(url, "live", cache_path=cache_path, cached_at=fetched_at, detail="Fresh response")
         return data
 
     except requests.exceptions.SSLError:
@@ -78,20 +105,28 @@ def _get(url, params=None, json_mode=False, verify_ssl=True, use_portal_headers=
                                 timeout=SCRAPE_TIMEOUT, verify=False)
             resp.raise_for_status()
             data = resp.json() if json_mode else resp.text
+            fetched_at = datetime.now().isoformat()
             with open(cache_path, "w", encoding="utf-8") as f:
-                json.dump({"ts": datetime.now().isoformat(), "data": data}, f)
+                json.dump({"ts": fetched_at, "data": data}, f)
             print(f"  [OK] Fetched (SSL bypass): {url[:70]}")
+            _remember_fetch(url, "live", cache_path=cache_path, cached_at=fetched_at, detail="Fresh response via SSL bypass")
             return data
         except Exception as e2:
             print(f"  [FAIL] SSL bypass failed: {url[:70]} -> {e2}")
+            _remember_fetch(url, "failed", cache_path=cache_path, detail=str(e2))
 
     except Exception as e:
         print(f"  [FAIL] Fetch failed: {url[:70]} -> {e}")
+        _remember_fetch(url, "failed", cache_path=cache_path, detail=str(e))
 
     if USE_CACHED_ON_FAILURE and os.path.exists(cache_path):
-        print(f"    -> Using cached data from {cache_path}")
         with open(cache_path, encoding="utf-8") as f:
-            return json.load(f)["data"]
+            cached = json.load(f)
+        cached_at = cached.get("ts")
+        print(f"    -> Using cached data from {cache_path}")
+        _remember_fetch(url, "cache", cache_path=cache_path, cached_at=cached_at, detail="Cache hit after fetch failure")
+        return cached.get("data")
+    _remember_fetch(url, "failed", cache_path=cache_path, detail="No live response and no cache available")
     return None
 
 
@@ -99,7 +134,7 @@ def _parse_price(text):
     """Extract numeric price from strings like 'Rs 8,500/sqft' or '8500'."""
     if not text:
         return None
-    text = str(text).replace(",", "").replace("â‚¹", "").replace("Rs", "").replace(" ", "")
+    text = str(text).replace(",", "").replace("â‚¹", "").replace("₹", "").replace("Rs", "").replace(" ", "")
     match = re.search(r'(\d+(?:\.\d+)?)', text)
     return float(match.group(1)) if match else None
 
@@ -111,11 +146,11 @@ def _parse_price(text):
 # ================================================================
 
 
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ----------------------------------------------------------------
 # RERA TELANGANA SCRAPER
 # Source: https://rera.telangana.gov.in/
 # Data: project registrations, developer names, unit counts, locality
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ----------------------------------------------------------------
 
 RERA_BASE_URL = "https://rera.telangana.gov.in"
 
@@ -133,6 +168,11 @@ def scrape_rera(locality_name):
     """
     print(f"\n[RERA] Scraping: {locality_name}")
     projects = []
+    source_url = ""
+    fetch_state = "failed"
+    cache_path = None
+    cached_at = None
+    fallback_reason = ""
 
     # Try each known API endpoint
     for api_url in RERA_API_CANDIDATES:
@@ -153,6 +193,8 @@ def scrape_rera(locality_name):
                 projects = data.get("data") or data.get("projects") or []
                 if projects:
                     print(f"  [OK] RERA API responded: {api_url[:60]}")
+                    source_url = api_url
+                    fetch_state = "live"
                     break
         except Exception:
             pass
@@ -161,8 +203,15 @@ def scrape_rera(locality_name):
     if not projects:
         search_url = f"{RERA_BASE_URL}/projectSearch"
         html = _get(search_url, verify_ssl=False)
+        meta = _fetch_meta(search_url)
+        source_url = search_url
+        fetch_state = meta.get("state", "failed")
+        cache_path = meta.get("cache_path")
+        cached_at = meta.get("cached_at")
         if html:
             projects = _parse_rera_html(html, locality_name)
+        if not projects:
+            fallback_reason = "RERA endpoint returned no locality projects for this run."
 
     # Calculate stats
     now = datetime.now()
@@ -200,6 +249,12 @@ def scrape_rera(locality_name):
         "projects":                    parsed_projects[:10],  # top 10 for the report
         "source":                      "rera.telangana.gov.in",
         "scraped_at":                  datetime.now().isoformat(),
+        "source_url":                  source_url or RERA_BASE_URL,
+        "fetch_state":                 fetch_state,
+        "cache_path":                  cache_path,
+        "cached_at":                   cached_at,
+        "cache_age_minutes":           _cache_age_minutes(cached_at),
+        "fallback_reason":             fallback_reason or ("RERA cache used after live request failed." if fetch_state == "cache" else ""),
     }
 
     print(f"  -> {result['total_projects']} projects, {result['recent_registrations_90d']} recent (90d)")
@@ -224,11 +279,11 @@ def _parse_rera_html(html, locality_name):
     return projects
 
 
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ----------------------------------------------------------------
 # 99ACRES SCRAPER
 # Source: https://www.99acres.com
 # Data: current listings, avg price/sqft, price range
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ----------------------------------------------------------------
 
 def scrape_99acres(locality_keyword):
     """
@@ -238,7 +293,7 @@ def scrape_99acres(locality_keyword):
     """
     print(f"\n[99acres] Scraping: {locality_keyword}")
 
-    # 99acres uses different URL patterns â€” try each
+    # 99acres uses different URL patterns; try each
     url_candidates = [
         f"https://www.99acres.com/property-for-sale-in-{locality_keyword}-hyderabad-ffid",
         f"https://www.99acres.com/search/property/buy/{locality_keyword}-hyderabad",
@@ -246,14 +301,25 @@ def scrape_99acres(locality_keyword):
     ]
 
     html = None
+    fetch_meta = {}
+    source_url = ""
     for url in url_candidates:
         html = _get(url, use_portal_headers=True)
+        fetch_meta = _fetch_meta(url)
+        source_url = url
         if html and len(html) > 5000:  # got a real page, not a redirect/error
             break
         time.sleep(1)
 
     if not html or len(html) < 5000:
-        return _fallback_listing_data(locality_keyword)
+        return _fallback_listing_data(
+            locality_keyword,
+            source_url=source_url,
+            fetch_state=fetch_meta.get("state", "failed"),
+            cache_path=fetch_meta.get("cache_path"),
+            cached_at=fetch_meta.get("cached_at"),
+            fallback_reason="99acres did not return a usable locality page.",
+        )
 
     soup = BeautifulSoup(html, "html.parser")
     prices = []
@@ -288,6 +354,12 @@ def scrape_99acres(locality_keyword):
             "listing_count":  len(prices),
             "source":         "99acres.com",
             "scraped_at":     datetime.now().isoformat(),
+            "source_url":     source_url,
+            "fetch_state":    fetch_meta.get("state", "live"),
+            "cache_path":     fetch_meta.get("cache_path"),
+            "cached_at":      fetch_meta.get("cached_at"),
+            "cache_age_minutes": _cache_age_minutes(fetch_meta.get("cached_at")),
+            "fallback_reason": "99acres cache used after live request failed." if fetch_meta.get("state") == "cache" else "",
         }
     else:
         print(f"  -> No structured prices found, using MagicBricks fallback...")
@@ -303,9 +375,17 @@ def scrape_magicbricks(locality_keyword):
 
     url = f"https://www.magicbricks.com/property-for-sale/residential-real-estate?proptype=Multistorey-Apartment&cityName=Hyderabad&localityName={locality_keyword}"
     html = _get(url, use_portal_headers=True)
+    fetch_meta = _fetch_meta(url)
 
     if not html:
-        return _fallback_listing_data(locality_keyword)
+        return _fallback_listing_data(
+            locality_keyword,
+            source_url=url,
+            fetch_state=fetch_meta.get("state", "failed"),
+            cache_path=fetch_meta.get("cache_path"),
+            cached_at=fetch_meta.get("cached_at"),
+            fallback_reason="MagicBricks was unavailable after the 99acres attempt failed.",
+        )
 
     soup = BeautifulSoup(html, "html.parser")
     prices = []
@@ -324,17 +404,30 @@ def scrape_magicbricks(locality_keyword):
             "listing_count":  len(prices),
             "source":         "magicbricks.com",
             "scraped_at":     datetime.now().isoformat(),
+            "source_url":     url,
+            "fetch_state":    fetch_meta.get("state", "live"),
+            "cache_path":     fetch_meta.get("cache_path"),
+            "cached_at":      fetch_meta.get("cached_at"),
+            "cache_age_minutes": _cache_age_minutes(fetch_meta.get("cached_at")),
+            "fallback_reason": "MagicBricks cache used after live request failed." if fetch_meta.get("state") == "cache" else "",
         }
 
-    return _fallback_listing_data(locality_keyword)
+    return _fallback_listing_data(
+        locality_keyword,
+        source_url=url,
+        fetch_state=fetch_meta.get("state", "failed"),
+        cache_path=fetch_meta.get("cache_path"),
+        cached_at=fetch_meta.get("cached_at"),
+        fallback_reason="MagicBricks returned a page, but no usable structured prices were found.",
+    )
 
 
-def _fallback_listing_data(locality_keyword):
+def _fallback_listing_data(locality_keyword, source_url="", fetch_state="baseline", cache_path=None, cached_at=None, fallback_reason=""):
     """
     Last resort: return last known prices from cache or baseline estimates.
     These are updated manually until live scraping is fully stable.
     """
-    # Real prices sourced via Chrome browser scraping of 99acres.com â€” March 2026
+    # Real prices sourced via Chrome browser scraping of 99acres.com - March 2026
     BASELINE = {
         "kokapet":    {"avg_price_sqft": 10394, "listing_count": 912},
         "gachibowli": {"avg_price_sqft": 10665, "listing_count": 523},
@@ -352,13 +445,19 @@ def _fallback_listing_data(locality_keyword):
         "max_price_sqft": int(base["avg_price_sqft"] * 1.40),
         "source":         "baseline_estimate",
         "scraped_at":     datetime.now().isoformat(),
+        "source_url":     source_url,
+        "fetch_state":    fetch_state if fetch_state in {"cache", "failed"} else "baseline",
+        "cache_path":     cache_path,
+        "cached_at":      cached_at,
+        "cache_age_minutes": _cache_age_minutes(cached_at),
+        "fallback_reason": fallback_reason or "Using the internal locality baseline because no live listing portal returned a usable response.",
     }
 
 
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ----------------------------------------------------------------
 # GOVERNMENT NEWS MONITOR
-# Sources: HMDA Â· TSIIC Â· Telangana Govt Â· RERA News
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# Sources: HMDA, TSIIC, Telangana Govt, RERA News
+# ----------------------------------------------------------------
 
 def scrape_govt_alerts(locality_id=None):
     """
@@ -369,7 +468,7 @@ def scrape_govt_alerts(locality_id=None):
     all_alerts = []
 
     for source in GOVT_NEWS_SOURCES:
-        print(f"  â†’ {source['name']}: {source['url']}")
+        print(f"  -> {source['name']}: {source['url']}")
         html = _get(source["url"], verify_ssl=False)  # govt sites often have SSL issues
         if not html:
             continue
@@ -438,7 +537,7 @@ def _parse_news_html(html, source_name, source_url):
 
         alerts.append({
             "title":   title,
-            "body":    title,  # Summary â€” full body needs detail page fetch
+            "body":    title,  # Summary; full body needs detail page fetch
             "source":  source_name,
             "url":     source_url,
             "date":    date_str,
@@ -483,9 +582,9 @@ def _tag_localities(text):
     return tags if tags else ["all"]
 
 
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ----------------------------------------------------------------
 # CITY-LEVEL STATS SCRAPER
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ----------------------------------------------------------------
 
 def scrape_city_stats():
     """
@@ -495,7 +594,9 @@ def scrape_city_stats():
     print("\n[City Stats] Scraping city-level stats...")
 
     # Try RERA aggregate stats
-    rera_html = _get("https://rera.telangana.gov.in/dashboard", verify_ssl=False)
+    dashboard_url = "https://rera.telangana.gov.in/dashboard"
+    rera_html = _get(dashboard_url, verify_ssl=False)
+    fetch_meta = _fetch_meta(dashboard_url)
     city_stats = {
         "avg_price_sqft":     6840,
         "quarterly_sales":    4820,
@@ -504,6 +605,12 @@ def scrape_city_stats():
         "unsold_inventory":   28400,
         "source":             "baseline",
         "scraped_at":         datetime.now().isoformat(),
+        "source_url":         dashboard_url,
+        "fetch_state":        "baseline",
+        "cache_path":         fetch_meta.get("cache_path"),
+        "cached_at":          fetch_meta.get("cached_at"),
+        "cache_age_minutes":  fetch_meta.get("cache_age_minutes"),
+        "fallback_reason":    "Using the city baseline because the RERA dashboard was unavailable.",
     }
 
     if rera_html:
@@ -516,6 +623,10 @@ def scrape_city_stats():
                 if 500 < n < 5000:
                     city_stats["active_projects"] = int(n)
                     city_stats["source"] = "rera.telangana.gov.in"
+                    city_stats["fetch_state"] = fetch_meta.get("state", "live")
+                    city_stats["cached_at"] = fetch_meta.get("cached_at")
+                    city_stats["cache_age_minutes"] = fetch_meta.get("cache_age_minutes")
+                    city_stats["fallback_reason"] = "City totals are using a cached RERA dashboard response." if fetch_meta.get("state") == "cache" else ""
                     break
 
     print(f"  -> City avg: Rs {city_stats['avg_price_sqft']}/sqft, "
@@ -523,18 +634,18 @@ def scrape_city_stats():
     return city_stats
 
 
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-# MAIN â€” run scrapers for all localities
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ----------------------------------------------------------------
+# MAIN - run scrapers for all localities
+# ----------------------------------------------------------------
 
 def run_all_scrapers():
     """
     Run all scrapers and return a structured data dict.
     Called by pipeline.py
     """
-    print("\n" + "â•"*60)
+    print("\n" + "="*60)
     print("  RUNNING ALL SCRAPERS")
-    print("â•"*60)
+    print("="*60)
 
     results = {
         "city_stats":  scrape_city_stats(),
@@ -544,9 +655,9 @@ def run_all_scrapers():
 
     for loc in LOCALITIES:
         lid = loc["id"]
-        print(f"\n{'â”€'*50}")
+        print(f"\n{'-'*50}")
         print(f"  LOCALITY: {loc['name']}")
-        print(f"{'â”€'*50}")
+        print(f"{'-'*50}")
 
         rera_data    = scrape_rera(loc["rera_keyword"])
         listing_data = scrape_99acres(loc["acres_keyword"])
@@ -556,9 +667,9 @@ def run_all_scrapers():
             "listings": listing_data,
         }
 
-    print("\n" + "â•"*60)
+    print("\n" + "="*60)
     print("  SCRAPING COMPLETE")
-    print("â•"*60)
+    print("="*60)
     return results
 
 
