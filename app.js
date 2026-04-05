@@ -100,6 +100,38 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{att
 let circ={},lblMk={},actLayer='roi',tlIdx=6,actZ=null,playing=false,ptmr=null,cmpMode=false,cmpPick=[],chReg={};
 let pipelineMeta={};
 
+function debugRow(label, value){
+  return `<div class="debug-row"><span class="debug-k">${label}</span><span class="debug-v">${value}</span></div>`;
+}
+
+function renderDebugPanel(){
+  const body=document.getElementById('debug-body');
+  if(!body) return;
+  const meta=pipelineMeta || {};
+  const totals=meta.scrape_summary?.totals || {};
+  const methods=Array.isArray(meta.actual_prediction_methods) && meta.actual_prediction_methods.length
+    ? meta.actual_prediction_methods.join(', ')
+    : (meta.prediction_engine || 'unknown');
+  body.innerHTML=[
+    debugRow('Mode', meta.pipeline_mode || 'UNKNOWN'),
+    debugRow('Methods', methods),
+    debugRow('Last refresh', formatAge(meta.last_updated)),
+    debugRow('Listings live/fallback', `${totals.listings_live ?? 0}/${totals.listings_fallback ?? 0}`),
+    debugRow('RERA live/fallback', `${totals.rera_live ?? 0}/${totals.rera_fallback ?? 0}`),
+    debugRow('Govt alerts', `${meta.scrape_summary?.govt_alerts?.count ?? 0}`),
+  ].join('');
+}
+
+function toggleDebugPanel(){
+  const panel=document.getElementById('debug-panel');
+  const btn=document.getElementById('dbg-btn');
+  if(!panel || !btn) return;
+  const open=!panel.classList.contains('open');
+  panel.classList.toggle('open', open);
+  btn.classList.toggle('open', open);
+  btn.setAttribute('aria-expanded', String(open));
+}
+
 function qualityTone(status){
   return status==='live' ? 'live' : 'fallback';
 }
@@ -531,6 +563,7 @@ function mergeLiveZone(z, live) {
 
 function updateTopbarStats(cityStats, meta) {
   pipelineMeta=meta || {};
+  renderDebugPanel();
   const statMap = {
     'sp-price': { v: 'Rs ' + cityStats.avg_price_sqft.toLocaleString('en-IN') },
     'sp-sales': { v: cityStats.quarterly_sales.toLocaleString('en-IN') + ' units' },
@@ -581,6 +614,7 @@ async function loadLiveData() {
     if (!resp.ok) throw new Error('No data.json yet');
     const data = await resp.json();
     pipelineMeta=data.metadata || {};
+    renderDebugPanel();
 
     const liveZones = data.zones || {};
     Z.forEach(z => {
@@ -603,6 +637,7 @@ async function loadLiveData() {
 
     console.log('[HydROI] Live data loaded from pipeline/output/data.json');
   } catch (e) {
+    renderDebugPanel();
     const badge = document.getElementById('live-badge');
     if (badge) {
       badge.textContent = 'DEMO DATA - run pipeline.py to activate live feed';
@@ -614,6 +649,7 @@ async function loadLiveData() {
 }
 
 // INIT
+document.getElementById('dbg-btn')?.addEventListener('click', toggleDebugPanel);
 buildMap();
 renderSB();
 setTimeout(()=>onZone('kokapet'),700);

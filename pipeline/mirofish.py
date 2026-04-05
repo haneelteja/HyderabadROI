@@ -1,5 +1,5 @@
-# ═══════════════════════════════════════════════════════════════
-# HydROI Pipeline — MiroFish Engine Integration
+﻿# ================================================================
+# HydROI Pipeline - MiroFish Engine Integration
 #
 # This module does two things:
 #   1. DEMO MODE (no keys needed): Generates predictions using
@@ -8,8 +8,8 @@
 #      MiroFish as "seed material", runs the multi-agent
 #      simulation, and extracts price/demand predictions.
 #
-# To switch from demo → live: set DEMO_MODE = False in config.py
-# ═══════════════════════════════════════════════════════════════
+# To switch from demo -> live: set DEMO_MODE = False in config.py
+# ================================================================
 
 import requests
 import json
@@ -21,7 +21,7 @@ from config import (
     MIROFISH_BACKEND_URL, DEMO_MODE, LOCALITIES
 )
 
-# Baseline data — updated to real March 2026 prices (Chrome-scraped from 99acres)
+# Baseline data - updated to real March 2026 prices (Chrome-scraped from 99acres)
 LOCALITY_BASELINES = {
     "kokapet":    { "price_2025": 10394, "roi_yoy": 22.3, "roi_3y": 38, "nri_pct": 38, "sales_vel": 145, "growth_rate": 0.155 },
     "gachibowli": { "price_2025": 10665, "roi_yoy": 15.8, "roi_3y": 32, "nri_pct": 29, "sales_vel": 130, "growth_rate": 0.118 },
@@ -33,7 +33,7 @@ LOCALITY_BASELINES = {
     "shamshabad": { "price_2025":  7312, "roi_yoy": 18.5, "roi_3y": 41, "nri_pct":  9, "sales_vel":  55, "growth_rate": 0.145 },
 }
 
-# Historical prices 2019–2025 (real market data)
+# Historical prices 2019-2025 (real market data)
 FULL_PRICE_HISTORY = {
     "kokapet":    [4200, 4410, 5040, 6300, 7560, 8500, 10394],
     "gachibowli": [5800, 6090, 6960, 7830, 8700, 9200, 10665],
@@ -68,9 +68,9 @@ ACTIVITY_HISTORY = {
 }
 
 
-# ───────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # DEMO MODE: Trend Extrapolation Engine
-# ───────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def _extrapolate_prices(locality_id, live_price=None, govt_alerts=None, method_name="trend_extrapolation_demo"):
     """
@@ -91,7 +91,7 @@ def _extrapolate_prices(locality_id, live_price=None, govt_alerts=None, method_n
                            and locality_id in a.get("localities_affected", [])]
         boost = min(len(positive_alerts) * 0.02, 0.08)  # max +8% boost
         if boost > 0:
-            print(f"    → Govt boost for {locality_id}: +{boost*100:.1f}% "
+            print(f"    -> Govt boost for {locality_id}: +{boost*100:.1f}% "
                   f"({len(positive_alerts)} positive alerts)")
 
     growth = base["growth_rate"] + boost
@@ -126,9 +126,9 @@ def _extrapolate_prices(locality_id, live_price=None, govt_alerts=None, method_n
     }
 
 
-# ───────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # LIVE MODE: MiroFish Integration
-# ───────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def _format_seed_material(locality_id, locality_name, scraped_data, govt_alerts):
     """
@@ -148,11 +148,11 @@ def _format_seed_material(locality_id, locality_name, scraped_data, govt_alerts)
     ) or "No recent government announcements."
 
     seed_text = f"""
-HYDERABAD REAL ESTATE MARKET REPORT — {locality_name.upper()}
+HYDERABAD REAL ESTATE MARKET REPORT â€” {locality_name.upper()}
 Generated: {datetime.now().strftime('%B %Y')}
 
 CURRENT MARKET DATA:
-- Current average price: ₹{listings.get('avg_price_sqft', base['price_2025']):,}/sqft
+- Current average price: â‚¹{listings.get('avg_price_sqft', base['price_2025']):,}/sqft
 - Active listings: {listings.get('listing_count', 'N/A')}
 - YoY price appreciation: {base['roi_yoy']}%
 - 3-year ROI: {base['roi_3y']}%
@@ -176,12 +176,12 @@ DEMAND DRIVERS:
 PREDICTION REQUEST:
 Based on the above market data, government initiatives, and demand drivers,
 predict the price appreciation trajectory for {locality_name} real estate
-over the next 4 quarters (Q2–Q4 2026) and full years 2027 and 2028.
+over the next 4 quarters (Q2â€“Q4 2026) and full years 2027 and 2028.
 Express predictions as:
-1. Price per sqft (₹)
+1. Price per sqft (â‚¹)
 2. NRI buyer percentage
-3. Market activity index (0–100)
-4. Confidence score (0–1)
+3. Market activity index (0â€“100)
+4. Confidence score (0â€“1)
 Give a clear, decisive verdict with no diplomatic hedging.
 """
     return seed_text.strip()
@@ -190,9 +190,9 @@ Give a clear, decisive verdict with no diplomatic hedging.
 def _call_mirofish_api(seed_material, locality_name):
     """
     Submit seed material to MiroFish backend and retrieve prediction report.
-    MiroFish flow: upload → simulate → fetch report
+    MiroFish flow: upload -> simulate -> fetch report
     """
-    print(f"  → Submitting to MiroFish: {locality_name}")
+    print(f"  -> Submitting to MiroFish: {locality_name}")
 
     session = requests.Session()
     session.headers.update({"Content-Type": "application/json"})
@@ -207,9 +207,9 @@ def _call_mirofish_api(seed_material, locality_name):
         upload_resp.raise_for_status()
         upload_data = upload_resp.json()
         seed_id = upload_data.get("id") or upload_data.get("seed_id")
-        print(f"    ✓ Seed uploaded, id: {seed_id}")
+        print(f"    [OK] Seed uploaded, id: {seed_id}")
     except Exception as e:
-        print(f"    ✗ Upload failed: {e}")
+        print(f"    [FAIL] Upload failed: {e}")
         return None
 
     # Step 2: Start simulation
@@ -227,9 +227,9 @@ def _call_mirofish_api(seed_material, locality_name):
         sim_resp.raise_for_status()
         sim_data = sim_resp.json()
         sim_id = sim_data.get("simulation_id") or sim_data.get("id")
-        print(f"    ✓ Simulation started, id: {sim_id}")
+        print(f"    [OK] Simulation started, id: {sim_id}")
     except Exception as e:
-        print(f"    ✗ Simulation failed: {e}")
+        print(f"    [FAIL] Simulation failed: {e}")
         return None
 
     # Step 3: Poll for completion (max 5 minutes)
@@ -243,14 +243,14 @@ def _call_mirofish_api(seed_material, locality_name):
             )
             status = status_resp.json().get("status", "")
             if status in ("complete", "completed", "done"):
-                print(f"    ✓ Simulation complete after {(i+1)*5}s")
+                print(f"    [OK] Simulation complete after {(i+1)*5}s")
                 break
             elif status in ("failed", "error"):
-                print(f"    ✗ Simulation failed with status: {status}")
+                print(f"    [FAIL] Simulation failed with status: {status}")
                 return None
-            print(f"    … Waiting ({(i+1)*5}s) — status: {status}")
+            print(f"    ... Waiting ({(i+1)*5}s) - status: {status}")
         except Exception as e:
-            print(f"    ✗ Status poll failed: {e}")
+            print(f"    [FAIL] Status poll failed: {e}")
 
     # Step 4: Fetch report
     try:
@@ -261,7 +261,7 @@ def _call_mirofish_api(seed_material, locality_name):
         report_resp.raise_for_status()
         return report_resp.json()
     except Exception as e:
-        print(f"    ✗ Report fetch failed: {e}")
+        print(f"    [FAIL] Report fetch failed: {e}")
         return None
 
 
@@ -315,22 +315,22 @@ def _parse_mirofish_report(report, locality_id):
 def _safe_num(val):
     """Convert to float safely."""
     try:
-        return float(str(val).replace(",", "").replace("₹", "").replace("%", ""))
+        return float(str(val).replace(",", "").replace("â‚¹", "").replace("%", ""))
     except Exception:
         return None
 
 
-# ───────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # LLM FALLBACK: Direct LLM prediction (no MiroFish server needed)
 # Uses OpenAI / Qwen API directly for structured predictions
-# ───────────────────────────────────────────────────────────────
+# ================================================================
 
 def _call_llm_direct(seed_material, locality_name):
     """
     Fallback: call LLM API directly for predictions if MiroFish server is not running.
     Returns structured JSON prediction.
     """
-    print(f"  → LLM direct call for: {locality_name}")
+    print(f"  -> LLM direct call for: {locality_name}")
 
     prompt = f"""
 You are an expert Hyderabad real estate analyst. Based on the following market data,
@@ -365,10 +365,10 @@ Respond ONLY with valid JSON in this exact format:
                 timeout=30
             )
 
-            # Rate limit hit — wait and retry
+            # Rate limit hit - wait and retry
             if resp.status_code == 429:
-                wait = 20 * (attempt + 1)   # 20s → 40s → 60s
-                print(f"    → Rate limit hit — waiting {wait}s before retry {attempt+1}/3...")
+                wait = 20 * (attempt + 1)   # 20s â†’ 40s â†’ 60s
+                print(f"    -> Rate limit hit - waiting {wait}s before retry {attempt+1}/3...")
                 time.sleep(wait)
                 continue
 
@@ -386,23 +386,23 @@ Respond ONLY with valid JSON in this exact format:
                     "narrative":    result.get("narrative", ""),
                     "generated_at": datetime.now().isoformat(),
                 }
-            break   # Got a response, just couldn't parse it — no point retrying
+            break   # Got a response, just could not parse it - no point retrying
 
         except Exception as e:
             if "429" in str(e):
                 wait = 20 * (attempt + 1)
-                print(f"    → Rate limit hit — waiting {wait}s before retry {attempt+1}/3...")
+                print(f"    -> Rate limit hit - waiting {wait}s before retry {attempt+1}/3...")
                 time.sleep(wait)
             else:
-                print(f"    ✗ LLM call failed: {e}")
+                print(f"    [FAIL] LLM call failed: {e}")
                 break
 
     return None
 
 
-# ───────────────────────────────────────────────────────────────
+# ================================================================
 # BATCH PREDICTION: One API call for all zones (beats rate limits)
-# ───────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 # Cache: filled by generate_all_predictions_batch(), consumed by generate_predictions()
 _BATCH_CACHE = {}
@@ -429,7 +429,7 @@ def generate_all_predictions_batch(all_scraped_data, govt_alerts):
         hist_prices = FULL_PRICE_HISTORY[lid]
 
         zone_summaries.append(
-            f"{lname}: current ₹{live_price}/sqft, "
+            f"{lname}: current Rs {live_price}/sqft, "
             f"7yr history {hist_prices}, "
             f"ROI {base['roi_yoy']}% YoY, NRI buyers {base['nri_pct']}%, "
             f"growth rate {base['growth_rate']*100:.1f}%"
@@ -451,7 +451,7 @@ Respond ONLY with this exact JSON (no markdown, no explanation):
   "uppal":      {{"Q3_2026": <int>, "y2027": <int>, "y2028": <int>, "nri_q3": <int>, "nri_27": <int>, "nri_28": <int>}},
   "shamshabad": {{"Q3_2026": <int>, "y2027": <int>, "y2028": <int>, "nri_q3": <int>, "nri_27": <int>, "nri_28": <int>}}
 }}
-All prices in ₹/sqft. Be decisive — no hedging. Reflect realistic Hyderabad market appreciation."""
+All prices in Rs /sqft. Be decisive - no hedging. Reflect realistic Hyderabad market appreciation."""
 
     for attempt in range(4):
         try:
@@ -464,7 +464,7 @@ All prices in ₹/sqft. Be decisive — no hedging. Reflect realistic Hyderabad 
             )
             if resp.status_code == 429:
                 wait = 25 * (attempt + 1)
-                print(f"    → Rate limit — waiting {wait}s (attempt {attempt+1}/4)...")
+                print(f"    -> Rate limit - waiting {wait}s (attempt {attempt+1}/4)...")
                 time.sleep(wait)
                 continue
 
@@ -472,7 +472,7 @@ All prices in ₹/sqft. Be decisive — no hedging. Reflect realistic Hyderabad 
             content = resp.json()["choices"][0]["message"]["content"].strip()
             json_match = re.search(r'\{.*\}', content, re.DOTALL)
             if not json_match:
-                print("    ✗ Batch: no JSON found in response")
+                print("    [FAIL] Batch: no JSON found in response")
                 break
 
             batch = json.loads(json_match.group(0))
@@ -493,27 +493,27 @@ All prices in ₹/sqft. Be decisive — no hedging. Reflect realistic Hyderabad 
                     "generated_at": ts,
                 }
 
-            print(f"    ✓ Batch complete — {len(_BATCH_CACHE)} zones predicted in 1 API call")
+            print(f"    [OK] Batch complete - {len(_BATCH_CACHE)} zones predicted in 1 API call")
             return True
 
         except json.JSONDecodeError as e:
-            print(f"    ✗ Batch JSON parse error: {e}")
+            print(f"    [FAIL] Batch JSON parse error: {e}")
             break
         except Exception as e:
             if "429" not in str(e):
-                print(f"    ✗ Batch LLM error: {e}")
+                print(f"    [FAIL] Batch LLM error: {e}")
                 break
             wait = 25 * (attempt + 1)
-            print(f"    → Rate limit — waiting {wait}s (attempt {attempt+1}/4)...")
+            print(f"    -> Rate limit - waiting {wait}s (attempt {attempt+1}/4)...")
             time.sleep(wait)
 
     print("    -> Batch failed - zones will use fallback logic")
     return False
 
 
-# ───────────────────────────────────────────────────────────────
+# ================================================================
 # MAIN ENTRY POINT
-# ───────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def generate_predictions(locality_id, locality_name, scraped_data, govt_alerts):
     """
@@ -523,7 +523,7 @@ def generate_predictions(locality_id, locality_name, scraped_data, govt_alerts):
     print(f"\n  [MiroFish] Predicting: {locality_name}")
     live_price = scraped_data.get("listings", {}).get("avg_price_sqft")
 
-    # ── DEMO MODE ──────────────────────────────────────────────
+    # DEMO MODE
     if DEMO_MODE:
         print(f"    -> DEMO MODE - using trend extrapolation")
         return _extrapolate_prices(
@@ -533,11 +533,11 @@ def generate_predictions(locality_id, locality_name, scraped_data, govt_alerts):
             method_name="trend_extrapolation_demo",
         )
 
-    # ── LIVE MODE ─────────────────────────────────────────────
+    # LIVE MODE
 
     # Check batch cache first (populated by generate_all_predictions_batch)
     if locality_id in _BATCH_CACHE:
-        print(f"    ✓ Using batch LLM prediction")
+        print(f"    [OK] Using batch LLM prediction")
         return _BATCH_CACHE[locality_id]
 
     seed_material = _format_seed_material(locality_id, locality_name, scraped_data, govt_alerts)
@@ -546,13 +546,13 @@ def generate_predictions(locality_id, locality_name, scraped_data, govt_alerts):
         report = _call_mirofish_api(seed_material, locality_name)
         parsed = _parse_mirofish_report(report, locality_id)
         if parsed:
-            print("    ✓ Using MiroFish simulation output")
+            print("    [OK] Using MiroFish simulation output")
             return parsed
 
     if LLM_API_KEY:
         direct = _call_llm_direct(seed_material, locality_name)
         if direct:
-            print("    ✓ Using direct LLM prediction")
+            print("    [OK] Using direct LLM prediction")
             return direct
 
     # Last resort: deterministic extrapolation, but label it honestly
