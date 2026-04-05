@@ -75,7 +75,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#07090f;color:#dde4f
 .ld{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
 .debug-panel{position:absolute;top:48px;right:11px;z-index:920;width:260px;background:rgba(7,9,15,.96);border:1px solid #1a2440;border-radius:10px;padding:10px 12px;box-shadow:0 12px 28px rgba(0,0,0,.36);display:none;}
 .debug-panel.open{display:block;}
-.debug-h{font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:#4a9eff;margin-bottom:7px;}
+.debug-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px;}
+.debug-h{font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:#4a9eff;}
+.debug-copy{background:#0d1428;border:1px solid #1a2440;color:#7e90b2;padding:3px 8px;border-radius:999px;font-size:8px;cursor:pointer;transition:all .15s;}
+.debug-copy:hover{border-color:#4a9eff;color:#4a9eff;background:#0f1c38;}
+.debug-copy.ok{border-color:#124020;color:#9ef0c1;background:#081810;}
 .debug-body{font-size:9px;color:#90a2c4;line-height:1.55;}
 .debug-row{display:flex;justify-content:space-between;gap:10px;padding:3px 0;border-bottom:1px solid #10192c;}
 .debug-row:last-child{border-bottom:none;}

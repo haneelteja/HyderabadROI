@@ -100,6 +100,22 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{att
 let circ={},lblMk={},actLayer='roi',tlIdx=6,actZ=null,playing=false,ptmr=null,cmpMode=false,cmpPick=[],chReg={};
 let pipelineMeta={};
 
+function debugSummaryText(){
+  const meta=pipelineMeta || {};
+  const totals=meta.scrape_summary?.totals || {};
+  const methods=Array.isArray(meta.actual_prediction_methods) && meta.actual_prediction_methods.length
+    ? meta.actual_prediction_methods.join(', ')
+    : (meta.prediction_engine || 'unknown');
+  return [
+    `Mode: ${meta.pipeline_mode || 'UNKNOWN'}`,
+    `Methods: ${methods}`,
+    `Last refresh: ${formatAge(meta.last_updated)}`,
+    `Listings live/fallback: ${totals.listings_live ?? 0}/${totals.listings_fallback ?? 0}`,
+    `RERA live/fallback: ${totals.rera_live ?? 0}/${totals.rera_fallback ?? 0}`,
+    `Govt alerts: ${meta.scrape_summary?.govt_alerts?.count ?? 0}`,
+  ].join('\n');
+}
+
 function debugRow(label, value){
   return `<div class="debug-row"><span class="debug-k">${label}</span><span class="debug-v">${value}</span></div>`;
 }
@@ -107,19 +123,45 @@ function debugRow(label, value){
 function renderDebugPanel(){
   const body=document.getElementById('debug-body');
   if(!body) return;
-  const meta=pipelineMeta || {};
-  const totals=meta.scrape_summary?.totals || {};
-  const methods=Array.isArray(meta.actual_prediction_methods) && meta.actual_prediction_methods.length
-    ? meta.actual_prediction_methods.join(', ')
-    : (meta.prediction_engine || 'unknown');
+  const summary=debugSummaryText().split('\n');
   body.innerHTML=[
-    debugRow('Mode', meta.pipeline_mode || 'UNKNOWN'),
-    debugRow('Methods', methods),
-    debugRow('Last refresh', formatAge(meta.last_updated)),
-    debugRow('Listings live/fallback', `${totals.listings_live ?? 0}/${totals.listings_fallback ?? 0}`),
-    debugRow('RERA live/fallback', `${totals.rera_live ?? 0}/${totals.rera_fallback ?? 0}`),
-    debugRow('Govt alerts', `${meta.scrape_summary?.govt_alerts?.count ?? 0}`),
+    debugRow('Mode', summary[0].replace('Mode: ', '')),
+    debugRow('Methods', summary[1].replace('Methods: ', '')),
+    debugRow('Last refresh', summary[2].replace('Last refresh: ', '')),
+    debugRow('Listings live/fallback', summary[3].replace('Listings live/fallback: ', '')),
+    debugRow('RERA live/fallback', summary[4].replace('RERA live/fallback: ', '')),
+    debugRow('Govt alerts', summary[5].replace('Govt alerts: ', '')),
   ].join('');
+}
+
+async function copyDebugSummary(){
+  const btn=document.getElementById('debug-copy');
+  const text=debugSummaryText();
+  try{
+    if(navigator.clipboard?.writeText){
+      await navigator.clipboard.writeText(text);
+    }else{
+      const ta=document.createElement('textarea');
+      ta.value=text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    if(btn){
+      btn.textContent='Copied';
+      btn.classList.add('ok');
+      setTimeout(()=>{
+        btn.textContent='Copy';
+        btn.classList.remove('ok');
+      },1400);
+    }
+  }catch(_err){
+    if(btn){
+      btn.textContent='Copy failed';
+      setTimeout(()=>btn.textContent='Copy',1400);
+    }
+  }
 }
 
 function toggleDebugPanel(){
@@ -656,6 +698,7 @@ async function loadLiveData() {
 
 // INIT
 document.getElementById('dbg-btn')?.addEventListener('click', toggleDebugPanel);
+document.getElementById('debug-copy')?.addEventListener('click', copyDebugSummary);
 buildMap();
 renderSB();
 setTimeout(()=>onZone('kokapet'),700);
