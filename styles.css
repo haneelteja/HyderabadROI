@@ -55,6 +55,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#07090f;color:#dde4f
 .qs{display:inline-block;background:#0c1422;border:1px solid #22314a;color:#90a2c4;font-size:7px;border-radius:999px;padding:2px 6px;text-transform:uppercase;letter-spacing:.3px;}
 .qs.live{border-color:#124020;color:#9ef0c1;background:#081810;}
 .qs.fallback{border-color:#5f4a1d;color:#ffcf8b;background:#1b1406;}
+.qage{font-size:8px;color:#4f6386;margin:2px 0 1px;letter-spacing:.15px;}
 /* MAP */
 #mw{flex:1;position:relative;overflow:hidden;}
 #map{width:100%;height:100%;}

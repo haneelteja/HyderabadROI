@@ -218,6 +218,11 @@ function zoneQualitySummary(z){
   return `Listings ${listings} | RERA ${rera} | Prediction ${method}`;
 }
 
+function compactAge(isoString){
+  const age=formatAge(isoString);
+  return age==='time unknown' ? 'n/a' : age;
+}
+
 function zoneMapQuality(z){
   const listings=z.dq?.listings?.status || 'fallback';
   const rera=z.dq?.rera?.status || 'fallback';
@@ -272,6 +277,7 @@ function renderSB(f='all'){
         <span class="qs ${qualityTone(z.dq?.listings?.status)}">${qualityLabel('Listings', z.dq?.listings?.status)}</span>
         <span class="qs ${qualityTone(z.dq?.rera?.status)}">${qualityLabel('RERA', z.dq?.rera?.status)}</span>
       </div>
+      <div class="qage">Updated L ${compactAge(z.dq?.listings?.scraped_at)} | R ${compactAge(z.dq?.rera?.scraped_at)}</div>
       <span class="np ${hi?'hi':''}">NRI: ${nriLvl}</span>
     </div>`;
   }).join('');

@@ -1,7 +1,7 @@
-# ═══════════════════════════════════════════════════════════════
-# HydROI Pipeline — Scrapers
+﻿# ================================================================
+# HydROI Pipeline - Scrapers
 # Sources: RERA Telangana · 99acres · MagicBricks · Govt news
-# ═══════════════════════════════════════════════════════════════
+# ================================================================
 
 import requests
 import json
@@ -10,7 +10,7 @@ import re
 import os
 import warnings
 from datetime import datetime, timedelta
-from bs4 import BeautifulSoup  # uses Python's built-in html.parser — no lxml needed
+from bs4 import BeautifulSoup  # uses Python's built-in html.parser; no lxml needed
 # Suppress SSL warnings for government sites with expired/self-signed certs
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 warnings.filterwarnings("ignore", category=InsecureRequestWarning)
@@ -47,11 +47,9 @@ PORTAL_HEADERS = {
     "Sec-Ch-Ua-Platform": '"Windows"',
 }
 
-
-# ───────────────────────────────────────────────────────────────
+# ================================================================
 # HELPERS
-# ───────────────────────────────────────────────────────────────
-
+# ================================================================
 def _get(url, params=None, json_mode=False, verify_ssl=True, use_portal_headers=False):
     """Safe HTTP GET with SSL flexibility and caching on failure."""
     cache_key = re.sub(r'[^a-z0-9]', '_', url.lower())[:80]
@@ -98,19 +96,26 @@ def _get(url, params=None, json_mode=False, verify_ssl=True, use_portal_headers=
 
 
 def _parse_price(text):
-    """Extract numeric price from strings like '₹8,500/sqft' or '8500'."""
+    """Extract numeric price from strings like 'Rs 8,500/sqft' or '8500'."""
     if not text:
         return None
-    text = str(text).replace(",", "").replace("₹", "").replace(" ", "")
+    text = str(text).replace(",", "").replace("â‚¹", "").replace("Rs", "").replace(" ", "")
     match = re.search(r'(\d+(?:\.\d+)?)', text)
     return float(match.group(1)) if match else None
 
 
-# ───────────────────────────────────────────────────────────────
+# ================================================================
 # RERA TELANGANA SCRAPER
 # Source: https://rera.telangana.gov.in/
 # Data: project registrations, developer names, unit counts, locality
-# ───────────────────────────────────────────────────────────────
+# ================================================================
+
+
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# RERA TELANGANA SCRAPER
+# Source: https://rera.telangana.gov.in/
+# Data: project registrations, developer names, unit counts, locality
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 RERA_BASE_URL = "https://rera.telangana.gov.in"
 
@@ -147,7 +152,7 @@ def scrape_rera(locality_name):
                 data = resp.json()
                 projects = data.get("data") or data.get("projects") or []
                 if projects:
-                    print(f"  ✓ RERA API responded: {api_url[:60]}")
+                    print(f"  [OK] RERA API responded: {api_url[:60]}")
                     break
         except Exception:
             pass
@@ -197,7 +202,7 @@ def scrape_rera(locality_name):
         "scraped_at":                  datetime.now().isoformat(),
     }
 
-    print(f"  → {result['total_projects']} projects, {result['recent_registrations_90d']} recent (90d)")
+    print(f"  -> {result['total_projects']} projects, {result['recent_registrations_90d']} recent (90d)")
     return result
 
 
@@ -219,11 +224,11 @@ def _parse_rera_html(html, locality_name):
     return projects
 
 
-# ───────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # 99ACRES SCRAPER
 # Source: https://www.99acres.com
 # Data: current listings, avg price/sqft, price range
-# ───────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def scrape_99acres(locality_keyword):
     """
@@ -233,7 +238,7 @@ def scrape_99acres(locality_keyword):
     """
     print(f"\n[99acres] Scraping: {locality_keyword}")
 
-    # 99acres uses different URL patterns — try each
+    # 99acres uses different URL patterns â€” try each
     url_candidates = [
         f"https://www.99acres.com/property-for-sale-in-{locality_keyword}-hyderabad-ffid",
         f"https://www.99acres.com/search/property/buy/{locality_keyword}-hyderabad",
@@ -262,7 +267,7 @@ def scrape_99acres(locality_keyword):
                     price_str = item.get("offers", {}).get("price") or item.get("price")
                     if price_str:
                         p = _parse_price(price_str)
-                        if p and 1000 < p < 50000:  # sanity check: ₹1k–₹50k/sqft
+                        if p and 1000 < p < 50000:  # sanity check: â‚¹1kâ€“â‚¹50k/sqft
                             prices.append(p)
         except Exception:
             pass
@@ -285,10 +290,10 @@ def scrape_99acres(locality_keyword):
             "scraped_at":     datetime.now().isoformat(),
         }
     else:
-        print(f"  → No structured prices found, using MagicBricks fallback...")
+        print(f"  -> No structured prices found, using MagicBricks fallback...")
         result = scrape_magicbricks(locality_keyword)
 
-    print(f"  → Avg: ₹{result.get('avg_price_sqft','?')}/sqft from {result.get('listing_count','?')} listings")
+    print(f"  -> Avg: Rs {result.get('avg_price_sqft','?')}/sqft from {result.get('listing_count','?')} listings")
     return result
 
 
@@ -329,7 +334,7 @@ def _fallback_listing_data(locality_keyword):
     Last resort: return last known prices from cache or baseline estimates.
     These are updated manually until live scraping is fully stable.
     """
-    # Real prices sourced via Chrome browser scraping of 99acres.com — March 2026
+    # Real prices sourced via Chrome browser scraping of 99acres.com â€” March 2026
     BASELINE = {
         "kokapet":    {"avg_price_sqft": 10394, "listing_count": 912},
         "gachibowli": {"avg_price_sqft": 10665, "listing_count": 523},
@@ -350,10 +355,10 @@ def _fallback_listing_data(locality_keyword):
     }
 
 
-# ───────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # GOVERNMENT NEWS MONITOR
-# Sources: HMDA · TSIIC · Telangana Govt · RERA News
-# ───────────────────────────────────────────────────────────────
+# Sources: HMDA Â· TSIIC Â· Telangana Govt Â· RERA News
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def scrape_govt_alerts(locality_id=None):
     """
@@ -364,7 +369,7 @@ def scrape_govt_alerts(locality_id=None):
     all_alerts = []
 
     for source in GOVT_NEWS_SOURCES:
-        print(f"  → {source['name']}: {source['url']}")
+        print(f"  â†’ {source['name']}: {source['url']}")
         html = _get(source["url"], verify_ssl=False)  # govt sites often have SSL issues
         if not html:
             continue
@@ -385,7 +390,7 @@ def scrape_govt_alerts(locality_id=None):
     for alert in unique_alerts:
         alert["localities_affected"] = _tag_localities(alert["title"] + " " + alert["body"])
 
-    print(f"  → {len(unique_alerts)} unique govt alerts found")
+    print(f"  -> {len(unique_alerts)} unique govt alerts found")
     return unique_alerts
 
 
@@ -433,7 +438,7 @@ def _parse_news_html(html, source_name, source_url):
 
         alerts.append({
             "title":   title,
-            "body":    title,  # Summary — full body needs detail page fetch
+            "body":    title,  # Summary â€” full body needs detail page fetch
             "source":  source_name,
             "url":     source_url,
             "date":    date_str,
@@ -478,9 +483,9 @@ def _tag_localities(text):
     return tags if tags else ["all"]
 
 
-# ───────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # CITY-LEVEL STATS SCRAPER
-# ───────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def scrape_city_stats():
     """
@@ -518,18 +523,18 @@ def scrape_city_stats():
     return city_stats
 
 
-# ───────────────────────────────────────────────────────────────
-# MAIN — run scrapers for all localities
-# ───────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# MAIN â€” run scrapers for all localities
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def run_all_scrapers():
     """
     Run all scrapers and return a structured data dict.
     Called by pipeline.py
     """
-    print("\n" + "═"*60)
+    print("\n" + "â•"*60)
     print("  RUNNING ALL SCRAPERS")
-    print("═"*60)
+    print("â•"*60)
 
     results = {
         "city_stats":  scrape_city_stats(),
@@ -539,9 +544,9 @@ def run_all_scrapers():
 
     for loc in LOCALITIES:
         lid = loc["id"]
-        print(f"\n{'─'*50}")
+        print(f"\n{'â”€'*50}")
         print(f"  LOCALITY: {loc['name']}")
-        print(f"{'─'*50}")
+        print(f"{'â”€'*50}")
 
         rera_data    = scrape_rera(loc["rera_keyword"])
         listing_data = scrape_99acres(loc["acres_keyword"])
@@ -551,9 +556,9 @@ def run_all_scrapers():
             "listings": listing_data,
         }
 
-    print("\n" + "═"*60)
+    print("\n" + "â•"*60)
     print("  SCRAPING COMPLETE")
-    print("═"*60)
+    print("â•"*60)
     return results
 
 
