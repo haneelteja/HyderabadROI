@@ -30,32 +30,45 @@ from scrapers import run_all_scrapers
 from mirofish import generate_predictions, generate_all_predictions_batch, get_full_timeline, LOCALITY_BASELINES
 
 TEXT_FIXUPS = {
-    "Ã¢â‚¬â€": "-",
-    "Ã¢â‚¬â€œ": "-",
-    "Ã¢â€ â€™": "->",
-    "Ã¢â€šÂ¹": "Rs ",
-    "Ã‚Â·": "Â·",
-    "Ã¢â‚¬â„¢": "'",
-    "Ã¢â‚¬Å“": '"',
-    "Ã¢â‚¬Â": '"',
-    "Ã¢â‚¬Ëœ": "'",
-    "Ã¢â‚¬Â¦": "...",
-    "Ãƒâ€”": "x",
+    "\u00a0": " ",
+    "\u2011": "-",
 }
+
+MOJIBAKE_MARKERS = ("Â", "â", "Ã")
+
+
+def _repair_mojibake(value):
+    repaired = value
+    for _ in range(2):
+        if not any(marker in repaired for marker in MOJIBAKE_MARKERS):
+            break
+        original = repaired
+        for legacy_encoding in ("cp1252", "latin-1"):
+            try:
+                candidate = repaired.encode(legacy_encoding).decode("utf-8")
+            except (UnicodeEncodeError, UnicodeDecodeError):
+                continue
+            if candidate != original:
+                repaired = candidate
+                break
+        if repaired == original:
+            break
+    return repaired
 
 
 def _normalize_text(value):
     if isinstance(value, str):
+        value = _repair_mojibake(value)
         for bad, good in TEXT_FIXUPS.items():
             value = value.replace(bad, good)
-        return value
+        return value.strip()
     if isinstance(value, list):
         return [_normalize_text(item) for item in value]
     if isinstance(value, dict):
         return {key: _normalize_text(item) for key, item in value.items()}
     return value
 
-# â”€â”€ Zone metadata (static â€” doesn't change with scraping) â”€â”€â”€â”€â”€
+# Zone metadata (static; does not change with scraping)
 ZONE_META = {
     "kokapet": {
         "name": "Kokapet", "rank": 1, "lat": 17.407, "lng": 78.330, "radius": 2200,

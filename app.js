@@ -113,6 +113,7 @@ function debugSummaryText(){
     `Listings live/fallback: ${totals.listings_live ?? 0}/${totals.listings_fallback ?? 0}`,
     `RERA live/fallback: ${totals.rera_live ?? 0}/${totals.rera_fallback ?? 0}`,
     `Govt alerts: ${meta.scrape_summary?.govt_alerts?.count ?? 0}`,
+    `Refresh command: cd pipeline && python pipeline.py`,
   ].join('\n');
 }
 
@@ -131,6 +132,7 @@ function renderDebugPanel(){
     debugRow('Listings live/fallback', summary[3].replace('Listings live/fallback: ', '')),
     debugRow('RERA live/fallback', summary[4].replace('RERA live/fallback: ', '')),
     debugRow('Govt alerts', summary[5].replace('Govt alerts: ', '')),
+    debugRow('Refresh command', '<code>cd pipeline && python pipeline.py</code>'),
   ].join('');
 }
 
