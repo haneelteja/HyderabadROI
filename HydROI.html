@@ -26,7 +26,7 @@
   <div class="sp"><div class="sp-l">NRI Investment</div><div class="sp-r"><span class="sp-v" id="sp-nri">Rs 2,840 Cr</span><span class="sp-u">+31.6%</span></div></div>
   <div class="sp"><div class="sp-l">Active Projects</div><div class="sp-r"><span class="sp-v" id="sp-projects">1,240</span><span class="sp-u">+8.3%</span></div></div>
   <div class="sp"><div class="sp-l">Unsold Inventory</div><div class="sp-r"><span class="sp-v" id="sp-unsold">28,400</span><span class="sp-d">-6.1%</span></div></div>
-  <div class="tb-r"><span id="live-badge" style="font-size:10px;color:#3a4a6a;cursor:default" title="Run pipeline.py to activate live data">DEMO DATA - run pipeline.py to activate live feed</span><button class="dbg-btn" id="dbg-btn" type="button" aria-expanded="false" aria-controls="debug-panel">Debug</button><span class="vsep"></span><span class="mf">MiroFish AI</span></div>
+  <div class="tb-r"><span id="live-badge" style="font-size:10px;color:#3a4a6a;cursor:default" title="Run pipeline.py to activate live data">DEMO DATA - run pipeline.py to activate live feed</span><button class="src-btn" id="src-btn" type="button" aria-expanded="false" aria-controls="sources-panel">Sources</button><button class="dbg-btn" id="dbg-btn" type="button" aria-expanded="false" aria-controls="debug-panel">Debug</button><span class="vsep"></span><span class="mf">MiroFish AI</span></div>
 </div>
 
 <div id="fbar">
@@ -76,6 +76,10 @@
         <button class="debug-copy" id="debug-copy" type="button">Copy</button>
       </div>
       <div id="debug-body" class="debug-body">Waiting for pipeline metadata...</div>
+    </div>
+    <div id="sources-panel" class="sources-panel" aria-live="polite">
+      <div class="sources-top"><div class="sources-h">Data Sources</div></div>
+      <div id="sources-body" class="sources-body">Waiting for pipeline metadata...</div>
     </div>
     <div id="dp"><div id="dpc"></div></div>
     <div id="cp">

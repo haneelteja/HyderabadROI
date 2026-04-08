@@ -171,8 +171,83 @@ async function copyDebugSummary(){
 function toggleDebugPanel(){
   const panel=document.getElementById('debug-panel');
   const btn=document.getElementById('dbg-btn');
+  const srcPanel=document.getElementById('sources-panel');
+  const srcBtn=document.getElementById('src-btn');
   if(!panel || !btn) return;
   const open=!panel.classList.contains('open');
+  if(open && srcPanel && srcBtn){
+    srcPanel.classList.remove('open');
+    srcBtn.classList.remove('open');
+    srcBtn.setAttribute('aria-expanded', 'false');
+  }
+  panel.classList.toggle('open', open);
+  btn.classList.toggle('open', open);
+  btn.setAttribute('aria-expanded', String(open));
+}
+
+function sourceStatusPill(entry, label){
+  const tone=qualityTone(entry);
+  const txt=qualityLabel(label, entry);
+  return `<span class="qs ${tone}">${txt}</span>`;
+}
+
+function renderSourcesPanel(){
+  const body=document.getElementById('sources-body');
+  if(!body) return;
+
+  const meta=pipelineMeta || {};
+  const summary=meta.scrape_summary || {};
+  const totals=summary.totals || {};
+  const city=summary.city_stats || {};
+  const govtChecks=summary.govt_alerts?.source_checks || [];
+
+  const cityLine = city.source
+    ? `<div class="meta">City stats source: ${sourceLabel(city.source)} | ${sourceMetaLine(city)}</div>`
+    : `<div class="meta">City stats source not available in this run.</div>`;
+
+  const govtRows = govtChecks.length
+    ? govtChecks.map(check=>{
+        const reason=check.fallback_reason ? `<div class="meta">${check.fallback_reason}</div>` : '';
+        const link=check.url
+          ? `<a class="qlink" href="${check.url}" target="_blank" rel="noopener noreferrer">${check.name}</a>`
+          : `<span class="qsrc">${check.name}</span>`;
+        return `<div class="src-row">
+          <div class="src-top">${sourceStatusPill(check, check.name)}<span class="meta">${sourceMetaLine(check)}</span></div>
+          <div class="meta">Source: ${link}</div>
+          ${reason}
+        </div>`;
+      }).join('')
+    : `<div class="meta">No government source checks were recorded in this run.</div>`;
+
+  body.innerHTML = `
+    <div class="src-block">
+      <div class="src-title">Pipeline Snapshot</div>
+      <div class="meta">Updated: ${formatAge(meta.last_updated)}</div>
+      <div class="meta">Mode: ${meta.pipeline_mode || 'UNKNOWN'}</div>
+      <div class="meta">Listings live/cached/fallback: ${totals.listings_live ?? 0}/${totals.listings_cached ?? 0}/${totals.listings_fallback ?? 0}</div>
+      <div class="meta">RERA live/cached/fallback: ${totals.rera_live ?? 0}/${totals.rera_cached ?? 0}/${totals.rera_fallback ?? 0}</div>
+      <div class="meta">Govt feeds live/cached/fallback: ${totals.govt_live ?? 0}/${totals.govt_cached ?? 0}/${totals.govt_fallback ?? 0}</div>
+      ${cityLine}
+    </div>
+    <div class="src-block">
+      <div class="src-title">Government Sources</div>
+      ${govtRows}
+    </div>
+  `;
+}
+
+function toggleSourcesPanel(){
+  const panel=document.getElementById('sources-panel');
+  const btn=document.getElementById('src-btn');
+  const dbgPanel=document.getElementById('debug-panel');
+  const dbgBtn=document.getElementById('dbg-btn');
+  if(!panel || !btn) return;
+  const open=!panel.classList.contains('open');
+  if(open && dbgPanel && dbgBtn){
+    dbgPanel.classList.remove('open');
+    dbgBtn.classList.remove('open');
+    dbgBtn.setAttribute('aria-expanded', 'false');
+  }
   panel.classList.toggle('open', open);
   btn.classList.toggle('open', open);
   btn.setAttribute('aria-expanded', String(open));
@@ -699,6 +774,7 @@ function mergeLiveZone(z, live) {
 function updateTopbarStats(cityStats, meta) {
   pipelineMeta=meta || {};
   renderDebugPanel();
+  renderSourcesPanel();
   const statMap = {
     'sp-price': { v: 'Rs ' + cityStats.avg_price_sqft.toLocaleString('en-IN') },
     'sp-sales': { v: cityStats.quarterly_sales.toLocaleString('en-IN') + ' units' },
@@ -750,6 +826,7 @@ async function loadLiveData() {
     const data = await resp.json();
     pipelineMeta=data.metadata || {};
     renderDebugPanel();
+    renderSourcesPanel();
 
     const liveZones = data.zones || {};
     Z.forEach(z => {
@@ -773,6 +850,7 @@ async function loadLiveData() {
     console.log('[HydROI] Live data loaded from pipeline/output/data.json');
   } catch (e) {
     renderDebugPanel();
+    renderSourcesPanel();
     const badge = document.getElementById('live-badge');
     if (badge) {
       badge.textContent = 'DEMO DATA - run pipeline.py to activate live feed';
@@ -786,6 +864,8 @@ async function loadLiveData() {
 // INIT
 document.getElementById('dbg-btn')?.addEventListener('click', toggleDebugPanel);
 document.getElementById('debug-copy')?.addEventListener('click', copyDebugSummary);
+document.getElementById('src-btn')?.addEventListener('click', toggleSourcesPanel);
+renderSourcesPanel();
 buildMap();
 renderSB();
 setTimeout(()=>onZone('kokapet'),700);
