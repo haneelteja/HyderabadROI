@@ -100,6 +100,30 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{att
 let circ={},lblMk={},actLayer='roi',tlIdx=6,actZ=null,playing=false,ptmr=null,cmpMode=false,cmpPick=[],chReg={};
 let pipelineMeta={};
 
+function pipelineHealth(meta){
+  const totals=meta?.scrape_summary?.totals || {};
+  const fallback=(totals.listings_fallback ?? 0) + (totals.rera_fallback ?? 0) + (totals.govt_fallback ?? 0);
+  const cached=(totals.listings_cached ?? 0) + (totals.rera_cached ?? 0) + (totals.govt_cached ?? 0);
+  if(meta?.pipeline_mode==='LIVE' && fallback===0 && cached===0){
+    return {tone:'ok', label:'HEALTH: STRONG'};
+  }
+  if(meta?.pipeline_mode==='LIVE' && fallback<=2){
+    return {tone:'warn', label:'HEALTH: DEGRADED'};
+  }
+  if(meta?.pipeline_mode==='FALLBACK'){
+    return {tone:'bad', label:'HEALTH: FALLBACK'};
+  }
+  return {tone:'neutral', label:'HEALTH: DEMO'};
+}
+
+function setTopbarHealth(meta){
+  const el=document.getElementById('pipeline-health');
+  if(!el) return;
+  const h=pipelineHealth(meta || {});
+  el.className=`ph ${h.tone}`;
+  el.textContent=h.label;
+}
+
 function debugSummaryText(){
   const meta=pipelineMeta || {};
   const totals=meta.scrape_summary?.totals || {};
@@ -407,6 +431,17 @@ function compactAge(isoString){
   return age==='time unknown' ? 'n/a' : age;
 }
 
+function freshnessBadge(z){
+  const lAgeMins = z?.dq?.listings?.scraped_at ? Math.max(0, Math.round((Date.now() - new Date(z.dq.listings.scraped_at).getTime())/60000)) : null;
+  const rAgeMins = z?.dq?.rera?.scraped_at ? Math.max(0, Math.round((Date.now() - new Date(z.dq.rera.scraped_at).getTime())/60000)) : null;
+  const valid=[lAgeMins, rAgeMins].filter(v=>Number.isFinite(v));
+  if(!valid.length) return {tone:'stale', text:'Freshness: n/a'};
+  const age=Math.max(...valid);
+  if(age<=120) return {tone:'fresh', text:'Freshness: High'};
+  if(age<=720) return {tone:'warm', text:'Freshness: Medium'};
+  return {tone:'stale', text:'Freshness: Low'};
+}
+
 function zoneMapQuality(z){
   const listings=z.dq?.listings?.status || 'fallback';
   const rera=z.dq?.rera?.status || 'fallback';
@@ -454,6 +489,7 @@ function renderSB(f='all'){
     const nriLvl=z.nri>30?'Very High':z.nri>20?'High':z.nri>12?'Medium':'Low';
     const hi=z.nri>20;
     const cs=cmpPick.includes(z.id)?'cs':(actZ===z.id&&!cmpMode?'on':'');
+    const fr=freshnessBadge(z);
     return`<div class="zc r${Math.min(z.rank,3)} ${cs}" onclick="onZone('${z.id}')">
       <div class="zrk">#${z.rank}</div>
       <div class="zn">${z.name}</div><div class="zsg">${z.seg}</div>
@@ -465,6 +501,7 @@ function renderSB(f='all'){
       <div class="qrow">
         <span class="qs ${qualityTone(z.dq?.listings)}">${qualityLabel('Listings', z.dq?.listings)}</span>
         <span class="qs ${qualityTone(z.dq?.rera)}">${qualityLabel('RERA', z.dq?.rera)}</span>
+        <span class="qf ${fr.tone}">${fr.text}</span>
       </div>
       <div class="qage">Updated L ${compactAge(z.dq?.listings?.scraped_at)} | R ${compactAge(z.dq?.rera?.scraped_at)}</div>
       <span class="np ${hi?'hi':''}">NRI: ${nriLvl}</span>
@@ -600,6 +637,8 @@ function closeCompare(){
   cmpMode=false;cmpPick=[];
   document.getElementById('cmp').classList.remove('open');
   document.getElementById('cmp-btn').style.display='';
+  const exportBtn=document.getElementById('cmp-export');
+  if(exportBtn) exportBtn.disabled=true;
   renderSB();
 }
 function cmpMetric(label,value,cls,isWinner){
@@ -655,8 +694,47 @@ function cmpCol(z,other){
 function renderCmp(){
   const [a,b]=cmpPick.map(id=>Z.find(z=>z.id===id));
   if(!a||!b)return;
+  const exportBtn=document.getElementById('cmp-export');
+  if(exportBtn) exportBtn.disabled=false;
   document.getElementById('cmpl').innerHTML=cmpCol(a,b);
   document.getElementById('cmpr').innerHTML=cmpCol(b,a);
+}
+
+function csvEscape(value){
+  const text=String(value ?? '');
+  if(/[",\n]/.test(text)) return `"${text.replace(/"/g, '""')}"`;
+  return text;
+}
+
+function downloadCompareCsv(){
+  if(cmpPick.length!==2) return;
+  const [a,b]=cmpPick.map(id=>Z.find(z=>z.id===id));
+  if(!a || !b) return;
+  const rows=[
+    ['Metric', a.name, b.name],
+    ['Rank', a.rank, b.rank],
+    ['YoY Appreciation (%)', a.roiY, b.roiY],
+    ['3-Year ROI (%)', a.roi3, b.roi3],
+    ['Avg Price (Rs/sqft)', a.price, b.price],
+    ['Rental Yield (%)', a.ry, b.ry],
+    ['NRI Buyer Share (%)', a.nri, b.nri],
+    ['Sales Velocity (units/qtr)', a.sv, b.sv],
+    ['Active Listings', a.lst, b.lst],
+    ['Price Range', a.range, b.range],
+    ['Segment', a.seg, b.seg],
+    ['Data Quality Summary', zoneQualitySummary(a), zoneQualitySummary(b)],
+  ];
+  const csv=rows.map(r=>r.map(csvEscape).join(',')).join('\n');
+  const blob=new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const stamp=new Date().toISOString().slice(0,10);
+  const link=document.createElement('a');
+  link.href=url;
+  link.download=`hydroi-compare-${a.id}-vs-${b.id}-${stamp}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }
 
 // CALCULATOR
@@ -773,6 +851,7 @@ function mergeLiveZone(z, live) {
 
 function updateTopbarStats(cityStats, meta) {
   pipelineMeta=meta || {};
+  setTopbarHealth(pipelineMeta);
   renderDebugPanel();
   renderSourcesPanel();
   const statMap = {
@@ -849,6 +928,7 @@ async function loadLiveData() {
 
     console.log('[HydROI] Live data loaded from pipeline/output/data.json');
   } catch (e) {
+    setTopbarHealth(pipelineMeta);
     renderDebugPanel();
     renderSourcesPanel();
     const badge = document.getElementById('live-badge');
@@ -865,6 +945,8 @@ async function loadLiveData() {
 document.getElementById('dbg-btn')?.addEventListener('click', toggleDebugPanel);
 document.getElementById('debug-copy')?.addEventListener('click', copyDebugSummary);
 document.getElementById('src-btn')?.addEventListener('click', toggleSourcesPanel);
+document.getElementById('cmp-export')?.addEventListener('click', downloadCompareCsv);
+setTopbarHealth(pipelineMeta);
 renderSourcesPanel();
 buildMap();
 renderSB();

@@ -26,7 +26,7 @@
   <div class="sp"><div class="sp-l">NRI Investment</div><div class="sp-r"><span class="sp-v" id="sp-nri">Rs 2,840 Cr</span><span class="sp-u">+31.6%</span></div></div>
   <div class="sp"><div class="sp-l">Active Projects</div><div class="sp-r"><span class="sp-v" id="sp-projects">1,240</span><span class="sp-u">+8.3%</span></div></div>
   <div class="sp"><div class="sp-l">Unsold Inventory</div><div class="sp-r"><span class="sp-v" id="sp-unsold">28,400</span><span class="sp-d">-6.1%</span></div></div>
-  <div class="tb-r"><span id="live-badge" style="font-size:10px;color:#3a4a6a;cursor:default" title="Run pipeline.py to activate live data">DEMO DATA - run pipeline.py to activate live feed</span><button class="src-btn" id="src-btn" type="button" aria-expanded="false" aria-controls="sources-panel">Sources</button><button class="dbg-btn" id="dbg-btn" type="button" aria-expanded="false" aria-controls="debug-panel">Debug</button><span class="vsep"></span><span class="mf">MiroFish AI</span></div>
+  <div class="tb-r"><span id="pipeline-health" class="ph neutral" title="Pipeline reliability indicator">HEALTH: DEMO</span><span id="live-badge" style="font-size:10px;color:#3a4a6a;cursor:default" title="Run pipeline.py to activate live data">DEMO DATA - run pipeline.py to activate live feed</span><button class="src-btn" id="src-btn" type="button" aria-expanded="false" aria-controls="sources-panel">Sources</button><button class="dbg-btn" id="dbg-btn" type="button" aria-expanded="false" aria-controls="debug-panel">Debug</button><span class="vsep"></span><span class="mf">MiroFish AI</span></div>
 </div>
 
 <div id="fbar">
@@ -106,6 +106,7 @@
       <div id="cmph">
         <h2>Zone Comparison</h2>
         <span style="font-size:9px;color:#364862;">Click any two zones in the sidebar to compare side-by-side</span>
+        <button class="cmp-export" id="cmp-export" type="button" disabled>Export CSV</button>
         <button class="cmpx" onclick="closeCompare()">Close</button>
       </div>
       <div id="cmpb">
